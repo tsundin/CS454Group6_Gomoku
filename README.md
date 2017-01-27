@@ -5,7 +5,7 @@ Team members:
 Thaddeus Sundin
 tsundin@pdx.edu
 
-Charlie Juszczak
+Charlie Juszczak*
 cbj3@pdx.edu
 
 Roopa Satyanarayan
