@@ -11,5 +11,5 @@ cbj3@pdx.edu
 Roopa Satyanarayan
 rs7@pdx.edu
 
-Scott Fabini
+Scott Fabini *
 sfabini@pdx.edu
