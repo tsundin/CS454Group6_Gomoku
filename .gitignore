@@ -4,3 +4,9 @@
 .DS_Store
 /build
 .idea
+CS454Group6_Gomoku.iml
+Gomuku.iml
+app/app.iml
+build.gradle
+gradle/
+
