@@ -2,7 +2,7 @@
 A group project for CS454 to create an Android game of Gomoku.
 
 Team members: 
-Thaddeus Sundin
+*Thaddeus Sundin
 tsundin@pdx.edu
 
 Charlie Juszczak*
