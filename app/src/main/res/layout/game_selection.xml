@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF5CDCD0"
+    >
+
+    <TextView
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Game Selection"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="348dp"
+        android:layout_height="445dp"
+        android:id="@+id/GS_Layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Game Type "
+            android:id="@+id/textView2"
+            android:textStyle="normal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+       <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                 android:layout_below="@+id/textView2"
+                android:layout_alignParentLeft="true"
+                 android:layout_alignParentTop="true"
+                android:id="@+id/radioGroup"
+                >
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Online"
+                android:id="@+id/online"
+                android:checked="false"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="44dp"
+                android:layout_alignTop="@+id/al"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+
+            <RadioButton
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Offline"
+                   android:id="@+id/radioButton"
+                   android:checked="false"
+                   android:layout_alignParentTop="true"
+                   android:layout_marginTop="45dp"
+
+                   android:layout_marginLeft="35dp"
+
+                   android:layout_alignTop="@+id/radioButton"
+                   android:layout_centerHorizontal="true"
+                   android:textSize="18dp" />
+           <RadioButton
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="AL"
+               android:id="@+id/al"
+               android:checked="false"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentEnd="true"
+               android:layout_marginLeft="35dp"
+
+               android:layout_marginTop="45dp"
+               android:textSize="18dp"
+               android:textStyle="normal" />
+       </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mode"
+            android:id="@+id/textView3"
+            android:layout_marginTop="99dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+          />
+
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroup1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+
+            android:layout_alignTop="@+id/textView3">
+
+
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Standard"
+            android:id="@+id/radioButton2"
+            android:layout_marginTop="134dp"
+            android:layout_alignParentStart="true"
+            android:checked="false"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FreeStyle"
+            android:id="@+id/radioButton4"
+            android:layout_below="@+id/textView3"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="134dp"
+
+
+            android:checked="false"
+            android:textSize="18dp" />
+
+
+            </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Board Size"
+            android:id="@+id/textView4"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="140dp"
+            />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:layout_below="@+id/textView4"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/radioGroup2"
+            >
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10X10"
+            android:id="@+id/radioButton5"
+            android:layout_below="@+id/textView4"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="245dp"
+            android:checked="false"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15X15"
+            android:id="@+id/radioButton6"
+            android:layout_alignTop="@+id/radioButton5"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="245dp"
+            android:layout_marginLeft="34dp"
+
+            android:checked="false"
+            android:textSize="18dp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20X20"
+            android:id="@+id/radioButton7"
+
+            android:layout_marginTop="245dp"
+            android:layout_marginLeft="35dp"
+            android:checked="false"
+            android:textSize="18dp"
+             />
+    </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Game"
+            android:id="@+id/button"
+            android:layout_marginBottom="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="120dp"
+            android:onClick="gamePage"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
