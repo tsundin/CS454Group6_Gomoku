@@ -196,8 +196,7 @@
             android:layout_marginBottom="48dp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="120dp"
-            android:onClick="gamePage"
-            />
+            android:onClick="sendMessage" />
 
 
     </RelativeLayout>
