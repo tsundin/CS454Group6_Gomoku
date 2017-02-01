@@ -21,10 +21,11 @@
         <activity
             android:name=".GameSelection"
             android:label="Select Game" >
-            </activity>
-
-
-
+        </activity>
+        <activity
+            android:name=".GamePage"
+            android:label="Play Gomoku" >
+        </activity>
     </application>
 
 </manifest>
