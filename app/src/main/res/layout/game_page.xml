@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF5CDCD0"
+    >
+
+    <!--
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:numColumns="10"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        />
+    -->
+    <GridLayout
+        android:id="@+id/gridlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:columnCount="11"
+        android:rowCount="11">
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        <ImageButton
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:src="@drawable/intersection_100px_100px"
+            android:contentDescription="@null" />
+        
+        
+
+
+    </GridLayout>
+
+    <TextView
+        android:layout_toRightOf="@+id/gridlayout"
+        android:text="Player 1 10:00"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/player1" />
+
+    <TextView
+        android:layout_toRightOf="@+id/gridlayout"
+        android:layout_below="@+id/player1"
+        android:text="Player 2 10:00"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/player2" />
+</RelativeLayout>

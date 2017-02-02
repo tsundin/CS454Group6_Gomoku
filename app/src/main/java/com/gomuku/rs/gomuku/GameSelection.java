@@ -41,7 +41,7 @@ import android.view.View;
     }
 
 
-    public  void gamePage(View view)
+    public  void sendMessage(View view)
     {
         Intent intent = new Intent(this, GamePage.class);
         startActivity(intent);
