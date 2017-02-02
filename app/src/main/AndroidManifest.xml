@@ -23,6 +23,15 @@
             android:label="Select Game" >
             </activity>
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <activity
             android:name=".GameRules"
             android:label="Game Rules" >
