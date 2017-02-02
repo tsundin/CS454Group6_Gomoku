@@ -10,13 +10,13 @@ import android.view.View;
 /**
  * Created by rs on 1/26/17.
  */
-public class WelcomePage extends Activity {
+public class GameRules extends Activity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_page);
+        setContentView(R.layout.game_rules);
     }
 
 
@@ -40,18 +40,10 @@ public class WelcomePage extends Activity {
     }
 
 
-    public void sendMessage(View view)
+    public  void sendMessage(View view)
     {
-        switch(view.getId()) {
-            case (R.id.HomePagebutton):
-                Intent gameSelection = new Intent(this, GameSelection.class);
-                startActivity(gameSelection);
-                break;
-            case (R.id.GameRulesButton):
-                Intent gameRules = new Intent(this, GameRules.class);
-                startActivity(gameRules);
-                break;
-        }
+        Intent intent = new Intent(this, GameSelection.class);
+        startActivity(intent);
     }
 
 }

@@ -26,6 +26,12 @@
             android:name=".GamePage"
             android:label="Play Gomoku" >
         </activity>
+        <activity
+            android:name=".GameRules"
+            android:label="Game Rules" >
+        </activity>
+
+
     </application>
 
 </manifest>
