@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FF5CDCD0"
@@ -582,7 +583,7 @@
 
     <TextView
         android:layout_toRightOf="@+id/gridlayout"
-        android:text="Player 1 10:00"
+        android:text="Player 1"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -591,9 +592,19 @@
     <TextView
         android:layout_toRightOf="@+id/gridlayout"
         android:layout_below="@+id/player1"
-        android:text="Player 2 10:00"
+        android:text="Player 2"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/player2" />
+
+    <fragment
+        android:name="com.gomuku.rs.gomuku.GameTimerFragment"
+        android:id="@+id/timer"
+        tools:layout="@layout/game_timer_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/player2"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
