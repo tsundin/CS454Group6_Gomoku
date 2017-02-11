@@ -9,16 +9,34 @@
     android:layout_height="match_parent"
     android:background="#00000000">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/GP_Layout">
+
+    <ImageView
+        android:src="@drawable/abstract_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:scaleType="centerCrop" />
 
 
+        <TextView
+        android:layout_below="@+id/player1"
+        android:text="Player 2"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/player2"
+            android:textColor="@color/primaryDark" />
 
-
-    <FrameLayout
+        <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center" >
+            android:gravity="center"
+            android:layout_below="@+id/player2"
+            android:layout_centerHorizontal="true">
 
         <ImageView
             android:layout_width="match_parent"
@@ -1242,29 +1260,43 @@
         </GridLayout>
     </FrameLayout>
 
+        <TextView
+            android:text="Play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primary"
+            android:textSize="30sp"
+            android:textAllCaps="true"
+            android:id="@+id/game_options_text"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal|bold"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
 
-    <TextView
-        android:text="Player 1"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/player1" />
+        <TextView
+            android:text="Player 1"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/player1"
+            android:textColor="@color/primaryDark"
+            android:layout_below="@+id/game_options_text"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_below="@+id/player1"
-        android:text="Player 2"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/player2" />
+        <fragment
+            android:name="com.gomuku.rs.gomuku.GameTimerFragment"
+            android:id="@+id/timer"
+            tools:layout="@layout/game_timer_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/player1"
+            android:layout_alignBottom="@+id/player1"
+            android:layout_alignParentStart="true" />
 
-    <fragment
-        android:name="com.gomuku.rs.gomuku.GameTimerFragment"
-        android:id="@+id/timer"
-        tools:layout="@layout/game_timer_fragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/player2"
-        android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
 
 </LinearLayout>
