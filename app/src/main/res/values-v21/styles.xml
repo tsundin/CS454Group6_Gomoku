@@ -2,4 +2,13 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Material.Light">
     </style>
+
+    <style name="Gomoku" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="android:statusBarColor">@color/darkBeige</item>
+        <item name="android:colorPrimary">@color/primaryDark</item>
+        <item name="android:navigationBarColor">@color/primaryDark</item>
+        <item name="android:textColorPrimary">@android:color/primary_text_light</item>
+        <item name="android:textColorPrimaryInverse">@android:color/primary_text_dark</item>
+        <item name="android:colorAccent">@color/primaryDark</item>
+    </style>
 </resources>

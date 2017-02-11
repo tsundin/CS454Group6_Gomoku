@@ -28,9 +28,9 @@ import android.widget.Toast;
         /*
             Determine Board Size from radio buttons
          */
-        RadioButton radioButton_10x10 = (RadioButton) findViewById(R.id.radioButton5);
-        RadioButton radioButton_15x15 = (RadioButton) findViewById(R.id.radioButton6);
-        RadioButton radioButton_20x20 = (RadioButton) findViewById(R.id.radioButton7);
+        RadioButton radioButton_10x10 = (RadioButton) findViewById(R.id.ten);
+        RadioButton radioButton_15x15 = (RadioButton) findViewById(R.id.fifteen);
+        RadioButton radioButton_20x20 = (RadioButton) findViewById(R.id.twenty);
 
         radioButton_10x10.setOnClickListener(new View.OnClickListener() {
             @Override
