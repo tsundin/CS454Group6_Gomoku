@@ -22,10 +22,6 @@ public class GamePage extends Activity {
         Bundle b = getIntent().getExtras();
         boardSize = (GameSelection.BoardSizes) b.getSerializable("boardSize");
 
-
-        //Bundle b = getIntent().getSerializableExtra("boardSize");
-        //boardSize = (BoardSizes) getIntent().getSerializableExtra("boardSize");
-
         switch(boardSize) {
             case _10x10: setContentView(R.layout.game_page);
                 break;
