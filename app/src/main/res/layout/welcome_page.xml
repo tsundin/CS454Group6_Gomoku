@@ -4,63 +4,58 @@
     android:background="#FF5CDCD0">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    tools:context=".MyActivity"
+        tools:context=".MyActivity"
         >
 
-    <TextView
-        android:text=" Welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        />
+        <ImageView
+            android:src="@drawable/abstract_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:scaleType="centerCrop" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's Play The Game !!"
-            android:textColor="#000000"
-            android:id="@+id/textView"
-            android:textSize="30sp"
-
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="111dp"
-            />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click here to start"
-        android:textColor="@color/black"
-        android:id="@+id/HomePagebutton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="sendMessage"
-        android:layout_marginBottom="114dp"
-
-        />
 
         <Button
             android:text="Game Rules"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="29dp"
             android:id="@+id/GameRulesButton"
+            android:onClick="sendMessage"
+            style="@android:style/Widget.Material.Light.Button"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:onClick="sendMessage" />
+            android:layout_marginBottom="27dp" />
+
+        <ImageView
+            android:src="@drawable/gomoku_logo_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_marginBottom="46dp"
+            android:layout_above="@+id/HomePagebutton"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:textColor="@color/white"
+            android:id="@+id/HomePagebutton"
+            android:onClick="sendMessage"
+
+            style="@android:style/Widget.Material.Button.Colored"
+            android:background="@drawable/round_play_button"
+            android:textStyle="normal|bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="85dp"
+            android:layout_above="@+id/GameRulesButton"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>
+
 </LinearLayout>

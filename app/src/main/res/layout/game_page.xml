@@ -1,610 +1,1302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF5CDCD0"
-    >
+    android:background="#00000000">
 
-    <!--
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridview"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:numColumns="10"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        />
-    -->
-    <GridLayout
-        android:id="@+id/gridlayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:columnCount="11"
-        android:rowCount="11">
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        <ImageButton
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:src="@drawable/intersection_100px_100px"
-            android:contentDescription="@null" />
-        
-        
-
-
-    </GridLayout>
-
-    <TextView
-        android:layout_toRightOf="@+id/gridlayout"
-        android:text="Player 1"
-        android:padding="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/player1" />
+        android:layout_height="match_parent"
+        android:id="@+id/GP_Layout">
 
-    <TextView
-        android:layout_toRightOf="@+id/gridlayout"
+    <ImageView
+        android:src="@drawable/abstract_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:scaleType="centerCrop" />
+
+
+        <TextView
         android:layout_below="@+id/player1"
         android:text="Player 2"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/player2" />
+        android:id="@+id/player2"
+            android:textColor="@color/primaryDark" />
 
-    <fragment
-        android:name="com.gomuku.rs.gomuku.GameTimerFragment"
-        android:id="@+id/timer"
-        tools:layout="@layout/game_timer_fragment"
+        <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/player2"
-        android:layout_alignParentStart="true" />
+            android:gravity="center"
+            android:layout_below="@+id/player2"
+            android:layout_centerHorizontal="true">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+
+            android:scaleType="fitStart"
+            android:src="@drawable/wood_texture"
+            android:contentDescription="Board"
+            android:layout_gravity="top" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="10"
+            android:rowCount="10"
+            android:id="@+id/gridlayout">
+
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_gravity="fill"
+                android:gravity="center"
+                android:src="@drawable/intersection_100px_100px"
+                android:contentDescription="@null"
+                android:background="@null"
+                android:onClick="placePiece"
+                android:scaleType="fitXY" />
+
+        </GridLayout>
+    </FrameLayout>
+
+        <TextView
+            android:text="Play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primary"
+            android:textSize="30sp"
+            android:textAllCaps="true"
+            android:id="@+id/game_options_text"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal|bold"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:text="Player 1"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/player1"
+            android:textColor="@color/primaryDark"
+            android:layout_below="@+id/game_options_text"
+            android:layout_alignParentStart="true" />
+
+        <fragment
+            android:name="com.gomuku.rs.gomuku.GameTimerFragment"
+            android:id="@+id/timer"
+            tools:layout="@layout/game_timer_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/player1"
+            android:layout_alignBottom="@+id/player1"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -3,200 +3,204 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF5CDCD0"
+    android:background="#FFFFFF"
     >
 
-    <TextView
-        android:layout_width="244dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Game Selection"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
     <RelativeLayout
-        android:layout_width="348dp"
-        android:layout_height="445dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/GS_Layout">
 
+        <ImageView
+            android:src="@drawable/abstract_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView"
+            android:scaleType="centerCrop" />
+
         <TextView
+            android:text="Game Options"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Game Type "
-            android:id="@+id/textView2"
-            android:textStyle="normal"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primary"
+            android:textSize="30sp"
+            android:textAllCaps="true"
+            android:id="@+id/game_options_text"
+            android:layout_marginTop="43dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal|bold"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-       <RadioGroup
-                android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="360dp"
+            android:id="@+id/game_options_card"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/game_options_text"
+            android:layout_centerHorizontal="true"
+            android:layout_height="300dp">
+
+            <TextView
+                android:text="Type"
+                android:id="@+id/game_type_text"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/textView5"
+                android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif-condensed"
+                android:textAllCaps="false"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_margin="15dp"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="18sp" />
+
+
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:id="@+id/game_type"
+                android:layout_marginTop="40dp">
 
-                 android:layout_below="@+id/textView2"
-                android:layout_alignParentLeft="true"
-                 android:layout_alignParentTop="true"
-                android:id="@+id/radioGroup"
-                >
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                android:id="@+id/online"
-                android:checked="false"
+                <RadioButton
+                    android:text="Online "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/online"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="Offline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/offline"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="Computer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ai"
+                    android:layout_weight="1" />
+            </RadioGroup>
+
+            <TextView
+                android:text="Mode"
+                android:id="@+id/textView"
+
+                android:layout_marginTop="90dp"
+                android:layout_below="@+id/mode_text"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="44dp"
-                android:layout_alignTop="@+id/al"
-                android:textSize="18dp"
-                android:textStyle="normal" />
-
-            <RadioButton
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="Offline"
-                   android:id="@+id/radioButton"
-                   android:checked="false"
-                   android:layout_alignParentTop="true"
-                   android:layout_marginTop="45dp"
-
-                   android:layout_marginLeft="35dp"
-
-                   android:layout_alignTop="@+id/radioButton"
-                   android:layout_centerHorizontal="true"
-                   android:textSize="18dp" />
-           <RadioButton
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="AL"
-               android:id="@+id/al"
-               android:checked="false"
-               android:layout_alignParentTop="true"
-               android:layout_alignParentEnd="true"
-               android:layout_marginLeft="35dp"
-
-               android:layout_marginTop="45dp"
-               android:textSize="18dp"
-               android:textStyle="normal" />
-       </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mode"
-            android:id="@+id/textView3"
-            android:layout_marginTop="99dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-          />
+                android:fontFamily="sans-serif-condensed"
+                android:textAllCaps="false"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="18sp" />
 
 
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGroup1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:id="@+id/game_mode"
+                android:layout_marginTop="115dp">
 
-            android:layout_alignTop="@+id/textView3">
+                <RadioButton
+                    android:text="Standard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/standard"
+                    android:layout_weight="1" />
 
-
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Standard"
-            android:id="@+id/radioButton2"
-            android:layout_marginTop="134dp"
-            android:layout_alignParentStart="true"
-            android:checked="false"
-            android:textSize="18dp" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FreeStyle"
-            android:id="@+id/radioButton4"
-            android:layout_below="@+id/textView3"
-            android:layout_alignParentEnd="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="134dp"
-
-
-            android:checked="false"
-            android:textSize="18dp" />
-
+                <RadioButton
+                    android:text="Freestyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/freestyle"
+                    android:layout_weight="1" />
 
             </RadioGroup>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Board Size"
-            android:id="@+id/textView4"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="140dp"
-            />
+            <TextView
+                android:text="Board Size"
+                android:id="@+id/textView"
 
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+                android:layout_marginTop="165dp"
+                android:layout_below="@+id/size_text"
+                android:layout_alignParentStart="true"
+                android:fontFamily="sans-serif-condensed"
+                android:textAllCaps="false"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="18sp" />
 
-            android:layout_below="@+id/textView4"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:id="@+id/radioGroup2"
-            >
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10X10"
-            android:id="@+id/radioButton5"
-            android:layout_below="@+id/textView4"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="245dp"
-            android:checked="false"
-            android:textSize="18dp" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:id="@+id/game_size"
+                android:layout_marginTop="190dp">
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="15X15"
-            android:id="@+id/radioButton6"
-            android:layout_alignTop="@+id/radioButton5"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="245dp"
-            android:layout_marginLeft="34dp"
+                <RadioButton
+                    android:text="10 x 10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ten"
+                    android:layout_weight="1" />
 
-            android:checked="false"
-            android:textSize="18dp" />
+                <RadioButton
+                    android:text="15 x 15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fifteen"
+                    android:layout_weight="1" />
 
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20X20"
-            android:id="@+id/radioButton7"
+                <RadioButton
+                    android:text="20 x 20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/twenty"
+                    android:layout_weight="1" />
 
-            android:layout_marginTop="245dp"
-            android:layout_marginLeft="35dp"
-            android:checked="false"
-            android:textSize="18dp"
-             />
-    </RadioGroup>
+            </RadioGroup>
+
+        </android.support.v7.widget.CardView>
+
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start Game"
-            android:id="@+id/button"
-            android:layout_marginBottom="48dp"
-            android:layout_alignParentBottom="true"
+            android:text="Start"
+            android:id="@+id/start_button"
+            android:layout_marginBottom="109dp"
             android:layout_marginLeft="120dp"
-            android:onClick="sendMessage" />
+            android:onClick="sendMessage"
+            android:background="@drawable/round_play_button"
+            android:textColor="@color/white"
+            android:textStyle="normal|bold"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>
