@@ -9,7 +9,6 @@
     android:layout_height="match_parent"
     android:background="#00000000">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,14 +21,15 @@
         android:id="@+id/imageView"
         android:scaleType="centerCrop" />
 
-        <TextView
-            android:layout_below="@+id/player1"
-            android:text="Player 2"
-            android:padding="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/player2"
-            android:textColor="@color/primaryDark" />
+
+    <TextView
+        android:layout_below="@+id/player1"
+        android:text="Player 2"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/player2_20"
+        android:textColor="@color/primaryDark" />
 
         <TextView
             android:text="Play"
@@ -71,10 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_below="@+id/timer"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp">
-
+            android:layout_below="@+id/player2_20"
+            android:layout_centerHorizontal="true">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,35 +86,38 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnCount="15"
-                android:rowCount="15"
+                android:columnCount="20"
+                android:rowCount="20"
                 android:id="@+id/gridlayout">
 
+
             </GridLayout>
-                <LinearLayout
-                    android:id="@+id/stalemate_and_winner"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/stalemate_and_winner"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <fragment
+                    android:name="com.gomuku.rs.gomuku.GameWinnerFragment"
+                    android:id="@+id/winner"
+                    android:layout_gravity="center"
+                    tools:layout="@layout/game_winner_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <fragment
+                    android:name="com.gomuku.rs.gomuku.GameStalemateFragment"
+                    android:id="@+id/stalemate"
+                    tools:layout="@layout/game_stalemate_fragment"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <fragment
-                        android:name="com.gomuku.rs.gomuku.GameWinnerFragment"
-                        android:id="@+id/winner"
-                        android:layout_gravity="center"
-                        tools:layout="@layout/game_winner_fragment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <fragment
-                        android:name="com.gomuku.rs.gomuku.GameStalemateFragment"
-                        android:id="@+id/stalemate"
-                        tools:layout="@layout/game_stalemate_fragment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
-                </LinearLayout>
+                    android:layout_gravity="center" />
+            </LinearLayout>
         </FrameLayout>
+
     </RelativeLayout>
+
 </LinearLayout>
