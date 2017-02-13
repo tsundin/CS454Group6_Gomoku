@@ -18,35 +18,8 @@ public class GameStalemateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.game_stalemate_fragment, container, false);
         TextView timerText = (TextView) view.findViewById(R.id.playerTimer);
-        Timer countdown = new Timer(600000, 1000, timerText);
-        countdown.start();
         return view;
     }
 
-    public class Timer extends CountDownTimer {
-        TextView text;
 
-        public Timer(long startTime, long interval, TextView timerText) {
-            super(startTime, interval);
-            text = timerText;
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            /*
-            String hms= String.format("%02d:%d",
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
-            );
-            text.setText("Time remaining:\n\n" + hms);
-            //text.setText("Time remaining:\n\n" + millisUntilFinished / 1000);
-            */
-        }
-
-        @Override
-        public void onFinish() {
-            text.setText("Out of time!");
-        }
-    }
 }

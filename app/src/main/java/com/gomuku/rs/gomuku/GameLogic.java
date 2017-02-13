@@ -1,5 +1,7 @@
 package com.gomuku.rs.gomuku;
 
+import java.util.Scanner;
+
 /**
  * Created by Thaddeus Sundin on 2/12/2017.
  */
@@ -102,7 +104,7 @@ public class GameLogic {
         }
 
         //Stop timer
-        timer.stopTImer();
+        timer.stopTimer();
 
         return 0;
     }
