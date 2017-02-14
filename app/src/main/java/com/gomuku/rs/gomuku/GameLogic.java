@@ -1,5 +1,7 @@
 package com.gomuku.rs.gomuku;
 
+import java.util.Scanner;
+
 /**
  * Created by Thaddeus Sundin on 2/12/2017.
  */
@@ -80,6 +82,7 @@ public class GameLogic {
         int x;
         int y;
         int successfulPlace = -1;
+        //Scanner in = new Scanner(System.in);
         Scanner in = new Scanner(System.in);
 
         //Start the timer
