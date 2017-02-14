@@ -105,7 +105,7 @@ public class GameLogic {
         }
 
         //Stop timer
-        timer.stopTImer();
+        timer.stopTimer();
 
         return 0;
     }
