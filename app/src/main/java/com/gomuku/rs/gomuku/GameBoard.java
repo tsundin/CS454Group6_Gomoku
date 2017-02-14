@@ -56,9 +56,106 @@ public class GameBoard {
         return 0;
     }
 
-    //Return the stone color of the winner (1 = white, 2 = black)
-    //Return 0 if there is no winner
-    public int checkForWinner() {
+    //Check if the chain length fulfills the winning conditions set forth by the game mode
+    public boolean isChainLengthValid(int chainLength) {
+        //Chain lengths must always be at least 5
+        //If we are in standard mode, a chain length of six or more stones does not count
+        if (gameMode == 0) {
+            if (chainLength == 5)
+                return true;
+        }
+        //In freestyle mode, a line of six or more stones is allowed
+        if (gameMode == 1) {
+            if (chainLength >= 5)
+                return true;
+        }
+        return false;
+    }
+
+    //Check the area surrounding the origin for winning conditions
+    //Return the stone color if the winning conditions are met
+    public int checkForWinner(int stoneColor, int originx, int originy) {
+        int chainLength;
+        //Check for horizontal winning conditions
+        chainLength = checkHorizontal(stoneColor, originx, originy);
+        System.out.print("Chain length: ");
+        System.out.println(chainLength);
+        if (isChainLengthValid(chainLength))
+            return stoneColor;
+
+        //Check for vertical winning conditions
+        chainLength = checkVertical(stoneColor, originx, originy);
+        if (isChainLengthValid(chainLength))
+            return stoneColor;
+
+        //Check for diagonal winning conditions
+        chainLength = checkDiagonal(stoneColor, originx, originy);
+        if (isChainLengthValid(chainLength))
+            return stoneColor;
+
+        //Return 0 if no winning chain length was found
+        return 0;
+    }
+
+    //Check for horizontal winning conditions around an origin point
+    public int checkHorizontal(int stoneColor, int originx, int originy) {
+        //Check to the left of the origin (Start at 1 to count the origin point)
+        int countLeft = 1;
+        for (int i=originx-1; i>=0; --i) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][originy] == stoneColor)
+                ++countLeft;
+            else
+                break;
+        }
+
+        //Check to the right of the origin
+        int countRight = 0;
+        for (int i=originx+1; i<boardSizeX; ++i) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][originy] == stoneColor)
+                ++countRight;
+            else
+                break;
+        }
+
+        int chainLength = countLeft + countRight;
+        return chainLength;
+    }
+
+    //Check for horizontal winning conditions around an origin point
+    public int checkVertical(int stoneColor, int originx, int originy) {
+        //Check above the origin
+        int countUp = 1;
+        for (int i=originy-1; i>=0; --i) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[originx][i] == stoneColor)
+                ++countUp;
+            else
+                break;
+        }
+
+        //Check below the origin
+        int countDown = 0;
+        for (int i=originy+1; i<boardSizeY; ++i) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[originx][i] == stoneColor)
+                ++countDown;
+            else
+                break;
+        }
+
+        int chainLength = countUp + countDown;
+        return chainLength;
+    }
+
+    //Check for horizontal winning conditions around an origin point
+    public int checkDiagonal(int stoneColor, int originx, int originy) {
+
         return 0;
     }
 
@@ -82,10 +179,10 @@ public class GameBoard {
     public void printBoard() {
 
         //Loop through the board printing one character at a time
-        for(int i=0; i<boardSizeX; ++i) {
-            for(int j=0; j<boardSizeY; ++j) {
+        for(int i=0; i<boardSizeY; ++i) {
+            for(int j=0; j<boardSizeX; ++j) {
                 System.out.print('[');
-                System.out.print(gameBoard[i][j]);
+                System.out.print(gameBoard[j][i]);
                 System.out.print("] ");
             }
             System.out.print('\n');

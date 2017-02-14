@@ -7,7 +7,6 @@ import java.util.Scanner;
  */
 
 public class GameLogic {
-
     private GameBoard gameBoard;
     //Specify the type of game to play
     //0 means offline, 1 means online, 2 means AI
@@ -34,31 +33,31 @@ public class GameLogic {
             //---------Player 1 turn---------
             printBoard();
             System.out.println("Player 1: Your turn!");
-            playTurn(player1, timer1);
+            winner = playTurn(player1, timer1);
             printBoard();
             //---------Logic check---------
             //Check if there is a winner
-            winner = gameBoard.checkForWinner();
+            //winner = gameBoard.checkForWinner();
             if(winner != 0) {
                 gameRunning = false;
             }
             //Check if the game board is full
-            if(gameBoard.isBoardFull())
+            else if(gameBoard.isBoardFull())
                 gameRunning = false;
 
             //---------Player 2 turn---------
             //(Only taken if the game is still running)
             if (gameRunning) {
                 System.out.println("Player 2: Your turn!");
-                playTurn(player2, timer2);
+                winner = playTurn(player2, timer2);
                 //---------Logic check---------
                 //Check if there is a winner
-                winner = gameBoard.checkForWinner();
+                //winner = gameBoard.checkForWinner();
                 if(winner != 0) {
                     gameRunning = false;
                 }
                 //Check if the game board is full
-                if (gameBoard.isBoardFull())
+                else if (gameBoard.isBoardFull())
                     gameRunning = false;
             }
         }
@@ -78,11 +77,12 @@ public class GameLogic {
     }
 
     //Play a turn
+    //Return the stone color of the player if they have won
+    //Return 0 otherwise
     public int playTurn(Player player, Timer timer) {
-        int x;
-        int y;
+        int x = -1;
+        int y = -1;
         int successfulPlace = -1;
-        //Scanner in = new Scanner(System.in);
         Scanner in = new Scanner(System.in);
 
         //Start the timer
@@ -107,7 +107,7 @@ public class GameLogic {
         //Stop timer
         timer.stopTimer();
 
-        return 0;
+        return gameBoard.checkForWinner(player.getStoneColor(), x, y);
     }
 
     //Print the game board
