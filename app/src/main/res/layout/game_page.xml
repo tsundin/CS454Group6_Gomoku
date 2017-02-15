@@ -25,6 +25,8 @@
             android:layout_below="@+id/player1"
             android:text="Player 2"
             android:padding="16dp"
+            android:textStyle="bold"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player2"
@@ -52,6 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player1"
+            android:textStyle="bold"
+
             android:textColor="@color/primaryDark"
             android:layout_below="@+id/game_options_text"
             android:layout_alignParentStart="true" />
@@ -63,7 +67,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/player1"
-            android:layout_alignBottom="@+id/player1"
+            android:layout_alignTop="@+id/player1"
+            android:layout_alignParentStart="true" />
+
+        <fragment
+            android:name="com.gomuku.rs.gomuku.GameTimerFragment"
+            android:id="@+id/timer2"
+            tools:layout="@layout/game_timer_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/player2"
+            android:layout_alignTop="@+id/player2"
             android:layout_alignParentStart="true" />
 
         <FrameLayout
