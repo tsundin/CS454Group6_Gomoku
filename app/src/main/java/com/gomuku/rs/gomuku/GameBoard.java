@@ -78,8 +78,6 @@ public class GameBoard {
         int chainLength;
         //Check for horizontal winning conditions
         chainLength = checkHorizontal(stoneColor, originx, originy);
-        System.out.print("Chain length: ");
-        System.out.println(chainLength);
         if (isChainLengthValid(chainLength))
             return stoneColor;
 
@@ -89,7 +87,10 @@ public class GameBoard {
             return stoneColor;
 
         //Check for diagonal winning conditions
-        chainLength = checkDiagonal(stoneColor, originx, originy);
+        chainLength = checkDiagonalInc(stoneColor, originx, originy);
+        if (isChainLengthValid(chainLength))
+            return stoneColor;
+        chainLength = checkDiagonalDec(stoneColor, originx, originy);
         if (isChainLengthValid(chainLength))
             return stoneColor;
 
@@ -125,9 +126,9 @@ public class GameBoard {
         return chainLength;
     }
 
-    //Check for horizontal winning conditions around an origin point
+    //Check for vertical winning conditions around an origin point
     public int checkVertical(int stoneColor, int originx, int originy) {
-        //Check above the origin
+        //Check above the origin (Start at 1 to count the origin point)
         int countUp = 1;
         for (int i=originy-1; i>=0; --i) {
             //If the next stone matches the stone color to search for, increment the count
@@ -153,16 +154,81 @@ public class GameBoard {
         return chainLength;
     }
 
-    //Check for horizontal winning conditions around an origin point
-    public int checkDiagonal(int stoneColor, int originx, int originy) {
+    //Check for increasing sloped diagonal winning conditions around an origin point
+    public int checkDiagonalInc(int stoneColor, int originx, int originy) {
+        //Check above and to the right of the origin (Start at 1 to count the origin point)
+        int countUp = 1;
+        int i = originx+1;
+        int j = originy-1;
+        while (i<boardSizeX && j>=0) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][j] == stoneColor)
+                ++countUp;
+            else
+                break;
+            ++i;
+            --j;
+        }
 
-        return 0;
+        //Check below and to the left of the origin
+        int countDown = 0;
+        i = originx-1;
+        j = originy+1;
+        while (i>=0 && j<boardSizeY) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][j] == stoneColor)
+                ++countDown;
+            else
+                break;
+            --i;
+            ++j;
+        }
+
+        int chainLength = countUp + countDown;
+        return chainLength;
+    }
+
+    //Check for decreasing sloped diagonal winning conditions around an origin point
+    public int checkDiagonalDec(int stoneColor, int originx, int originy) {
+        //Check above and to the left of the origin (Start at 1 to count the origin point)
+        int countUp = 1;
+        int i = originx-1;
+        int j = originy-1;
+        while (i>=0 && j>=0) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][j] == stoneColor)
+                ++countUp;
+            else
+                break;
+            --i;
+            --j;
+        }
+
+        //Check below and to the right of the origin point
+        int countDown = 0;
+        i = originx+1;
+        j = originy+1;
+        while (i<boardSizeX && j<boardSizeY) {
+            //If the next stone matches the stone color to search for, increment the count
+            //Otherwise, break the loop (Because the chain has ended)
+            if (gameBoard[i][j] == stoneColor)
+                ++countUp;
+            else
+                break;
+            ++i;
+            ++j;
+        }
+
+        int chainLength = countUp + countDown;
+        return chainLength;
     }
 
     //Return true if there are no more free spaces on the game board (if there are no more 0s of the board)
     //Return false otherwise
     public boolean isBoardFull() {
-
         //If there exists a zero on the game board, then the board is not full
         for(int i=0; i<boardSizeX; ++i) {
             for(int j=0; j<boardSizeY; ++j) {
