@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_columnWeight="1"
+    android:layout_rowWeight="1"
+    android:layout_gravity="fill"
+    android:gravity="center"
+    android:src="@drawable/intersection_100px_100px"
+    android:contentDescription="@null"
+    android:background="@null"
+    android:onClick="placePiece"
+    android:scaleType="fitXY"
+    android:id="@+id/empty_intersection"/>

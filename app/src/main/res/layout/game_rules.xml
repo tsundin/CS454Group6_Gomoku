@@ -40,7 +40,9 @@
             android:id="@+id/game_rules_card"
             android:layout_marginTop="30dp"
             android:layout_below="@+id/textView5"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent">
+
 
             <TextView
                 android:text="Gomoku is a two-player board game.\n\nEach player has a type of stone, black or white. In each turn, a player places a stone at a corner in the board.\n\nThe winner must have a line of first five adjacent stones vertically, horizontally, or diagonally. This line must not be blocked at both ends. The edge of the board is considered as a blocked end.\n\nIn standard mode, a line of six or more adjacent stones does not count. In freestyle mode, a line of six or more adjacent stones is allowed."
