@@ -22,16 +22,7 @@
         android:scaleType="centerCrop" />
 
 
-    <TextView
-        android:layout_below="@+id/player1"
-        android:text="Player 2"
-        android:textStyle="bold"
 
-        android:padding="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/player2_20"
-        android:textColor="@color/primaryDark" />
 
         <TextView
             android:text="Play"
@@ -52,39 +43,51 @@
         <TextView
             android:text="Player 1"
             android:padding="16dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player1"
             android:textStyle="bold"
 
             android:textColor="@color/primaryDark"
-            android:layout_below="@+id/game_options_text"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/game_options_text" />
+
+        <TextView
+            android:layout_below="@+id/player1"
+            android:text="Player 2"
+            android:textStyle="bold"
+
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/player2"
+            android:textColor="@color/primaryDark" />
 
         <fragment
             android:name="com.gomuku.rs.gomuku.GameTimerFragment"
             android:id="@+id/timer"
             tools:layout="@layout/game_timer_fragment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/player1"
             android:layout_alignBottom="@+id/player1"
+
             android:layout_alignParentStart="true" />
         <fragment
             android:name="com.gomuku.rs.gomuku.GameTimerFragment"
             android:id="@+id/timer2"
             tools:layout="@layout/game_timer_fragment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/player2"
-            android:layout_alignTop="@+id/player2"
+            android:layout_alignBottom="@+id/player2"
             android:layout_alignParentStart="true" />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_below="@+id/player2_20"
+            android:layout_below="@+id/player2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp">
             <ImageView
@@ -131,6 +134,8 @@
                     android:layout_gravity="center" />
             </LinearLayout>
         </FrameLayout>
+
+
 
     </RelativeLayout>
 

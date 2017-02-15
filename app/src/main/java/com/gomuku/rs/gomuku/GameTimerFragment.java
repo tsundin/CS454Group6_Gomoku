@@ -69,7 +69,7 @@ public class GameTimerFragment extends Fragment {
                     TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisToDisplay))
             );
-            text.setText("Time : " + hms);
+            text.setText("Time: " + hms);
             //text.setText("Time remaining:\n\n" + millisUntilFinished / 1000);
         }
 
