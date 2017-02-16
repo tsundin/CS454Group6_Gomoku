@@ -1,5 +1,11 @@
 package com.gomuku.rs.gomuku;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
 import java.util.Scanner;
 
 /**
@@ -83,18 +89,20 @@ public class GameLogic {
         int x = -1;
         int y = -1;
         int successfulPlace = -1;
-        Scanner in = new Scanner(System.in);
+        //Scanner in = new Scanner(System.in);
+
+        int boardSize = gameBoard.getBoardSize();
 
         //Start the timer
         timer.startTimer();
 
         while (successfulPlace != 0) {
             //Read input from the user
-            System.out.println("Where would you like to place a stone?");
-            System.out.print("x: ");
-            x = in.nextInt();
-            System.out.print("y: ");
-            y = in.nextInt();
+            //System.out.println("Where would you like to place a stone?");
+            //System.out.print("x: ");
+            //x = in.nextInt();
+            //System.out.print("y: ");
+            //y = in.nextInt();
 
             //Place a stone on the board
             successfulPlace = this.gameBoard.placeStone(player.getStoneColor(), x, y);
