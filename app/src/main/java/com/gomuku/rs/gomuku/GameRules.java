@@ -17,6 +17,10 @@ public class GameRules extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_rules);
+        android.support.v7.widget.CardView cV = (android.support.v7.widget.CardView) findViewById(R.id.game_rules_card);
+        cV.setCardBackgroundColor(getResources().getColor(R.color.transparent));
+
+
     }
 
 

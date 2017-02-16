@@ -73,6 +73,8 @@ import android.widget.Toast;
         RadioButton radioButton_10x10 = (RadioButton) findViewById(R.id.ten);
         RadioButton radioButton_15x15 = (RadioButton) findViewById(R.id.fifteen);
         RadioButton radioButton_20x20 = (RadioButton) findViewById(R.id.twenty);
+        android.support.v7.widget.CardView cV = (android.support.v7.widget.CardView) findViewById(R.id.game_options_card);
+
 
         radioButton_10x10.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +88,7 @@ import android.widget.Toast;
             @Override
             public void onClick(View view) { boardSize = BoardSizes._20x20; }
         });
+        cV.setCardBackgroundColor(getResources().getColor(R.color.transparent));
 
 
     }

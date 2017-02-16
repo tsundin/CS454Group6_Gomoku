@@ -21,16 +21,6 @@
         android:id="@+id/imageView"
         android:scaleType="centerCrop" />
 
-
-    <TextView
-        android:layout_below="@+id/player1"
-        android:text="Player 2"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/player2_20"
-        android:textColor="@color/primaryDark" />
-
         <TextView
             android:text="Play"
             android:layout_width="wrap_content"
@@ -47,15 +37,27 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp" />
 
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/intersection_black_100px_100px"
+            android:contentDescription="@null"
+            android:background="@null"
+            android:id="@+id/player1_color"
+            android:layout_below="@id/game_options_text"
+            android:layout_alignParentStart="true"
+            android:layout_margin="2dp"
+            />
         <TextView
             android:text="Player 1"
             android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/player1"
+            android:textStyle="bold"
             android:textColor="@color/primaryDark"
-            android:layout_below="@+id/game_options_text"
-            android:layout_alignParentStart="true" />
+            android:layout_below="@id/game_options_text"
+            android:layout_toRightOf="@id/player1_color" />
 
         <fragment
             android:name="com.gomuku.rs.gomuku.GameTimerFragment"
@@ -63,16 +65,51 @@
             tools:layout="@layout/game_timer_fragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/player1"
-            android:layout_alignBottom="@+id/player1"
-            android:layout_alignParentStart="true" />
+            android:layout_alignTop="@+id/player1"
+            android:layout_below="@id/game_options_text"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/intersection_white_100px_100px"
+            android:contentDescription="@null"
+            android:background="@null"
+            android:id="@+id/player2_color"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/player1"
+            android:layout_margin="2dp"
+            />
+        <TextView
+            android:text="Player 2"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/player2"
+            android:textColor="@color/primaryDark"
+            android:layout_toRightOf="@id/player2_color"
+            android:layout_below="@id/player1"
+            />
+
+        <fragment
+            android:name="com.gomuku.rs.gomuku.GameTimerFragment"
+            android:id="@+id/timer2"
+            tools:layout="@layout/game_timer_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/player2"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/player1"
+            />
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_below="@+id/player2_20"
-            android:layout_centerHorizontal="true">
+            android:layout_below="@+id/player2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,6 +154,8 @@
                     android:layout_gravity="center" />
             </LinearLayout>
         </FrameLayout>
+
+
 
     </RelativeLayout>
 

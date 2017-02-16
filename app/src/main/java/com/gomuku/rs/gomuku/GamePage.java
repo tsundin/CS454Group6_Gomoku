@@ -3,6 +3,7 @@ package com.gomuku.rs.gomuku;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.TextView;
+import android.text.Spannable;
+import android.text.style.BackgroundColorSpan;
 
 /**
  * Created by rs on 1/27/17.
@@ -115,6 +118,8 @@ public class GamePage extends Activity {
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
+        FragmentManager fm = getFragmentManager();
+
         if (aButton.getTag() == null) {
             if (player) {
                     int play = playTurn(player1, timer1, x_coord, y_coord);
@@ -122,6 +127,14 @@ public class GamePage extends Activity {
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
                         player = !player;
+                        com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                        com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                        player1Time.pause();
+                        player2Time.resume();
+                        TextView textView = (TextView)findViewById(R.id.player1);
+                        textView.setBackgroundColor(0xFFFFCB3D);
+                        TextView textView2 = (TextView)findViewById(R.id.player2);
+                        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));                    
                     } else {
                         if(play == 1) {
                             System.out.println("Player 1 Wins!");
@@ -143,6 +156,14 @@ public class GamePage extends Activity {
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
                         player = !player;
+                        TextView textView = (TextView)findViewById(R.id.player2);
+                        textView.setBackgroundColor(0xFFFFCB3D);
+                        TextView textView2 = (TextView)findViewById(R.id.player1);
+                        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+                        com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                        com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                        player2Time.pause();
+                        player1Time.resume();                    
                     } else {
                         if(play == 1) {
                             //TODO : Change to alert dialog
