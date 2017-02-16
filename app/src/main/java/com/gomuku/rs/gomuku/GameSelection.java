@@ -15,19 +15,61 @@ import android.widget.Toast;
  */
 
     public class GameSelection extends Activity {
-        public enum BoardSizes {
-            _10x10, _15x15, _20x20
-        }
-        BoardSizes boardSize = BoardSizes._10x10;
+
+    public enum GameTypes {
+        Online, Offline, AI
+    }
+
+    GameTypes gameType = GameTypes.Offline;
+
+    public enum GameModes {
+        Standard, Freestyle
+    }
+
+    GameModes gameMode = GameModes.Standard;
+
+    public enum BoardSizes {
+        _10x10, _15x15, _20x20
+    }
+    BoardSizes boardSize = BoardSizes._10x10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_selection);
 
-        /*
-            Determine Board Size from radio buttons
-         */
+        // Determine game type from radio buttons
+        RadioButton radioButton_online = (RadioButton) findViewById(R.id.online);
+        RadioButton radioButton_offline = (RadioButton) findViewById(R.id.offline);
+        RadioButton radioButton_ai = (RadioButton) findViewById(R.id.ai);
+
+        radioButton_online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameType = GameTypes.Online; }
+        });
+        radioButton_offline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameType = GameTypes.Offline; }
+        });
+        radioButton_ai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameType = GameTypes.AI; }
+        });
+
+        // Determine game mode from radio buttons
+        RadioButton radioButton_standard = (RadioButton) findViewById(R.id.standard);
+        RadioButton radioButton_freestyle = (RadioButton) findViewById(R.id.freestyle);
+
+        radioButton_standard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameMode = gameMode.Standard; }
+        });
+        radioButton_freestyle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameMode = gameMode.Freestyle; }
+        });
+
+        // Determine Board Size from Radio Buttons
         RadioButton radioButton_10x10 = (RadioButton) findViewById(R.id.ten);
         RadioButton radioButton_15x15 = (RadioButton) findViewById(R.id.fifteen);
         RadioButton radioButton_20x20 = (RadioButton) findViewById(R.id.twenty);
@@ -72,9 +114,9 @@ import android.widget.Toast;
     public  void sendMessage(View view)
     {
         Intent intent = new Intent(this, GamePage.class);
+        intent.putExtra("gameType", gameType);
+        intent.putExtra("gameMode", gameMode);
         intent.putExtra("boardSize", boardSize);
         startActivity(intent);
-
-
     }
 }

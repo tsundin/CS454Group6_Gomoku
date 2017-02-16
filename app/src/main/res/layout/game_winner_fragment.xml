@@ -8,28 +8,29 @@
     android:layout_margin="5dp">
 
     <TextView
-        android:id="@+id/winner"
+        android:id="@+id/winnerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" Winner: Player 1!\nPlay Again? "
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:gravity="center"
         android:textStyle="normal|bold"
-        android:textSize="40sp"
+        android:textSize="24sp"
         android:rotation="0"
         android:textColor="@color/primaryDark" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/yes"
-        android:layout_below="@id/winner"
-        android:layout_alignLeft="@id/winner"
-        />
+        android:layout_below="@id/winnerText"
+        android:layout_alignLeft="@id/winnerText"
+        android:onClick="restartGame" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no"
-        android:layout_below="@id/winner"
-        android:layout_alignRight="@id/winner"
+        android:layout_below="@id/winnerText"
+        android:layout_alignRight="@id/winnerText"
+        android:onClick="endGame"
         />
 </RelativeLayout>

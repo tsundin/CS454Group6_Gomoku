@@ -254,4 +254,9 @@ public class GameBoard {
             System.out.print('\n');
         }
     }
+
+    //Returns board size
+    public int getBoardSize() {
+        return boardSizeX;
+    }
 }
