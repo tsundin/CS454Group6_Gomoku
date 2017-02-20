@@ -2,18 +2,27 @@ package com.gomuku.rs.gomuku;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by rs on 1/27/17.
@@ -30,6 +39,11 @@ public class GamePage extends Activity {
     private Player player2;
     private Timer timer1;
     private Timer timer2;
+    private BluetoothAdapter BA;
+    private Set<BluetoothDevice> pairedDevices;
+    ListView lv;
+    Button b1,b2,b3,b4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +69,25 @@ public class GamePage extends Activity {
         }
 
 
+        b1 = (Button) findViewById(R.id.button);
+        b2=(Button)findViewById(R.id.button2);
+        b3=(Button)findViewById(R.id.button3);
+        b4=(Button)findViewById(R.id.button4);
+
+        /*
+        BA = BluetoothAdapter.getDefaultAdapter();
+        lv = (ListView) findViewById(R.id.listView);
+
+        if (!BA.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }
+        pairedDevices = BA.getBondedDevices();
+        */
+
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
         for (int i = 0; i < board_size; i++) {
             for (int j = 0; j < board_size; j++) {
@@ -78,6 +111,45 @@ public class GamePage extends Activity {
         player2 = new Player(2);
         timer1 = new Timer();
         timer2 = new Timer();
+    }
+
+    // Helper method for establishing Bluetooth connection
+    public void on(View v){
+        if (!BA.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Helper method for disabling Bluetooth connection
+    public void off(View v){
+        BA.disable();
+        Toast.makeText(getApplicationContext(), "Turned off" ,Toast.LENGTH_LONG).show();
+    }
+
+    // Helper method showing Bluetooth connection
+    public  void visible(View v){
+        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        startActivityForResult(getVisible, 0);
+    }
+
+    // Helper method for listing Bluetooth connections
+    public void list(View v){
+        RelativeLayout rl = (RelativeLayout)findViewById(R.id.GP_Layout);
+        rl.setVisibility(LinearLayout.INVISIBLE);
+        pairedDevices = BA.getBondedDevices();
+
+        ArrayList list = new ArrayList();
+
+        for(BluetoothDevice bt : pairedDevices) list.add(bt.getName());
+        Toast.makeText(getApplicationContext(), "Showing Paired Devices",Toast.LENGTH_SHORT).show();
+
+        final ArrayAdapter adapter = new  ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
+
+        lv.setAdapter(adapter);
     }
 
     //End game
