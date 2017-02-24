@@ -96,7 +96,7 @@ public class GamePage extends Activity {
         int successfulPlace = -1;
 
         //Start the timer
-        timer.startTimer();
+        //timer.startTimer();
 
         while (successfulPlace != 0) {
             //Place a stone on the board
@@ -108,7 +108,7 @@ public class GamePage extends Activity {
         }
 
         //Stop timer
-        timer.stopTimer();
+        //timer.stopTimer();
 
         return gameBoard.checkForWinner(player.getStoneColor(), x, y);
     }
