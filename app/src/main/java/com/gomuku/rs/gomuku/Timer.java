@@ -1,6 +1,7 @@
 package com.gomuku.rs.gomuku;
 
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
@@ -32,10 +33,10 @@ public class Timer {
         // Will it be in GameLogic, or GameBoard?
     }
 
-    public Timer(TextView timerText) {
+    public Timer(View view) {
+        textView = (TextView) view.findViewById(R.id.playerTimer);
         pausedTimeUntilFinished = primaryDefaultTime;
         isPaused = false;
-        textView = timerText;
         primaryTimerExpired = false;
         secondaryTimerExpired = false;
         primaryTimer = createPrimaryCountDownTimer(primaryDefaultTime, defaultInterval);

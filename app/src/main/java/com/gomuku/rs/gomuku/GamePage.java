@@ -29,8 +29,9 @@ public class GamePage extends Activity {
     private int gameType;
     private Player player1;
     private Player player2;
-    private Timer timer1;
-    private Timer timer2;
+    private Timer player1Time;
+    private Timer player2Time;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,13 @@ public class GamePage extends Activity {
         this.gameType = GetGameType(gameTypeEnum);
         player1 = new Player(1);
         player2 = new Player(2);
-        timer1 = new Timer();
-        timer2 = new Timer();
+        FragmentManager fm = getFragmentManager();
+        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
+        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
+        player1Time = player1TimeFragment.createTimer();
+        player2Time = player2TimeFragment.createTimer();
+        player1Time.resume();
+        player2Time.pause();
     }
 
     //End game
@@ -94,11 +100,8 @@ public class GamePage extends Activity {
     }
 
     // Place stone on board and verify
-    public int playTurn(Player player, Timer timer, int x, int y) {
+    public int playTurn(Player player, int x, int y) {
         int successfulPlace = -1;
-
-        //Start the timer
-        //timer.startTimer();
 
         while (successfulPlace != 0) {
             //Place a stone on the board
@@ -109,9 +112,6 @@ public class GamePage extends Activity {
                 System.out.println("Those coordinates are out of bounds!");
         }
 
-        //Stop timer
-        //timer.stopTimer();
-
         return gameBoard.checkForWinner(player.getStoneColor(), x, y);
     }
 
@@ -120,17 +120,14 @@ public class GamePage extends Activity {
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
-        FragmentManager fm = getFragmentManager();
 
         if (aButton.getTag() == null) {
             if (player) {
-                    int play = playTurn(player1, timer1, x_coord, y_coord);
+                    int play = playTurn(player1, x_coord, y_coord);
                     if(play == 0){
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
                         player = !player;
-                        com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                        com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
                         player1Time.pause();
                         player2Time.resume();
                         TextView textView = (TextView)findViewById(R.id.player1);
@@ -152,8 +149,8 @@ public class GamePage extends Activity {
                         }
                     }
                 }
-                else {
-                    int play = playTurn(player2, timer2, x_coord, y_coord);
+            else {
+                    int play = playTurn(player2, x_coord, y_coord);
                     if(play == 0){
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
@@ -162,10 +159,8 @@ public class GamePage extends Activity {
                         textView.setBackgroundColor(0xFFFFCB3D);
                         TextView textView2 = (TextView)findViewById(R.id.player1);
                         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                        com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                        com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
                         player2Time.pause();
-                        player1Time.resume();                    
+                        player1Time.resume();
                     } else {
                         if(play == 1) {
                             //TODO : Change to alert dialog

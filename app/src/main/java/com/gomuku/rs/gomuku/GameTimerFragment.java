@@ -20,19 +20,14 @@ import java.util.concurrent.TimeUnit;
 
 public class GameTimerFragment extends Fragment {
     Timer countdown;
-    TextView timerText;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.game_timer_fragment, container, false);
-        timerText = (TextView) view.findViewById(R.id.playerTimer);
-        countdown = new Timer(timerText);
+        view = inflater.inflate(R.layout.game_timer_fragment, container, false);
         return view;
     }
 
-    public void pause() {
-        countdown.pause();
+    public Timer createTimer() {
+        return countdown = new Timer(view);
     }
-    public void resume() { countdown.resume(); }
-
-
 }
