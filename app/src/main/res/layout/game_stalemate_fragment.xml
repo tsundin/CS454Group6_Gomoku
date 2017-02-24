@@ -24,6 +24,7 @@
         android:text="@string/yes"
         android:layout_below="@id/stalemate"
         android:layout_alignLeft="@id/stalemate"
+        android:onClick="restartGame"
         />
     <Button
         android:layout_width="wrap_content"
@@ -31,6 +32,7 @@
         android:text="@string/no"
         android:layout_below="@id/stalemate"
         android:layout_alignRight="@id/stalemate"
+        android:onClick="endGame"
         />
 
 </RelativeLayout>

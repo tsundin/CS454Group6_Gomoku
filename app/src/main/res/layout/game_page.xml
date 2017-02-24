@@ -127,7 +127,13 @@
                     android:src="@drawable/wood_texture"
                     android:contentDescription="Board"
                     android:layout_gravity="top" />
-
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:columnCount="10"
+                    android:rowCount="10"
+                    android:id="@+id/gridlayout">
+                </GridLayout>
                 <LinearLayout
                     android:id="@+id/winner"
                     android:visibility="gone"
@@ -160,14 +166,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
                 </LinearLayout>
-
-                <GridLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:columnCount="10"
-                    android:rowCount="10"
-                    android:id="@+id/gridlayout">
-                </GridLayout>
             </FrameLayout>
         </RelativeLayout>
 

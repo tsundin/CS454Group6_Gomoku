@@ -196,6 +196,8 @@ public class GamePage extends Activity {
             if (player) {
                     int play = playTurn(player1, timer1, x_coord, y_coord);
                     if(play == 0){
+                        Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
+
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
                         player = !player;
@@ -206,7 +208,7 @@ public class GamePage extends Activity {
                         TextView textView = (TextView)findViewById(R.id.player1);
                         textView.setBackgroundColor(0xFFFFCB3D);
                         TextView textView2 = (TextView)findViewById(R.id.player2);
-                        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));                    
+                        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
                     } else {
                         if(play == 1) {
                             System.out.println("Player 1 Wins!");
@@ -225,6 +227,7 @@ public class GamePage extends Activity {
                 else {
                     int play = playTurn(player2, timer2, x_coord, y_coord);
                     if(play == 0){
+                        Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
                         player = !player;
