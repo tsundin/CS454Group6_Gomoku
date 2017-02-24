@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.app.FragmentManager;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +55,7 @@ public class GamePage extends Activity {
                 break;
         }
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
         for (int i = 0; i < board_size; i++) {
