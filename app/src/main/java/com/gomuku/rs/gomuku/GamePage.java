@@ -79,6 +79,7 @@ public class GamePage extends Activity {
         this.gameType = GetGameType(gameTypeEnum);
         player1 = new Player(1);
         player2 = new Player(2);
+        // Initialize the timer fragments, extract the Timers, and start player 1's timer
         FragmentManager fm = getFragmentManager();
         GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
         GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
@@ -100,7 +101,7 @@ public class GamePage extends Activity {
     }
 
     // Place stone on board and verify
-    public int playTurn(Player player, int x, int y) {
+    public int playTurn(Player player, Timer timer, int x, int y) {
         int successfulPlace = -1;
 
         while (successfulPlace != 0) {
@@ -112,7 +113,7 @@ public class GamePage extends Activity {
                 System.out.println("Those coordinates are out of bounds!");
         }
 
-        return gameBoard.checkForWinner(player.getStoneColor(), x, y);
+        return gameBoard.checkForWinner(player.getStoneColor(), timer.isTimerExpired(), x, y);
     }
 
     public void placePiece(View view) {
@@ -123,7 +124,7 @@ public class GamePage extends Activity {
 
         if (aButton.getTag() == null) {
             if (player) {
-                    int play = playTurn(player1, x_coord, y_coord);
+                    int play = playTurn(player1, player1Time, x_coord, y_coord);
                     if(play == 0){
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
@@ -144,13 +145,18 @@ public class GamePage extends Activity {
                             winnerText.setText("Winner: Player 1!\nPlay Again?");
                             layout.setVisibility(View.VISIBLE);
                         } else if(play == 2) {
-                            //TODO : Change to alert dialog
                             System.out.println("Player 2 Wins!");
+                            aButton.setImageResource(R.drawable.intersection_white_100px_100px);
+                            aButton.setTag("White");
+                            LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
+                            TextView winnerText = (TextView) findViewById(R.id.winnerText);
+                            winnerText.setText("Winner: Player 2!\nPlay Again?");
+                            layout.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             else {
-                    int play = playTurn(player2, x_coord, y_coord);
+                    int play = playTurn(player2, player2Time, x_coord, y_coord);
                     if(play == 0){
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
@@ -163,8 +169,13 @@ public class GamePage extends Activity {
                         player1Time.resume();
                     } else {
                         if(play == 1) {
-                            //TODO : Change to alert dialog
                             System.out.println("Player 1 Wins!");
+                            aButton.setImageResource(R.drawable.intersection_black_100px_100px);
+                            aButton.setTag("Black");
+                            LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
+                            TextView winnerText = (TextView) findViewById(R.id.winnerText);
+                            winnerText.setText("Winner: Player 1!\nPlay Again?");
+                            layout.setVisibility(View.VISIBLE);
                         } else if(play == 2) {
                             aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                             aButton.setTag("White");

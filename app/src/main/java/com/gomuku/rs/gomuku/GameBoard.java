@@ -74,8 +74,17 @@ public class GameBoard {
 
     //Check the area surrounding the origin for winning conditions
     //Return the stone color if the winning conditions are met
-    public int checkForWinner(int stoneColor, int originx, int originy) {
+    public int checkForWinner(int stoneColor, boolean isTimerExpired, int originx, int originy) {
         int chainLength;
+
+        //Check for timer expired
+        if (isTimerExpired) {
+            if (stoneColor == 1) {
+                return 2;
+            }
+            return 1;
+        }
+
         //Check for horizontal winning conditions
         chainLength = checkHorizontal(stoneColor, originx, originy);
         if (isChainLengthValid(chainLength))

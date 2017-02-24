@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Timer {
-    private static final long primaryDefaultTime = 10 * 60000;
+    private static final long primaryDefaultTime = 1 * 60000;
     private static final long secondaryDefaultTime = 60000;
     private static final long defaultInterval = 1000;
     CountDownTimer primaryTimer;
@@ -109,7 +109,7 @@ public class Timer {
 
     public void resume() {
         if (primaryTimerExpired) {
-            secondaryTimer = createSecondaryCountDownTimer(pausedTimeUntilFinished, defaultInterval);
+            secondaryTimer = createSecondaryCountDownTimer(secondaryDefaultTime, defaultInterval);
             secondaryTimer.start();
         }
         else {

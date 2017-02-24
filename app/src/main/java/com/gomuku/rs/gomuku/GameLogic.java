@@ -114,8 +114,8 @@ public class GameLogic {
 
         //Stop timer
         // timer.stopTimer();
-
-        return gameBoard.checkForWinner(player.getStoneColor(), x, y);
+        boolean isTimerExpired = false;
+        return gameBoard.checkForWinner(player.getStoneColor(), isTimerExpired, x, y);
     }
 
     //Print the game board
