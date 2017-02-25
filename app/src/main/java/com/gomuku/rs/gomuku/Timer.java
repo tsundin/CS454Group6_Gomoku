@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Timer {
-    private static final long primaryDefaultTime = 1 * 60000;
+    private static final long primaryDefaultTime = 10 * 60000;
     private static final long secondaryDefaultTime = 60000;
     private static final long defaultInterval = 1000;
     CountDownTimer primaryTimer;
@@ -29,14 +29,13 @@ public class Timer {
 
     public Timer() {
         // TODO: Timer currently coupled into GameLogic, which requires this constructor.
-        // Need to determine how the Winner/Loser is triggered by the timer fully expiring.
-        // Will it be in GameLogic, or GameBoard?
     }
 
     public Timer(View view) {
         textView = (TextView) view.findViewById(R.id.playerTimer);
+        textView.setText("Time: 10:00");
         pausedTimeUntilFinished = primaryDefaultTime;
-        isPaused = false;
+        isPaused = true;
         primaryTimerExpired = false;
         secondaryTimerExpired = false;
         primaryTimer = createPrimaryCountDownTimer(primaryDefaultTime, defaultInterval);
@@ -108,6 +107,7 @@ public class Timer {
     }
 
     public void resume() {
+        isPaused = false;
         if (primaryTimerExpired) {
             secondaryTimer = createSecondaryCountDownTimer(secondaryDefaultTime, defaultInterval);
             secondaryTimer.start();
@@ -116,11 +116,26 @@ public class Timer {
             primaryTimer = createPrimaryCountDownTimer(pausedTimeUntilFinished, defaultInterval);
             primaryTimer.start();
         }
-        isPaused = false;
+
     }
 
     public void pause() { isPaused = true; }
 
+    public void reset() {
+        long currentTime = primaryDefaultTime;
+        String hms= String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(currentTime),
+                TimeUnit.MILLISECONDS.toSeconds(currentTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(currentTime))
+        );
+        textView.setText("Time: " + hms);
+        pausedTimeUntilFinished = primaryDefaultTime;
+        isPaused = true;
+        primaryTimerExpired = false;
+        secondaryTimerExpired = false;
+        primaryTimer = createPrimaryCountDownTimer(primaryDefaultTime, defaultInterval);
+        secondaryTimer = createSecondaryCountDownTimer(secondaryDefaultTime, defaultInterval);
+    }
     public boolean isTimerExpired() { return secondaryTimerExpired; }
 }
 

@@ -32,7 +32,6 @@ public class GamePage extends Activity {
     private Timer player1Time;
     private Timer player2Time;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +57,30 @@ public class GamePage extends Activity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        player1 = new Player(1);
+        player2 = new Player(2);
+        FragmentManager fm = getFragmentManager();
+        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
+        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
+        player1Time = player1TimeFragment.createTimer();
+        player2Time = player2TimeFragment.createTimer();
+        initializeLayout();
+
+    }
+
+    //Restart game. This reinitializes everything except player1/2, so we can track wins
+    public void restartGame(View view) {
+        initializeLayout();
+    }
+
+    private void initializeLayout() {
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
+        gridlayout.removeAllViews();
         for (int i = 0; i < board_size; i++) {
             for (int j = 0; j < board_size; j++) {
                 View inflatedView = View.inflate(GamePage.this, R.layout.intersection_button, gridlayout);
                 View justAddedIntersection = (View) findViewById(R.id.empty_intersection);
                 justAddedIntersection.setId(i * board_size + j);
-
             }
         }
         gridlayout.setOnClickListener(new AdapterView.OnClickListener() {
@@ -73,31 +89,28 @@ public class GamePage extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-        // Initialize game objects
+        // Re-Initialize game objects
         this.gameBoard = new GameBoard(board_size, board_size, GetGameMode(gameModeEnum));
         this.gameType = GetGameType(gameTypeEnum);
-        player1 = new Player(1);
-        player2 = new Player(2);
-        // Initialize the timer fragments, extract the Timers, and start player 1's timer
-        FragmentManager fm = getFragmentManager();
-        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
-        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
-        player1Time = player1TimeFragment.createTimer();
-        player2Time = player2TimeFragment.createTimer();
-        player1Time.resume();
+        // Initialize Wins
+        TextView wins = (TextView) findViewById(R.id.player1_wins);
+        wins.setText("Wins: " + player1.getWins());
+        wins = (TextView) findViewById(R.id.player2_wins);
+        wins.setText("Wins: " + player2.getWins());
+        player1Time.reset();
+        player2Time.reset();
+        player1Time.pause();
         player2Time.pause();
+        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
+        layout.setVisibility(View.INVISIBLE);
+        layout = (LinearLayout) findViewById(R.id.stalemate);
+        layout.setVisibility(View.INVISIBLE);
     }
 
     //End game
     public void endGame(View view) {
         Intent intent = new Intent(this, GameSelection.class);
         startActivity(intent);
-    }
-
-    //Restart game
-    public void restartGame(View view) {
-        recreate();
     }
 
     // Place stone on board and verify
@@ -137,6 +150,11 @@ public class GamePage extends Activity {
                         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));                    
                     } else {
                         if(play == 1) {
+                            player1.incrementWins();
+                            TextView wins = (TextView) findViewById(R.id.player1_wins);
+                            wins.setText("Wins: " + player1.getWins());
+                            player1Time.pause();
+                            player2Time.pause();
                             System.out.println("Player 1 Wins!");
                             aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                             aButton.setTag("Black");
@@ -145,6 +163,11 @@ public class GamePage extends Activity {
                             winnerText.setText("Winner: Player 1!\nPlay Again?");
                             layout.setVisibility(View.VISIBLE);
                         } else if(play == 2) {
+                            player2.incrementWins();
+                            TextView wins = (TextView) findViewById(R.id.player2_wins);
+                            wins.setText("Wins: " + player2.getWins());
+                            player1Time.pause();
+                            player2Time.pause();
                             System.out.println("Player 2 Wins!");
                             aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                             aButton.setTag("White");
@@ -169,6 +192,11 @@ public class GamePage extends Activity {
                         player1Time.resume();
                     } else {
                         if(play == 1) {
+                            player1.incrementWins();
+                            TextView wins = (TextView) findViewById(R.id.player1_wins);
+                            wins.setText("Wins: " + player1.getWins());
+                            player1Time.pause();
+                            player2Time.pause();
                             System.out.println("Player 1 Wins!");
                             aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                             aButton.setTag("Black");
@@ -177,6 +205,11 @@ public class GamePage extends Activity {
                             winnerText.setText("Winner: Player 1!\nPlay Again?");
                             layout.setVisibility(View.VISIBLE);
                         } else if(play == 2) {
+                            player2.incrementWins();
+                            TextView wins = (TextView) findViewById(R.id.player2_wins);
+                            wins.setText("Wins: " + player2.getWins());
+                            player1Time.pause();
+                            player2Time.pause();
                             aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                             aButton.setTag("White");
                             LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
@@ -187,10 +220,6 @@ public class GamePage extends Activity {
                     }
                 }
             }
-        else { // click an already-placed piece, to demo stalemate box
-            LinearLayout layout = (LinearLayout) findViewById(R.id.stalemate);
-            layout.setVisibility(View.VISIBLE);
-        }
     }
 
     public int GetGameType(GameSelection.GameTypes type) {

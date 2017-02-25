@@ -51,13 +51,24 @@
         <TextView
             android:text="Player 1"
             android:padding="16dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/player1"
             android:textStyle="bold"
             android:textColor="@color/primaryDark"
             android:layout_below="@id/game_options_text"
             android:layout_toRightOf="@id/player1_color" />
+        <TextView
+            android:text="Wins: 0"
+            android:padding="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player1_wins"
+            android:textStyle="bold"
+            android:textColor="@color/primaryDark"
+            android:layout_below="@id/game_options_text"
+            android:layout_toRightOf="@id/player1" />
 
         <fragment
             android:name="com.gomuku.rs.gomuku.GameTimerFragment"
@@ -84,14 +95,24 @@
             android:text="Player 2"
             android:padding="16dp"
             android:textStyle="bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/player2"
             android:textColor="@color/primaryDark"
             android:layout_toRightOf="@id/player2_color"
             android:layout_below="@id/player1"
             />
-
+        <TextView
+            android:text="Wins: 0"
+            android:padding="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player2_wins"
+            android:textStyle="bold"
+            android:textColor="@color/primaryDark"
+            android:layout_below="@id/player1"
+            android:layout_toRightOf="@id/player2" />
         <fragment
             android:name="com.gomuku.rs.gomuku.GameTimerFragment"
             android:id="@+id/timer2"
