@@ -89,8 +89,6 @@ import android.widget.Toast;
             public void onClick(View view) { boardSize = BoardSizes._20x20; }
         });
         cV.setCardBackgroundColor(getResources().getColor(R.color.transparent));
-
-
     }
 
 

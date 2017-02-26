@@ -166,5 +166,14 @@
                     android:layout_gravity="center" />
             </LinearLayout>
         </FrameLayout>
+
+        <Button
+            android:text="Start Match"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/timer2"
+            android:layout_toEndOf="@+id/game_options_text"
+            android:id="@+id/button2"
+            android:onClick="onStartMatchClicked" />
     </RelativeLayout>
 </LinearLayout>

@@ -46,7 +46,7 @@ import java.util.List;
  * Created by charlesjuszczak on 2/26/17.
  */
 
-public class GamePage extends Activity implements GoogleApiClient.ConnectionCallbacks,
+public class GpsGamePage extends GamePage implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, OnTurnBasedMatchUpdateReceivedListener {
     private boolean player = true;
     private GameSelection.BoardSizes boardSizeEnum = GameSelection.BoardSizes._10x10;
@@ -123,7 +123,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
         for (int i = 0; i < board_size; i++) {
             for (int j = 0; j < board_size; j++) {
-                View inflatedView = View.inflate(GamePage.this, R.layout.intersection_button, gridlayout);
+                View inflatedView = View.inflate(GpsGamePage.this, R.layout.intersection_button, gridlayout);
                 View justAddedIntersection = (View) findViewById(R.id.empty_intersection);
                 justAddedIntersection.setId(i * board_size + j);
 
@@ -142,11 +142,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         if(b.getBoolean("isGoogle")) {
             int id = b.getInt("button");
             ImageButton button = (ImageButton) findViewById(id);
-            button.setImageResource(R.drawable.intersection_white_100px_100px);
-            button.setTag("White");
+            button.setImageResource(R.drawable.intersection_black_100px_100px);
+            button.setTag("Black");
             player = !player;
             match = b.getParcelable("game");
-            setParticipants(match.getParticipants(), match);
+            setParticipants(match.getParticipants(), match, true);
         }
     }
 
@@ -166,7 +166,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         } else {
             // Alternative implementation (or warn user that they must
             // sign in to use this feature)
-            Toast.makeText(GamePage.this, "You must sign in to use this feature!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GpsGamePage.this, "You must sign in to use this feature!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -208,7 +208,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 public void onResult(TurnBasedMultiplayer.InitiateMatchResult result) {
                     //processResult(result);
                     match = result.getMatch();
-                    setParticipants(match.getParticipants(), match);
+                    //setParticipants(match.getParticipants(), match, false);
                 }
             };
             Games.TurnBasedMultiplayer.createMatch(mGoogleApiClient, tbmc).setResultCallback(cb);
@@ -225,7 +225,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     public void onConnected(Bundle connectionHint) {
         // The player is signed in. Hide the sign-in button and allow the
         // player to proceed.
-        Games.TurnBasedMultiplayer.registerMatchUpdateListener(mGoogleApiClient, this);
     }
 
     @Override
@@ -275,8 +274,21 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     }
 
     // Sets player name
-    private void setParticipants(ArrayList<Participant> players, TurnBasedMatch match) {
+    private void setParticipants(ArrayList<Participant> players, TurnBasedMatch match, Boolean isInvitee) {
+        if(isInvitee) {
+            Participant first = players.get(1);
+            Participant second = players.get(0);
 
+            player1.setName(first.getDisplayName());
+            player1.setId(first.getParticipantId());
+            TextView firstText = (TextView) findViewById(R.id.player1);
+            firstText.setText(player1.getName());
+
+            player2.setName(second.getDisplayName());
+            player2.setId(second.getParticipantId());
+            TextView secondText = (TextView) findViewById(R.id.player2);
+            secondText.setText(player2.getName());
+        } else {
             Participant first = players.get(0);
             Participant second = players.get(1);
 
@@ -289,6 +301,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             player2.setId(second.getParticipantId());
             TextView secondText = (TextView) findViewById(R.id.player2);
             secondText.setText(player2.getName());
+        }
     }
 
     @Override
@@ -296,10 +309,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         byte[] data = match.getData();
         String str = new String(data, Charset.forName("US-ASCII"));
         List<String> list = new ArrayList<String>(Arrays.asList(str.split(" , ")));
-        String id = list.get(2) + list.get(3);
+        String id = list.get(3) + list.get(2);
 
-        int x = Integer.parseInt(list.get(3));
-        int y = Integer.parseInt(list.get(4));
+        int x = Integer.parseInt(list.get(2));
+        int y = Integer.parseInt(list.get(3));
         int stoneColor = Integer.parseInt(list.get(4));
         int buttonId = Integer.parseInt(id);
 
@@ -315,7 +328,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     }
 
     public void onTurnBasedMatchRemoved (String matchId) {
-        mGoogleApiClient.disconnect();
+
     }
 
     /*******************************END GPGS FUNCTIONS*********************************/
@@ -416,17 +429,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
                     player2Time.pause();
                     player1Time.resume();
-                    //TODO : Add takeTurn call to send invitation and take turns
-                    //String test = "gameMode , boardSize , x_coord , y_coord , stoneColor";
-                    int intMode = gameBoard.getGameMode();
-                    String mode = new String(Integer.toString(intMode));
-                    String size = new String(Integer.toString(board_size));
-                    String x = new String(Integer.toString(x_coord));
-                    String y = new String(Integer.toString(y_coord));
-                    String stone = new String(Integer.toString(player2.getStoneColor()));
-                    String game = mode + " , " + size + " , " + x + " , " + y + " , " + stone;
-                    byte[] data = game.getBytes(Charset.forName("UTF-8"));
-                    Games.TurnBasedMultiplayer.takeTurn(mGoogleApiClient, match.getMatchId(), data, player1.getId());
                 } else {
                     if(play == 1) {
                         //TODO : Change to alert dialog
