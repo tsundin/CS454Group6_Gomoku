@@ -94,7 +94,7 @@ public class GameLogic {
         int boardSize = gameBoard.getBoardSize();
 
         //Start the timer
-        timer.startTimer();
+        // timer.startTimer();
 
         while (successfulPlace != 0) {
             //Read input from the user
@@ -113,9 +113,9 @@ public class GameLogic {
         }
 
         //Stop timer
-        timer.stopTimer();
-
-        return gameBoard.checkForWinner(player.getStoneColor(), x, y);
+        // timer.stopTimer();
+        boolean isTimerExpired = false;
+        return gameBoard.checkForWinner(player.getStoneColor(), isTimerExpired, x, y);
     }
 
     //Print the game board
