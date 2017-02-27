@@ -330,7 +330,8 @@ public class GameBoard {
     }
 
     //Returns board size
-    public int getBoardSize() {
-        return boardSizeX;
-    }
+    public int getBoardSize() { return boardSizeX; }
+
+    //Returns game mode
+    public int getGameMode() { return gameMode; }
 }

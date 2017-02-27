@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Gomoku" >
+
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+
         <activity
             android:name=".WelcomePage"
             android:label="@string/app_name" >
@@ -32,7 +36,6 @@
             android:name=".GameRules"
             android:label="Game Rules" >
         </activity>
-
 
     </application>
 
