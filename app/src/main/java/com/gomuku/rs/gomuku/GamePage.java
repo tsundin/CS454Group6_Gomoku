@@ -141,10 +141,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         b3=(Button)findViewById(R.id.button3);
         b4=(Button)findViewById(R.id.button4);
 
-        /**/
+
         /**** Initialize Bluetooth connection *****/
         //this.gameType = GetGameType(gameTypeEnum);
-        if (gameTypeEnum == GameSelection.GameTypes.Online) {
+        if (gameTypeEnum == GameSelection.GameTypes.Online) { // TODO: add an OnlineBT game type
             initializeBluetoothConnection();
         }
         /**** Initialize Google Play connection ****/
@@ -167,7 +167,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 setParticipants(match.getParticipants(), match);
             }
         }
-        else { // keep this temporarily even in offline mode. else we get a crash.
+        else { // TODO: keep this temporarily needed even in offline mode. else we get a crash.
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -240,9 +240,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         layout.setVisibility(View.INVISIBLE);
         layout = (LinearLayout) findViewById(R.id.stalemate);
         layout.setVisibility(View.INVISIBLE);
-
-        player1 = new Player(1);
-        player2 = new Player(2);
     }
 
     //End game
@@ -288,7 +285,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             }
         }
         if (aButton.getTag() == null) {
-            if (player) {
+            if (player) { // player 1
                 int play = playTurn(player1, player1Time, x_coord, y_coord);
 
                 Log.i("PLAY", Integer.toString(play));
@@ -298,7 +295,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     mChatService.write(send);
                 }
 
-                if (play == 0) {
+                if (play == 0) { // successful play, but no winner
                     Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord, Toast.LENGTH_LONG).show();
 
                     aButton.setImageResource(R.drawable.intersection_black_100px_100px);
@@ -311,7 +308,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     TextView textView2 = (TextView) findViewById(R.id.player2);
                     textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
                 } else {
-                    if (play == 1) {
+                    if (play == 1) { // winner player 1
                         player1.incrementWins();
                         TextView wins = (TextView) findViewById(R.id.player1_wins);
                         wins.setText("Wins: " + player1.getWins());
@@ -326,7 +323,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         winnerText.setText("Winner: Player 1!\nPlay Again?");
                         layout.setVisibility(View.VISIBLE);
 
-                    } else if (play == 2) {
+                    } else if (play == 2) { // winner player 2
                         player2.incrementWins();
                         TextView wins = (TextView) findViewById(R.id.player2_wins);
                         wins.setText("Wins: " + player2.getWins());
@@ -345,7 +342,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 if (isPaired) {
                     //wait
                 }
-            } else {
+            } else {  // player 2
                 int play = playTurn(player2, player2Time, x_coord, y_coord);
                 String message = Integer.toString(id);
 
@@ -354,7 +351,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     mChatService.write(send);
                 } else {
 
-                    if (play == 0) {
+                    if (play == 0) { // successful play, but no winner
                         Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord, Toast.LENGTH_LONG).show();
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
@@ -366,7 +363,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         player2Time.pause();
                         player1Time.resume();
                     } else {
-                        if (play == 1) {
+                        if (play == 1) { // winner player 1
                             player1.incrementWins();
                             TextView wins = (TextView) findViewById(R.id.player1_wins);
                             wins.setText("Wins: " + player1.getWins());
@@ -379,7 +376,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                             TextView winnerText = (TextView) findViewById(R.id.winnerText);
                             winnerText.setText("Winner: Player 1!\nPlay Again?");
                             layout.setVisibility(View.VISIBLE);
-                        } else if (play == 2) {
+                        } else if (play == 2) { // winner player 2
                             player2.incrementWins();
                             TextView wins = (TextView) findViewById(R.id.player2_wins);
                             wins.setText("Wins: " + player2.getWins());
@@ -462,7 +459,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 int play = playTurn(player1, player1Time, x_coord, y_coord);
                 String message = x_coord + "_" + y_coord;
                 byte[] send = message.getBytes();
-                if(play == 0){
+                if(play == 0){  // successfull play, but no winner
                     aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                     aButton.setTag("Black");
                     player = !player;
@@ -473,7 +470,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     TextView textView2 = (TextView)findViewById(R.id.player2);
                     textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
                 } else {
-                    if(play == 1) {
+                    if(play == 1) { // player 1 wins
                         System.out.println("Player 1 Wins!");
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
@@ -481,7 +478,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         TextView winnerText = (TextView) findViewById(R.id.winnerText);
                         winnerText.setText("Winner: Player 1!\nPlay Again?");
                         layout.setVisibility(View.VISIBLE);
-                    } else if(play == 2) {
+                    } else if(play == 2) { // player 2 wins
                         //TODO : Change to alert dialog
                         System.out.println("Player 2 Wins!");
                     }
@@ -495,7 +492,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 int play = playTurn(player2, player2Time, x_coord, y_coord);
                 String message = x_coord + "_" + y_coord;
                 byte[] send = message.getBytes();
-                if(play == 0){
+                if(play == 0){ // successful play, but no winner
                     aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                     aButton.setTag("White");
                     player = !player;
@@ -506,10 +503,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     player2Time.pause();
                     player1Time.resume();
                 } else {
-                    if(play == 1) {
+                    if(play == 1) { // player 1 wins
                         //TODO : Change to alert dialog
                         System.out.println("Player 1 Wins!");
-                    } else if(play == 2) {
+                    } else if(play == 2) { // player 2 wins
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
                         LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
