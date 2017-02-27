@@ -85,49 +85,11 @@ public class GamePage extends Activity {
         b4=(Button)findViewById(R.id.button4);
 
         /**/
-        this.gameType = GetGameType(gameTypeEnum);
-        if (gameType == 0) {
-            BA = BluetoothAdapter.getDefaultAdapter();
-            lv = (ListView) findViewById(R.id.listView);
-
-            if (!BA.isEnabled()) {
-                Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(turnOn, 0);
-                Toast.makeText(getApplicationContext(), "Turned on", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
-            }
-            pairedDevices = BA.getBondedDevices();
-            if (pairedDevices.size() != 1) {
-                // need to error out;
-
-                Toast.makeText(getApplicationContext(), "No paired device found", Toast.LENGTH_LONG).show();
-                for(BluetoothDevice bt : pairedDevices) ;
-
-            } else {
-                isPaired = true;
-            }
-            if (isPaired) {
-
-                mChatService = new BluetoothChatService(this, mHandler);
-                List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
-                String pairedDeviceName = deviceList.get(0).getName();
-                String myName = BA.getName();
-                if (myName.compareTo(pairedDeviceName) < 0) {
-
-                    iHoldBlackPieces = true;
-                } else {
-                    iHoldBlackPieces = false;
-                }
-                mChatService.connect(deviceList.get(0), false);
-            }
+        /**** Initialize Bluetooth connection *****/
+        //this.gameType = GetGameType(gameTypeEnum);
+        if (gameTypeEnum == GameSelection.GameTypes.Online) {
+            initializeBluetoothConnection();
         }
-        if (isPaired) {
-        } else {
-
-        }
-        /**/
-
 
         player1 = new Player(1);
         player2 = new Player(2);
@@ -139,6 +101,8 @@ public class GamePage extends Activity {
         initializeLayout();
 
     }
+
+
 
     //Restart game. This reinitializes everything except player1/2, so we can track wins
     public void restartGame(View view) {
@@ -181,46 +145,6 @@ public class GamePage extends Activity {
         layout.setVisibility(View.INVISIBLE);
     }
 
-    // Helper method for establishing Bluetooth connection
-    public void on(View v){
-        if (!BA.isEnabled()) {
-            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(turnOn, 0);
-            Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    // Helper method for disabling Bluetooth connection
-    public void off(View v){
-        BA.disable();
-        Toast.makeText(getApplicationContext(), "Turned off" ,Toast.LENGTH_LONG).show();
-    }
-
-    // Helper method showing Bluetooth connection
-    public  void visible(View v){
-        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        startActivityForResult(getVisible, 0);
-    }
-
-    // Helper method for listing Bluetooth connections
-    public void list(View v){
-        RelativeLayout rl = (RelativeLayout)findViewById(R.id.GP_Layout);
-        rl.setVisibility(LinearLayout.INVISIBLE);
-        pairedDevices = BA.getBondedDevices();
-
-        ArrayList list = new ArrayList();
-
-
-        for(BluetoothDevice bt : pairedDevices) list.add(bt.getName());
-        Toast.makeText(getApplicationContext(), "Showing Paired Devices",Toast.LENGTH_SHORT).show();
-
-        final ArrayAdapter adapter = new  ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
-
-        lv.setAdapter(adapter);
-    }
-
     //End game
     public void endGame(View view) {
         //mChatService.stop();
@@ -248,12 +172,13 @@ public class GamePage extends Activity {
     }
 
     public void placePiece(View view) {
+        // Get the coordinate from the button
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
 
-        FragmentManager fm = getFragmentManager();
+        // Black pieces means player == true, so
         if (isPaired) {
             if (iHoldBlackPieces) {
                 player = true;
@@ -375,6 +300,46 @@ public class GamePage extends Activity {
         }
     }
 
+
+
+    /************************** Bluetooth Helper Methods *******************************/
+    private void initializeBluetoothConnection() {
+        BA = BluetoothAdapter.getDefaultAdapter();
+        lv = (ListView) findViewById(R.id.listView);
+
+        if (!BA.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }
+        pairedDevices = BA.getBondedDevices();
+        if (pairedDevices.size() != 1) {
+            // need to error out;
+
+            Toast.makeText(getApplicationContext(), "No paired device found", Toast.LENGTH_LONG).show();
+            for(BluetoothDevice bt : pairedDevices) ;
+
+        } else {
+            isPaired = true;
+        }
+        if (isPaired) {
+
+            mChatService = new BluetoothChatService(this, mHandler);
+            List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
+            String pairedDeviceName = deviceList.get(0).getName();
+            String myName = BA.getName();
+            if (myName.compareTo(pairedDeviceName) < 0) {
+
+                iHoldBlackPieces = true;
+            } else {
+                iHoldBlackPieces = false;
+            }
+            mChatService.connect(deviceList.get(0), false);
+        }
+
+    }
     public void placePieceFromPairedPlayer(int id) {
         ImageButton aButton = (ImageButton) findViewById(id);
         int y_coord = id % board_size;
@@ -461,7 +426,6 @@ public class GamePage extends Activity {
             layout.setVisibility(View.VISIBLE);
         }
     }
-
     public int GetGameType(GameSelection.GameTypes type) {
         switch(type) {
             case Online:
@@ -484,6 +448,47 @@ public class GamePage extends Activity {
         }
 
         return -1;
+    }
+
+
+    // Helper method for establishing Bluetooth connection
+    public void on(View v){
+        if (!BA.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 0);
+            Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Helper method for disabling Bluetooth connection
+    public void off(View v){
+        BA.disable();
+        Toast.makeText(getApplicationContext(), "Turned off" ,Toast.LENGTH_LONG).show();
+    }
+
+    // Helper method showing Bluetooth connection
+    public  void visible(View v){
+        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        startActivityForResult(getVisible, 0);
+    }
+
+    // Helper method for listing Bluetooth connections
+    public void list(View v){
+        RelativeLayout rl = (RelativeLayout)findViewById(R.id.GP_Layout);
+        rl.setVisibility(LinearLayout.INVISIBLE);
+        pairedDevices = BA.getBondedDevices();
+
+        ArrayList list = new ArrayList();
+
+
+        for(BluetoothDevice bt : pairedDevices) list.add(bt.getName());
+        Toast.makeText(getApplicationContext(), "Showing Paired Devices",Toast.LENGTH_SHORT).show();
+
+        final ArrayAdapter adapter = new  ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
+
+        lv.setAdapter(adapter);
     }
 
     /**
@@ -548,5 +553,8 @@ public class GamePage extends Activity {
             }
         }
     };
+
+    /************************** End of Bluetooth Helper Methods *******************************/
+
 
 }
