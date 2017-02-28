@@ -132,8 +132,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             default: setContentView(R.layout.game_page);
                 break;
         }
-
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         b1 = (Button) findViewById(R.id.button);
@@ -143,8 +141,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
 
         /**** Initialize Bluetooth connection *****/
-        //this.gameType = GetGameType(gameTypeEnum);
-        if (gameTypeEnum == GameSelection.GameTypes.Online) { // TODO: add an OnlineBT game type
+        if (gameTypeEnum == GameSelection.GameTypes.OnlineBT) { // TODO: add an OnlineBT game type
             initializeBluetoothConnection();
         }
         /**** Initialize Google Play connection ****/
@@ -167,23 +164,23 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 setParticipants(match.getParticipants(), match);
             }
         }
-        else { // TODO: keep this temporarily needed even in offline mode. else we get a crash.
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                    // add other APIs and scopes here as needed
-                    .build();
 
-            if(b.getBoolean("isGoogle")) {
-                int id = b.getInt("button");
-                ImageButton button = (ImageButton) findViewById(id);
-                button.setImageResource(R.drawable.intersection_white_100px_100px);
-                button.setTag("White");
-                player = !player;
-                match = b.getParcelable("game");
-                setParticipants(match.getParticipants(), match);
-            }
+        // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
+        // It should be in the if (gameTypeEnum == .Online), above?
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                // add other APIs and scopes here as needed
+                .build();
+        if(b.getBoolean("isGoogle")) {
+            int id = b.getInt("button");
+            ImageButton button = (ImageButton) findViewById(id);
+            button.setImageResource(R.drawable.intersection_white_100px_100px);
+            button.setTag("White");
+            player = !player;
+            match = b.getParcelable("game");
+            setParticipants(match.getParticipants(), match);
         }
 
         player1 = new Player(1);
