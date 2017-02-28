@@ -270,13 +270,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
 
     public void placePiece(View view) {
-        // Get the coordinate from the button
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
 
-        // Black pieces means player == true, so
+        FragmentManager fm = getFragmentManager();
         if (isPaired) {
             if (iHoldBlackPieces) {
                 player = true;
@@ -285,36 +284,30 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             }
         }
         if (aButton.getTag() == null) {
-            if (player) { // player 1
+            if (player) {
                 int play = playTurn(player1, player1Time, x_coord, y_coord);
-
                 Log.i("PLAY", Integer.toString(play));
                 String message = Integer.toString(id);
                 if (isPaired) {
                     byte[] send = message.getBytes();
                     mChatService.write(send);
                 }
-
-                if (play == 0) { // successful play, but no winner
-                    Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord, Toast.LENGTH_LONG).show();
+                if(play == 0){
+                    Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
 
                     aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                     aButton.setTag("Black");
                     player = !player;
-                    player1Time.pause();
-                    player2Time.resume();
-                    TextView textView = (TextView) findViewById(R.id.player1);
+                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                    //player1Time.pause();
+                    //player2Time.resume();
+                    TextView textView = (TextView)findViewById(R.id.player1);
                     textView.setBackgroundColor(0xFFFFCB3D);
-                    TextView textView2 = (TextView) findViewById(R.id.player2);
+                    TextView textView2 = (TextView)findViewById(R.id.player2);
                     textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
                 } else {
-                    if (play == 1) { // winner player 1
-                        player1.incrementWins();
-                        TextView wins = (TextView) findViewById(R.id.player1_wins);
-                        wins.setText("Wins: " + player1.getWins());
-                        player1Time.pause();
-                        player2Time.pause();
-
+                    if(play == 1) {
                         System.out.println("Player 1 Wins!");
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
@@ -322,14 +315,42 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         TextView winnerText = (TextView) findViewById(R.id.winnerText);
                         winnerText.setText("Winner: Player 1!\nPlay Again?");
                         layout.setVisibility(View.VISIBLE);
-
-                    } else if (play == 2) { // winner player 2
-                        player2.incrementWins();
-                        TextView wins = (TextView) findViewById(R.id.player2_wins);
-                        wins.setText("Wins: " + player2.getWins());
-                        player1Time.pause();
-                        player2Time.pause();
+                    } else if(play == 2) {
+                        //TODO : Change to alert dialog
                         System.out.println("Player 2 Wins!");
+                    }
+                }
+                // wait for opponent move from bluetooth
+                if (isPaired) {
+                    //wait
+                }
+            }
+            else {
+                int play = playTurn(player2, player2Time, x_coord, y_coord);
+                String message = Integer.toString(id);
+
+                if (isPaired) {
+                    byte[] send = message.getBytes();
+                    mChatService.write(send);
+                }
+                if(play == 0){
+                    Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
+                    aButton.setImageResource(R.drawable.intersection_white_100px_100px);
+                    aButton.setTag("White");
+                    player = !player;
+                    TextView textView = (TextView)findViewById(R.id.player2);
+                    textView.setBackgroundColor(0xFFFFCB3D);
+                    TextView textView2 = (TextView)findViewById(R.id.player1);
+                    textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                    //player2Time.pause();
+                    //player1Time.resume();
+                } else {
+                    if(play == 1) {
+                        //TODO : Change to alert dialog
+                        System.out.println("Player 1 Wins!");
+                    } else if(play == 2) {
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
                         LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
@@ -338,66 +359,17 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         layout.setVisibility(View.VISIBLE);
                     }
                 }
-                // wait for opponent move from bluetooth
                 if (isPaired) {
-                    //wait
-                }
-            } else {  // player 2
-                int play = playTurn(player2, player2Time, x_coord, y_coord);
-                String message = Integer.toString(id);
-
-                if (isPaired) {
-                    byte[] send = message.getBytes();
-                    mChatService.write(send);
-                } else {
-
-                    if (play == 0) { // successful play, but no winner
-                        Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord, Toast.LENGTH_LONG).show();
-                        aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                        aButton.setTag("White");
-                        player = !player;
-                        TextView textView = (TextView) findViewById(R.id.player2);
-                        textView.setBackgroundColor(0xFFFFCB3D);
-                        TextView textView2 = (TextView) findViewById(R.id.player1);
-                        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                        player2Time.pause();
-                        player1Time.resume();
-                    } else {
-                        if (play == 1) { // winner player 1
-                            player1.incrementWins();
-                            TextView wins = (TextView) findViewById(R.id.player1_wins);
-                            wins.setText("Wins: " + player1.getWins());
-                            player1Time.pause();
-                            player2Time.pause();
-                            System.out.println("Player 1 Wins!");
-                            aButton.setImageResource(R.drawable.intersection_black_100px_100px);
-                            aButton.setTag("Black");
-                            LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                            TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                            winnerText.setText("Winner: Player 1!\nPlay Again?");
-                            layout.setVisibility(View.VISIBLE);
-                        } else if (play == 2) { // winner player 2
-                            player2.incrementWins();
-                            TextView wins = (TextView) findViewById(R.id.player2_wins);
-                            wins.setText("Wins: " + player2.getWins());
-                            player1Time.pause();
-                            player2Time.pause();
-                            aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                            aButton.setTag("White");
-                            LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                            TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                            winnerText.setText("Winner: Player 2!\nPlay Again?");
-                            layout.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-                    if (isPaired) {
-                        // wait for opponent move
-                    }
+                    // wait for opponent move
                 }
             }
         }
+        else { // click an already-placed piece, to demo stalemate box
+            LinearLayout layout = (LinearLayout) findViewById(R.id.stalemate);
+            layout.setVisibility(View.VISIBLE);
+        }
     }
+
 
 
 
@@ -459,18 +431,20 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 int play = playTurn(player1, player1Time, x_coord, y_coord);
                 String message = x_coord + "_" + y_coord;
                 byte[] send = message.getBytes();
-                if(play == 0){  // successfull play, but no winner
+                if(play == 0){
                     aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                     aButton.setTag("Black");
                     player = !player;
-                    player1Time.pause();
-                    player2Time.resume();
+                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                    //player1Time.pause();
+                    //player2Time.resume();
                     TextView textView = (TextView)findViewById(R.id.player1);
                     textView.setBackgroundColor(0xFFFFCB3D);
                     TextView textView2 = (TextView)findViewById(R.id.player2);
                     textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
                 } else {
-                    if(play == 1) { // player 1 wins
+                    if(play == 1) {
                         System.out.println("Player 1 Wins!");
                         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
                         aButton.setTag("Black");
@@ -478,7 +452,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                         TextView winnerText = (TextView) findViewById(R.id.winnerText);
                         winnerText.setText("Winner: Player 1!\nPlay Again?");
                         layout.setVisibility(View.VISIBLE);
-                    } else if(play == 2) { // player 2 wins
+                    } else if(play == 2) {
                         //TODO : Change to alert dialog
                         System.out.println("Player 2 Wins!");
                     }
@@ -492,7 +466,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 int play = playTurn(player2, player2Time, x_coord, y_coord);
                 String message = x_coord + "_" + y_coord;
                 byte[] send = message.getBytes();
-                if(play == 0){ // successful play, but no winner
+                if(play == 0){
                     aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                     aButton.setTag("White");
                     player = !player;
@@ -500,13 +474,15 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     textView.setBackgroundColor(0xFFFFCB3D);
                     TextView textView2 = (TextView)findViewById(R.id.player1);
                     textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    player2Time.pause();
-                    player1Time.resume();
+                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
+                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
+                    //player2Time.pause();
+                    //player1Time.resume();
                 } else {
-                    if(play == 1) { // player 1 wins
+                    if(play == 1) {
                         //TODO : Change to alert dialog
                         System.out.println("Player 1 Wins!");
-                    } else if(play == 2) { // player 2 wins
+                    } else if(play == 2) {
                         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
                         aButton.setTag("White");
                         LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
@@ -525,6 +501,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             layout.setVisibility(View.VISIBLE);
         }
     }
+
+
     public int GetGameType(GameSelection.GameTypes type) {
         switch(type) {
             case Offline:
