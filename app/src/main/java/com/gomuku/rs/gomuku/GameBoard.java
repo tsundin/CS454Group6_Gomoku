@@ -1,5 +1,7 @@
 package com.gomuku.rs.gomuku;
 
+import java.util.ArrayList;
+
 /**
  * Created by Thaddeus Sundin on 2/7/2017.
  */
@@ -38,6 +40,22 @@ public class GameBoard {
         this.gameMode = gameMode;
     }
 
+
+    //Constructor that takes a GameBoard object as input and uses it to initialize itself
+    public GameBoard(GameBoard toCopy) {
+        //Initialize the board sizes
+        this.boardSizeX = toCopy.boardSizeX;
+        this.boardSizeY = toCopy.boardSizeY;
+
+        //Initialize the gameBoard to be the same as the one passed in
+        for(int i=0; i<this.boardSizeX; ++i) {
+            for(int j=0; j<this.boardSizeY; ++j) {
+                this.gameBoard[i][j] = toCopy.gameBoard[i][j];
+            }
+        }
+    }
+
+
     //Place a specified color of stone at the given coordinates
     //If a stone already exists there (the array does not contain 0 at that space), return -1
     public int placeStone(int stoneColor, int x, int y) {
@@ -56,6 +74,7 @@ public class GameBoard {
         return 0;
     }
 
+
     //Check if the chain length fulfills the winning conditions set forth by the game mode
     public boolean isChainLengthValid(int chainLength) {
         //Chain lengths must always be at least 5
@@ -72,8 +91,10 @@ public class GameBoard {
         return false;
     }
 
+
     //Check the area surrounding the origin for winning conditions
     //Return the stone color if the winning conditions are met
+    //Returns 0 if no winning conditions are met
     public int checkForWinner(int stoneColor, int originx, int originy) {
         int chainLength;
         //Check for horizontal winning conditions
@@ -98,7 +119,10 @@ public class GameBoard {
         return 0;
     }
 
+
     //Check for horizontal winning conditions around an origin point
+    //Returns the length of the horizontal chain measured from the origin point
+    //Returns 0 if the chain is blocked at both ends
     public int checkHorizontal(int stoneColor, int originx, int originy) {
         //Check to the left of the origin (Start at 1 to count the origin point)
         int countLeft = 1;
@@ -122,11 +146,37 @@ public class GameBoard {
                 break;
         }
 
+        //Check if the chain length is not blocked at both ends
+        boolean blockedLeft = false;
+        boolean blockedRight = false;
+        //First, check if the offset to the left of the origin point
+        // is out of bounds (less than 0)
+        // or is the opposite stone color (!= 0 && != stoneColor)
+        int leftOffset = originx - countLeft;
+        if(leftOffset < 0 || (gameBoard[leftOffset][originy] != 0 && gameBoard[leftOffset][originy] != stoneColor)) {
+            blockedLeft = true;
+        }
+
+        //Then, check if the offset to the right of the origin point)
+        // is out of bounds (greater than or equal to the boardSizeX vlue)
+        // or is the opposite stone color (!= 0 && !+ stoneColor)
+        int rightOffset = originx + countRight + 1;
+        if(rightOffset >= boardSizeX || (gameBoard[rightOffset][originy] != 0 && gameBoard[rightOffset][originy] != stoneColor)) {
+            blockedRight = true;
+        }
+
+        //If the stone is blocked at both ends, return 0 to invalidate chain length
+        if(blockedLeft && blockedRight)
+            return 0;
+        //Otherwise, return the valid chain length
         int chainLength = countLeft + countRight;
         return chainLength;
     }
 
+
     //Check for vertical winning conditions around an origin point
+    //Returns the length of the vertical chain measured from the origin point
+    //Returns 0 if the chain is blocked at both ends
     public int checkVertical(int stoneColor, int originx, int originy) {
         //Check above the origin (Start at 1 to count the origin point)
         int countUp = 1;
@@ -150,11 +200,37 @@ public class GameBoard {
                 break;
         }
 
+        //Check if the chain length is not blocked at both ends
+        boolean blockedUp = false;
+        boolean blockedDown = false;
+        //First, check if the offset above the origin point
+        // is out of bounds (less than 0)
+        // or is the opposite stone color (!= 0 && != stoneColor)
+        int upOffset = originy - countUp;
+        if(upOffset < 0 || (gameBoard[originx][upOffset] != 0 && gameBoard[originx][upOffset] != stoneColor)) {
+            blockedUp = true;
+        }
+
+        //Then, check if the offset below the origin point
+        // is out of bounds (greater than or equal to the boardSizeX value)
+        // or is the opposite stone color (!= 0 && !+ stoneColor)
+        int downOffset = originy + countDown + 1;
+        if(downOffset >= boardSizeX || (gameBoard[originx][downOffset] != 0 && gameBoard[originx][downOffset] != stoneColor)) {
+            blockedDown = true;
+        }
+
+        //If the stone is blocked at both ends, return 0 to invalidate chain length
+        if(blockedUp && blockedDown)
+            return 0;
+        //Otherwise, return the valid chain length
         int chainLength = countUp + countDown;
         return chainLength;
     }
 
+
     //Check for increasing sloped diagonal winning conditions around an origin point
+    //Returns the length of the diagonal chain measured from the origin point
+    //Returns 0 if the chain is blocked at both ends
     public int checkDiagonalInc(int stoneColor, int originx, int originy) {
         //Check above and to the right of the origin (Start at 1 to count the origin point)
         int countUp = 1;
@@ -190,7 +266,10 @@ public class GameBoard {
         return chainLength;
     }
 
+
     //Check for decreasing sloped diagonal winning conditions around an origin point
+    //Returns the length of the diagonal chain measured from the origin point
+    //Returns 0 if the chain is blocked at both ends
     public int checkDiagonalDec(int stoneColor, int originx, int originy) {
         //Check above and to the left of the origin (Start at 1 to count the origin point)
         int countUp = 1;
@@ -226,6 +305,7 @@ public class GameBoard {
         return chainLength;
     }
 
+
     //Return true if there are no more free spaces on the game board (if there are no more 0s of the board)
     //Return false otherwise
     public boolean isBoardFull() {
@@ -241,6 +321,7 @@ public class GameBoard {
         return true;
     }
 
+
     //Print the game board to standard output
     public void printBoard() {
 
@@ -255,8 +336,160 @@ public class GameBoard {
         }
     }
 
-    //Returns board size
-    public int getBoardSize() {
-        return boardSizeX;
+
+    //Configure the game board for testing purposes
+    public void configBoard(){
+        //Configure player 1 pieces
+        // Template gameBoard[][] = 1;
+        gameBoard[0][5] = 1;
+        gameBoard[2][3] = 1;
+        gameBoard[7][7] = 1;
+
+        //Configure player 2 pieces
+        // Template gameBoard[][] = 2;
+        gameBoard[0][2] = 2;
+        gameBoard[0][3] = 2;
+        gameBoard[0][4] = 2;
+    }
+
+    //Configure the game board for testing purposes
+    public void configBoard2() {
+        //Configure player 1 pieces
+        // Template gameBoard[][] = 1;
+        gameBoard[5][5] = 1;
+        gameBoard[2][3] = 1;
+        gameBoard[7][7] = 1;
+
+        //Configure player 2 pieces
+        // Template gameBoard[][] = 2;
+        gameBoard[5][2] = 2;
+        gameBoard[5][3] = 2;
+        gameBoard[5][4] = 2;
+    }
+
+
+    /*
+    --------------------------------------
+    ----- Functions to be used by AI -----
+    --------------------------------------
+     */
+
+    //Generate list of possible moves
+    public ArrayList<int[]> getMoves() {
+        ArrayList<int[]> availableMoves = new ArrayList<int[]>();
+        //Populate the list with any space that is free (is a 0 on the board)
+        for(int i=0; i<boardSizeX; ++i) {
+            for(int j=0; j<boardSizeY; ++j) {
+                if(gameBoard[i][j] == 0) {
+                    int[] toAdd = new int[2];
+                    toAdd[0] = i;
+                    toAdd[1] = j;
+                    availableMoves.add(toAdd);
+                }
+            }
+        }
+        return availableMoves;
+    }
+
+    //Check entire board for winner with the matching stone color
+    //Return true if that winner is found, false otherwise
+    public boolean isThereWinner(int stoneColor){
+        for(int i=0; i<boardSizeX; ++i) {
+            for(int j=0; j<boardSizeY; ++j) {
+                if(checkForWinner(stoneColor, i, j) == stoneColor)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    //Evaluate the board
+    public int evaluate(int stoneColor){
+        int score = 0;
+        int opponentScore = 0;
+        int opponentStoneColor;
+        if (stoneColor == 1)
+            opponentStoneColor = 2;
+        else
+            opponentStoneColor = 1;
+
+        //For each spot on the board, tally each player's score
+        for(int i=0; i<boardSizeX; ++i) {
+            for (int j = 0; j < boardSizeY; ++j) {
+                //If this space doesn't contain our stone, skip it
+                if(gameBoard[i][j] != stoneColor)
+                    break;
+                //Get the length of all the player's chains from this point
+                int hLength = checkHorizontal(stoneColor, i, j);
+                int vLength = checkVertical(stoneColor, i, j);
+                int dIncLength = checkDiagonalInc(stoneColor, i, j);
+                int dDecLength = checkDiagonalDec(stoneColor, i, j);
+                //Add them to the player's score
+                score = score + hLength + vLength + dIncLength + dDecLength;
+
+                //Get the length of all the opponent's chains from this point
+                int hLengthOpp = checkHorizontal(opponentStoneColor, i, j);
+                int vLengthOpp = checkVertical(opponentStoneColor, i, j);
+                int dIncLengthOpp = checkDiagonalInc(opponentStoneColor, i, j);
+                int dDecLengthOpp = checkDiagonalDec(opponentStoneColor, i, j);
+                //Add them to the opponent's score
+                opponentScore = opponentScore + hLengthOpp + vLengthOpp + dIncLengthOpp + dDecLengthOpp;
+            }
+        }
+        return score - opponentScore;
+    }
+
+    //A better evaluation function
+    public int evaluate2(int stoneColor) {
+        int score = 0;
+        int opponentScore = 0;
+        int opponentStoneColor;
+        if (stoneColor == 1)
+            opponentStoneColor = 2;
+        else
+            opponentStoneColor = 1;
+
+        //For each spot on the board, tally each player's score
+        for(int i=0; i<boardSizeX; ++i) {
+            for (int j = 0; j < boardSizeY; ++j) {
+                //If this space doesn't contain a stone, skip it
+                if(gameBoard[i][j] == 0)
+                    break;
+                    //If the space contains our stone color, search for chains
+                else if(gameBoard[i][j] == stoneColor) {
+                    //Get the score of all the player chains at this point
+                    score += scoreChain(checkHorizontal(stoneColor, i, j));
+                    score += scoreChain(checkVertical(stoneColor, i, j));
+                    score += scoreChain(checkDiagonalInc(stoneColor, i, j));
+                    score += scoreChain(checkDiagonalDec(stoneColor, i, j));
+                }
+                //Otherwise, search for opponent's chain color
+                else {
+                    //Get the score of all the opponent chains at this point
+                    opponentScore += scoreChain(checkHorizontal(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkVertical(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkDiagonalInc(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkDiagonalDec(opponentStoneColor, i, j));
+                }
+            }
+        }
+        return score - opponentScore;
+    }
+
+    //Return the scored value of a chain length
+    //Should only be run after checking for winners, so a chain length of 5 or greater is never expected
+    public int scoreChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 10;
+            case 3: return 25;
+            case 4: return 50;
+            default: return 0;
+        }
+    }
+
+    //Reset spot (Reset the given coordinates to 0)
+    public void resetSpot(int x, int y) {
+        gameBoard[x][y] = 0;
     }
 }
