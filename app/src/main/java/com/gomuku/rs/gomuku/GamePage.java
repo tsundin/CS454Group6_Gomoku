@@ -69,7 +69,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     private Timer player1Time;
     private Timer player2Time;
-
+    private Timer thisPlayerTime;
+    private Timer opponentPlayerTime;
 
     // Turn-based multi-isMyTurn objects
     private GoogleApiClient mGoogleApiClient;
@@ -189,6 +190,23 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         this.gameType = GetGameType(gameTypeEnum);
     }
 
+    private void initializePlayers() {
+        player1 = new Player(1);
+        player2 = new Player(2);
+        thisPlayer = player1;
+        opponentPlayer = player2;
+    }
+
+    private void initializeTimers() {
+        FragmentManager fm = getFragmentManager();
+        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
+        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
+        player1Time = player1TimeFragment.createTimer();
+        player2Time = player2TimeFragment.createTimer();
+        thisPlayerTime = player1Time;
+        opponentPlayerTime = player2Time;
+
+    }
     //Restart game. This reinitializes everything except thisPlayer/2, so we can track wins
     public void restartGame(View view) {
         initializeLayout();
@@ -237,6 +255,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             if (player == thisPlayer) {
                 writeStoneToBluetooth(player, id);
                 writeStoneToGPS(player, x_coord, y_coord);
+                thisPlayerTime.pause();
+                opponentPlayerTime.resume();
+
+            }
+            else {
+                opponentPlayerTime.pause();
+                thisPlayerTime.resume();
             }
             if(play == 0){ // successful play, no winner
                 if (player.getStoneColor() == 1) {
@@ -251,35 +276,26 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             }
             else if(play == 1) {
                 drawBlackStone(aButton);
-                player1Wins();
+                player1Wins(thisPlayer);
 
             }
             else if(play == 2) {
                 drawWhiteStone(aButton);
-                player2Wins();
+                player2Wins(opponentPlayer);
             }
         }
     }
 
-    private void initializePlayers() {
-        player1 = new Player(1);
-        player2 = new Player(2);
-        thisPlayer = player1;
-        opponentPlayer = player2;
-    }
 
-    private void initializeTimers() {
-        FragmentManager fm = getFragmentManager();
-        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
-        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
-        player1Time = player1TimeFragment.createTimer();
-        player2Time = player2TimeFragment.createTimer();
-    }
     private void changeTurns() {
         if (gameTypeEnum == GameSelection.GameTypes.Offline) {
             Player swap = thisPlayer;
             thisPlayer = opponentPlayer;
             opponentPlayer = swap;
+
+            Timer swapTime = thisPlayerTime;
+            thisPlayerTime = opponentPlayerTime;
+            opponentPlayerTime = swapTime;
             isMyTurn = true;
         }
         else {
@@ -335,13 +351,19 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         aButton.setTag("White");
 
     }
-    private void player1Wins() {
+    private void player1Wins(Player player) {
+        player.incrementWins();
+        TextView wins = (TextView) findViewById(R.id.player1_wins);
+        wins.setText("Wins: " + player.getWins());
         LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
         TextView winnerText = (TextView) findViewById(R.id.winnerText);
         winnerText.setText("Winner: Player 1!\nPlay Again?");
         layout.setVisibility(View.VISIBLE);
     }
-    private void player2Wins() {
+    private void player2Wins(Player player) {
+        player.incrementWins();
+        TextView wins = (TextView) findViewById(R.id.player2_wins);
+        wins.setText("Wins: " + player.getWins());
         LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
         TextView winnerText = (TextView) findViewById(R.id.winnerText);
         winnerText.setText("Winner: Player 2!\nPlay Again?");
@@ -386,7 +408,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 iHoldBlackPieces = false;
                 isMyTurn = false;
                 thisPlayer = player2;
+                thisPlayerTime = player2Time;
                 opponentPlayer = player1;
+                opponentPlayerTime = player1Time;
             }
             mChatService.connect(deviceList.get(0), false);
         }
@@ -534,7 +558,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             int id = b.getInt("button");
             ImageButton button = (ImageButton) findViewById(id);
             thisPlayer = player2;
+            thisPlayerTime = player2Time;
             opponentPlayer = player1;
+            opponentPlayerTime = player1Time;
             isMyTurn = false;
             placePiece(button, opponentPlayer);
             isMyTurn = true;
