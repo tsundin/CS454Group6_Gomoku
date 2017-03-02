@@ -8,7 +8,7 @@ public class Player {
 
     //Create an integer to represent the player's stone color
     //1 represents white, 2 represents black
-    private int stoneColor;
+    protected int stoneColor;
     private String name;
     private String participantId;
 
@@ -46,5 +46,12 @@ public class Player {
     //Increment the player's win total
     public void incrementWins() {
         this.wins = this.wins + 1;
+    }
+
+    //This function should only be called by the AIPlayer2 class
+    //Therefore, simply return an invalid move
+    public int[] playTurn(GameBoard gameBoard){
+        int[] toReturn = new int[] {-1, -1};
+        return toReturn;
     }
 }

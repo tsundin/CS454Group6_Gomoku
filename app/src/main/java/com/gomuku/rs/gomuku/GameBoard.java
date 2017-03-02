@@ -1,5 +1,7 @@
 package com.gomuku.rs.gomuku;
 
+import java.util.ArrayList;
+
 /**
  * Created by Thaddeus Sundin on 2/7/2017.
  */
@@ -39,6 +41,28 @@ public class GameBoard {
     }
 
 
+    //Constructor that takes a GameBoard object as input and uses it to initialize itself
+    public GameBoard(GameBoard toCopy) {
+        //Initialize the board sizes
+        this.boardSizeX = toCopy.boardSizeX;
+        this.boardSizeY = toCopy.boardSizeY;
+
+        //Initialize the gameBoard to be the same as the one passed in
+        for(int i=0; i<this.boardSizeX; ++i) {
+            for(int j=0; j<this.boardSizeY; ++j) {
+                this.gameBoard[i][j] = toCopy.gameBoard[i][j];
+            }
+        }
+    }
+
+    //Getters for board sizes
+    public int getBoardSizeX() {
+        return boardSizeX;
+    }
+    public int getBoardSizeY() {
+        return boardSizeY;
+    }
+
     //Place a specified color of stone at the given coordinates
     //If a stone already exists there (the array does not contain 0 at that space), return -1
     public int placeStone(int stoneColor, int x, int y) {
@@ -77,19 +101,9 @@ public class GameBoard {
 
     //Check the area surrounding the origin for winning conditions
     //Return the stone color if the winning conditions are met
-
-    public int checkForWinner(int stoneColor, boolean isTimerExpired, int originx, int originy) {
-
+    //Returns 0 if no winning conditions are met
+    public int checkForWinner(int stoneColor, int originx, int originy) {
         int chainLength;
-
-        //Check for timer expired
-        if (isTimerExpired) {
-            if (stoneColor == 1) {
-                return 2;
-            }
-            return 1;
-        }
-
         //Check for horizontal winning conditions
         chainLength = checkHorizontal(stoneColor, originx, originy);
         if (isChainLengthValid(chainLength))
@@ -315,6 +329,15 @@ public class GameBoard {
     }
 
 
+    //Return true if the coordinates given are within the bounds of the game board
+    //Return false otherwise
+    public boolean isSpaceValid(int x, int y) {
+        if(x>=0 && y>=0 && x<boardSizeX && y<boardSizeY)
+            return true;
+        return false;
+    }
+
+
     //Print the game board to standard output
     public void printBoard() {
 
@@ -329,9 +352,259 @@ public class GameBoard {
         }
     }
 
-    //Returns board size
-    public int getBoardSize() { return boardSizeX; }
 
-    //Returns game mode
-    public int getGameMode() { return gameMode; }
+    //Configure the game board for testing purposes
+    public void configBoard(){
+        //Configure player 1 pieces
+        // Template gameBoard[][] = 1;
+        gameBoard[0][5] = 1;
+        gameBoard[2][3] = 1;
+        gameBoard[7][7] = 1;
+
+        //Configure player 2 pieces
+        // Template gameBoard[][] = 2;
+        gameBoard[0][2] = 2;
+        gameBoard[0][3] = 2;
+        gameBoard[0][4] = 2;
+    }
+
+    //Configure the game board for testing purposes
+    public void configBoard2() {
+        //Configure player 1 pieces
+        // Template gameBoard[][] = 1;
+        gameBoard[5][5] = 1;
+        gameBoard[2][3] = 1;
+        gameBoard[7][7] = 1;
+
+        //Configure player 2 pieces
+        // Template gameBoard[][] = 2;
+        gameBoard[5][2] = 2;
+        gameBoard[5][3] = 2;
+        gameBoard[5][4] = 2;
+    }
+
+
+    /*
+    --------------------------------------
+    ----- Functions to be used by AI -----
+    --------------------------------------
+    */
+
+    //Generate list of possible moves
+    public ArrayList<int[]> getMoves() {
+        ArrayList<int[]> availableMoves = new ArrayList<int[]>();
+        //Populate the list with any space that is free (is a 0 on the board)
+        for(int i=0; i<boardSizeX; ++i) {
+            for(int j=0; j<boardSizeY; ++j) {
+                if(gameBoard[i][j] == 0) {
+                    int[] toAdd = new int[2];
+                    toAdd[0] = i;
+                    toAdd[1] = j;
+                    availableMoves.add(toAdd);
+                }
+            }
+        }
+        return availableMoves;
+    }
+
+    //Check entire board for winner with the matching stone color
+    //Return true if that winner is found, false otherwise
+    public boolean isThereWinner(int stoneColor){
+        for(int i=0; i<boardSizeX; ++i) {
+            for(int j=0; j<boardSizeY; ++j) {
+                if(checkForWinner(stoneColor, i, j) == stoneColor)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    //Evaluate the board
+    public int evaluate(int stoneColor){
+        int score = 0;
+        int opponentScore = 0;
+        int opponentStoneColor;
+        if (stoneColor == 1)
+            opponentStoneColor = 2;
+        else
+            opponentStoneColor = 1;
+
+        //For each spot on the board, tally each player's score
+        for(int i=0; i<boardSizeX; ++i) {
+            for (int j = 0; j < boardSizeY; ++j) {
+                //If this space doesn't contain our stone, skip it
+                if(gameBoard[i][j] != stoneColor)
+                    break;
+                //Get the length of all the player's chains from this point
+                int hLength = checkHorizontal(stoneColor, i, j);
+                int vLength = checkVertical(stoneColor, i, j);
+                int dIncLength = checkDiagonalInc(stoneColor, i, j);
+                int dDecLength = checkDiagonalDec(stoneColor, i, j);
+                //Add them to the player's score
+                score = score + hLength + vLength + dIncLength + dDecLength;
+
+                //Get the length of all the opponent's chains from this point
+                int hLengthOpp = checkHorizontal(opponentStoneColor, i, j);
+                int vLengthOpp = checkVertical(opponentStoneColor, i, j);
+                int dIncLengthOpp = checkDiagonalInc(opponentStoneColor, i, j);
+                int dDecLengthOpp = checkDiagonalDec(opponentStoneColor, i, j);
+                //Add them to the opponent's score
+                opponentScore = opponentScore + hLengthOpp + vLengthOpp + dIncLengthOpp + dDecLengthOpp;
+            }
+        }
+        return score - opponentScore;
+    }
+
+    //A better evaluation function
+    public int evaluate2(int stoneColor) {
+        int score = 0;
+        int opponentScore = 0;
+        int opponentStoneColor;
+        if (stoneColor == 1)
+            opponentStoneColor = 2;
+        else
+            opponentStoneColor = 1;
+
+        //For each spot on the board, tally each player's score
+        for(int i=0; i<boardSizeX; ++i) {
+            for (int j = 0; j < boardSizeY; ++j) {
+                //If this space doesn't contain a stone, skip it
+                if(gameBoard[i][j] == 0)
+                    break;
+                    //If the space contains our stone color, search for chains
+                else if(gameBoard[i][j] == stoneColor) {
+                    //Get the score of all the player chains at this point
+                    score += scoreChain(checkHorizontal(stoneColor, i, j));
+                    score += scoreChain(checkVertical(stoneColor, i, j));
+                    score += scoreChain(checkDiagonalInc(stoneColor, i, j));
+                    score += scoreChain(checkDiagonalDec(stoneColor, i, j));
+                }
+                //Otherwise, search for opponent's chain color
+                else {
+                    //Get the score of all the opponent chains at this point
+                    opponentScore += scoreChain(checkHorizontal(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkVertical(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkDiagonalInc(opponentStoneColor, i, j));
+                    opponentScore += scoreChain(checkDiagonalDec(opponentStoneColor, i, j));
+                }
+            }
+        }
+        return score - opponentScore;
+    }
+
+    //Return the scored value of a chain length
+    //Should only be run after checking for winners, so a chain length of 5 or greater is never expected
+    public int scoreChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 10;
+            case 3: return 25;
+            case 4: return 50;
+            default: return 0;
+        }
+    }
+
+    //Reset spot (Reset the given coordinates to 0)
+    public void resetSpot(int x, int y) {
+        gameBoard[x][y] = 0;
+    }
+
+
+    /*
+    ---------------------------------------------
+    ----- Functions to be used by AIPlayer2 -----
+    ---------------------------------------------
+    */
+
+    //Generate a board of scores based on possible player next moves
+    //NOTE: Assumes AI player's stone color is black (stoneColor == 2)
+    public int[][] generateScoreBoard() {
+        //Create n x n matrix to hold scores
+        int[][] scoreBoard = new int[boardSizeX][boardSizeY];
+        //Generate list of possible player moves
+        ArrayList<int[]> moves = getMoves();
+        //Use to store current move
+        int[] currentMove;
+
+        //For each move, score that space on the board
+        for(int i=0; i<moves.size(); i++) {
+            currentMove = moves.get(i);
+            scoreBoard[currentMove[0]][currentMove[1]] = scoreSpace(currentMove, 2);
+        }
+        return scoreBoard;
+    }
+
+    //Return the score of the move to evaluate
+    public int scoreSpace(int[] spaceToEval, int playerStoneColor) {
+        int score = 0;
+        int x = spaceToEval[0];
+        int y = spaceToEval[1];
+
+        //Search all adjacent spaces and generate a chain length score based on the color stone that exists there
+        //Need to score:
+        //[x+1][y], [x+1][y+1], [x][y+1], [x-1][y+1], [x-1][y], [x-1][y-1], [x][y-1], [x+1][y-1]
+        score += scoreAdjacentSpace(x+1, y, 0);
+        score += scoreAdjacentSpace(x+1, y+1, 3);
+        score += scoreAdjacentSpace(x, y+1, 1);
+        score += scoreAdjacentSpace(x-1, y+1, 2);
+        score += scoreAdjacentSpace(x-1, y, 0);
+        score += scoreAdjacentSpace(x-1, y-1, 3);
+        score += scoreAdjacentSpace(x, y-1, 1);
+        score += scoreAdjacentSpace(x+1, y-1, 2);
+
+        //Sum these values to score the spot
+        return score;
+    }
+
+    //Return the score of an adjacent space
+    //Modes: 0 = horizontal
+    //       1 = vertical
+    //       2 = increasing diagonal
+    //       3 = decreasing diagonal
+    public int scoreAdjacentSpace(int x, int y, int mode) {
+        int chainLength = 0;
+        //If the space to check is valid and contains a player stone, score it
+        if(isSpaceValid(x, y) && gameBoard[x][y] != 0) {
+            //Check for chain based on the mode specified
+            if(mode == 0)
+                chainLength = checkHorizontal(gameBoard[x][y], x, y);
+            if(mode == 1)
+                chainLength = checkVertical(gameBoard[x][y], x, y);
+            if(mode == 2)
+                chainLength = checkDiagonalInc(gameBoard[x][y], x, y);
+            if(mode == 3)
+                chainLength = checkDiagonalDec(gameBoard[x][y], x, y);
+
+            //Return the score for that chain length based on the color of stone on that space
+            if(gameBoard[x][y] == 2)
+                return scorePlayerChain(chainLength);
+            else
+                return scoreOpponentChain(chainLength);
+        }
+        //Otherwise, return a score of 0
+        else
+            return 0;
+    }
+
+    //Return the weighted score of a player chain
+    public int scorePlayerChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 10;
+            case 3: return 25;
+            case 4: return 50;
+            default: return 0;
+        }
+    }
+
+    //Return the weighted score of an opponent chain
+    public int scoreOpponentChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 5;
+            case 3: return 15;
+            case 4: return 35;
+            default: return 0;
+        }
+    }
 }
