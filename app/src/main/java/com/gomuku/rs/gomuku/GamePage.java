@@ -150,15 +150,17 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             initializeAI();
 
         }
+        if (gameTypeEnum != GameSelection.GameTypes.Online) {
+            // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
+            // It should be in the if (gameTypeEnum == .Online), above?
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                    // add other APIs and scopes here as needed
+                    .build();
+        }
 
-        // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
-        // It should be in the if (gameTypeEnum == .Online), above?
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                // add other APIs and scopes here as needed
-                .build();
     }
 
     private void initializeLayout() {
@@ -265,9 +267,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         if (aButton.getTag() == null &&
                 (isMyTurn && player == thisPlayer) || (!isMyTurn && player == opponentPlayer)) {
             int play = playTurn(player, player1Time, x_coord, y_coord);
-            if (player == thisPlayer) {
+            if (isMyTurn && player == thisPlayer) {
                 writeStoneToBluetooth(player, id);
                 writeStoneToGPS(player, x_coord, y_coord);
+                //Toast.makeText(getApplicationContext(), "T", Toast.LENGTH_LONG).show();
                 thisPlayerTime.pause();
                 opponentPlayerTime.resume();
 
@@ -311,15 +314,17 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             int id = rawId[0] * 10 + rawId[1];
             ImageButton button = (ImageButton) findViewById(id);
 
+
             playerSwap();
             placePiece(button, thisPlayer);
+            highlightPlayer1();
             isMyTurn = true;
         }
         else if (gameTypeEnum == GameSelection.GameTypes.AI && thisPlayer == player2) {
             playerSwap();
             isMyTurn = true;
         }
-        else {
+        else { // online modes don't swap. just change turns.
             isMyTurn = !isMyTurn;
         }
 
@@ -342,6 +347,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         textView.setBackgroundColor(0xFFFFCB3D);
         TextView textView2 = (TextView)findViewById(R.id.player1);
         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+        //textView2.setBackgroundResource(0);
+        //textView.setBackgroundResource(R.drawable.rounded_bg);
+
     }
 
     private void highlightPlayer2() {
@@ -349,6 +357,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         textView.setBackgroundColor(0xFFFFCB3D);
         TextView textView2 = (TextView)findViewById(R.id.player2);
         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+        //textView.setBackgroundResource(0);
+        //textView2.setBackgroundResource(R.drawable.rounded_bg);
+
     }
 
 
@@ -434,7 +445,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
             String pairedDeviceName = deviceList.get(0).getName();
             String myName = BA.getName();
-            if (myName.compareTo(pairedDeviceName) > 0) {
+            if (myName.compareTo(pairedDeviceName) < 0) {
 
                 iHoldBlackPieces = true;
                 isMyTurn = true;
@@ -528,14 +539,15 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
-                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
-                            mConversationArrayAdapter.clear();
+                            Toast.makeText(GamePage.this, "Connected", Toast.LENGTH_SHORT).show();
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            setStatus(R.string.title_connecting);
+                            Toast.makeText(GamePage.this, "Connecting", Toast.LENGTH_SHORT).show();
                             break;
                         case BluetoothChatService.STATE_LISTEN:
                         case BluetoothChatService.STATE_NONE:
+                            Toast.makeText(GamePage.this, "Closing Connection", Toast.LENGTH_SHORT).show();
+
                             mChatService.stop();
                             break;
                     }
@@ -597,7 +609,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             opponentPlayerTime = player1Time;
             isMyTurn = false;
             placePiece(button, opponentPlayer);
-            isMyTurn = true;
+
+            mGoogleApiClient.connect();
+
             /*
             button.setImageResource(R.drawable.intersection_black_100px_100px);
             button.setTag("Black");
@@ -608,6 +622,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             match = b.getParcelable("game");
             setParticipants(match.getParticipants(), match);
         }
+        mGoogleApiClient.connect();
     }
 
     @Override

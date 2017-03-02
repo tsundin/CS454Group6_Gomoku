@@ -107,15 +107,18 @@ public class Timer {
     }
 
     public void resume() {
-        isPaused = false;
         if (primaryTimerExpired) {
+            secondaryTimer.cancel();
             secondaryTimer = createSecondaryCountDownTimer(secondaryDefaultTime, defaultInterval);
             secondaryTimer.start();
         }
         else {
+            primaryTimer.cancel();
             primaryTimer = createPrimaryCountDownTimer(pausedTimeUntilFinished, defaultInterval);
             primaryTimer.start();
         }
+        isPaused = false;
+
 
     }
 
@@ -133,7 +136,9 @@ public class Timer {
         isPaused = true;
         primaryTimerExpired = false;
         secondaryTimerExpired = false;
+        primaryTimer.cancel();
         primaryTimer = createPrimaryCountDownTimer(primaryDefaultTime, defaultInterval);
+        secondaryTimer.cancel();
         secondaryTimer = createSecondaryCountDownTimer(secondaryDefaultTime, defaultInterval);
     }
     public boolean isTimerExpired() { return secondaryTimerExpired; }
