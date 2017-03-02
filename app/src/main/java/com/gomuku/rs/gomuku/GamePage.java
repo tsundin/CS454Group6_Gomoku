@@ -1,11 +1,8 @@
 package com.gomuku.rs.gomuku;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.app.FragmentManager;
 import android.content.pm.ActivityInfo;
@@ -22,36 +19,27 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.TextView;
-import android.text.Spannable;
-import android.text.style.BackgroundColorSpan;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.List;
 //Google Play Game Services Imports
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesStatusCodes;
-import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
-import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
 import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.OnTurnBasedMatchUpdateReceivedListener;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMultiplayer;
-import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by charlesjuszczak on 2/26/17.
@@ -59,7 +47,7 @@ import java.util.List;
 
 public class GamePage extends Activity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, OnTurnBasedMatchUpdateReceivedListener {
-    private boolean player = true;
+    private boolean isMyTurn = true;
     private GameSelection.BoardSizes boardSizeEnum = GameSelection.BoardSizes._10x10;
     private int board_size = 10;
     private GameSelection.GameTypes gameTypeEnum;
@@ -68,6 +56,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     private int gameType;
     private Player player1;
     private Player player2;
+    private Player thisPlayer;
+    private Player opponentPlayer;
 
     private BluetoothAdapter BA;
     private BluetoothChatService mChatService = null;
@@ -81,7 +71,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     private Timer player2Time;
 
 
-    // Turn-based multi-player objects
+    // Turn-based multi-isMyTurn objects
     private GoogleApiClient mGoogleApiClient;
     private boolean mResolvingConnectionFailure = false;
     private boolean mAutoStartSignInFlow = true;
@@ -97,7 +87,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
         Bundle b = getIntent().getExtras();
 
-        /*if(b.getBoolean("isGoogle")) {
+        if(b.getBoolean("isGoogle")) {
             gameTypeEnum = GameSelection.GameTypes.Online;
             if(b.getInt("gameMode") == 0) {
                 gameModeEnum = GameSelection.GameModes.Standard;
@@ -113,11 +103,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 boardSizeEnum = GameSelection.BoardSizes._20x20;
             }
 
-        } else { */
+        } else {
             gameTypeEnum = (GameSelection.GameTypes) b.getSerializable("gameType");
             gameModeEnum = (GameSelection.GameModes) b.getSerializable("gameMode");
             boardSizeEnum = (GameSelection.BoardSizes) b.getSerializable("boardSize");
-        //}
+        }
 
         switch(boardSizeEnum) {
             case _10x10: setContentView(R.layout.game_page);
@@ -139,30 +129,19 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         b3=(Button)findViewById(R.id.button3);
         b4=(Button)findViewById(R.id.button4);
 
+        initializePlayers();
+        initializeTimers();
 
+        /**** Initialize Layout *****/
+        initializeLayout();
         /**** Initialize Bluetooth connection *****/
-        if (gameTypeEnum == GameSelection.GameTypes.OnlineBT) { // TODO: add an OnlineBT game type
+        if (gameTypeEnum == GameSelection.GameTypes.OnlineBT) {
             initializeBluetoothConnection();
+
         }
         /**** Initialize Google Play connection ****/
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
-            // Create the Google Api Client with access to the Play Games services
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(Games.API).addScope(Games.SCOPE_GAMES)
-                    // add other APIs and scopes here as needed
-                    .build();
-
-            if(b.getBoolean("isGoogle")) {
-                int id = b.getInt("button");
-                ImageButton button = (ImageButton) findViewById(id);
-                button.setImageResource(R.drawable.intersection_white_100px_100px);
-                button.setTag("White");
-                player = !player;
-                match = b.getParcelable("game");
-                setParticipants(match.getParticipants(), match);
-            }
+            initializeGooglePlayConnection(b);
         }
 
         // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
@@ -173,62 +152,20 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 .addApi(Games.API).addScope(Games.SCOPE_GAMES)
                 // add other APIs and scopes here as needed
                 .build();
-        if(b.getBoolean("isGoogle")) {
-            int id = b.getInt("button");
-            ImageButton button = (ImageButton) findViewById(id);
-            button.setImageResource(R.drawable.intersection_white_100px_100px);
-            button.setTag("White");
-            player = !player;
-            match = b.getParcelable("game");
-            setParticipants(match.getParticipants(), match);
-        }
-
-        player1 = new Player(1);
-        player2 = new Player(2);
-        FragmentManager fm = getFragmentManager();
-        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
-        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
-        player1Time = player1TimeFragment.createTimer();
-        player2Time = player2TimeFragment.createTimer();
-
-        initializeLayout();
-
-    }
-
-
-    //Restart game. This reinitializes everything except player1/2, so we can track wins
-    public void restartGame(View view) {
-        initializeLayout();
     }
 
     private void initializeLayout() {
-        GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
+        initializeBoard();
+        initializeWins();
 
-        gridlayout.removeAllViews();
-        for (int i = 0; i < board_size; i++) {
-            for (int j = 0; j < board_size; j++) {
-                View inflatedView = View.inflate(GamePage.this, R.layout.intersection_button, gridlayout);
-                View justAddedIntersection = (View) findViewById(R.id.empty_intersection);
-                justAddedIntersection.setId(i * board_size + j);
-            }
-        }
+    }
 
-        gridlayout.setOnClickListener(new AdapterView.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(GamePage.this, "Clicked " + boardSizeEnum ,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        this.gameBoard = new GameBoard(board_size, board_size, GetGameMode(gameModeEnum));
-
-        this.gameType = GetGameType(gameTypeEnum);
-
+    public void initializeWins() {
         // Initialize Wins
         TextView wins = (TextView) findViewById(R.id.player1_wins);
-        wins.setText("Wins: " + player1.getWins());
+        wins.setText("Wins: " + thisPlayer.getWins());
         wins = (TextView) findViewById(R.id.player2_wins);
-        wins.setText("Wins: " + player2.getWins());
+        wins.setText("Wins: " + opponentPlayer.getWins());
         player1Time.reset();
         player2Time.reset();
         player1Time.pause();
@@ -237,6 +174,24 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         layout.setVisibility(View.INVISIBLE);
         layout = (LinearLayout) findViewById(R.id.stalemate);
         layout.setVisibility(View.INVISIBLE);
+    }
+    public void initializeBoard() {
+        GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
+        gridlayout.removeAllViews();
+        for (int i = 0; i < board_size; i++) {
+            for (int j = 0; j < board_size; j++) {
+                View inflatedView = View.inflate(GamePage.this, R.layout.intersection_button, gridlayout);
+                View justAddedIntersection = (View) findViewById(R.id.empty_intersection);
+                justAddedIntersection.setId(i * board_size + j);
+            }
+        }
+        this.gameBoard = new GameBoard(board_size, board_size, GetGameMode(gameModeEnum));
+        this.gameType = GetGameType(gameTypeEnum);
+    }
+
+    //Restart game. This reinitializes everything except thisPlayer/2, so we can track wins
+    public void restartGame(View view) {
+        initializeLayout();
     }
 
     //End game
@@ -265,108 +220,133 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         return gameBoard.checkForWinner(player.getStoneColor(), timer.isTimerExpired(), x, y);
     }
 
-
     public void placePiece(View view) {
+        placePiece(view, thisPlayer);
+
+    }
+
+    public void placePiece(View view, Player player) {
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
 
-        FragmentManager fm = getFragmentManager();
-        if (isPaired) {
-            if (iHoldBlackPieces) {
-                player = true;
-            } else {
-                player = false;
+        if (aButton.getTag() == null &&
+                (isMyTurn && player == thisPlayer) || (!isMyTurn && player == opponentPlayer)) {
+            int play = playTurn(player, player1Time, x_coord, y_coord);
+            if (player == thisPlayer) {
+                writeStoneToBluetooth(player, id);
+                writeStoneToGPS(player, x_coord, y_coord);
             }
-        }
-        if (aButton.getTag() == null) {
-            if (player) {
-                int play = playTurn(player1, player1Time, x_coord, y_coord);
-                Log.i("PLAY", Integer.toString(play));
-                String message = Integer.toString(id);
-                if (isPaired) {
-                    byte[] send = message.getBytes();
-                    mChatService.write(send);
+            if(play == 0){ // successful play, no winner
+                if (player.getStoneColor() == 1) {
+                    drawBlackStone(aButton);
+                    highlightPlayer2();
                 }
-                if(play == 0){
-                    Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
+                else if (player.getStoneColor() == 2) {
+                    drawWhiteStone(aButton);
+                    highlightPlayer1();
+                }
+                changeTurns();
+            }
+            else if(play == 1) {
+                drawBlackStone(aButton);
+                player1Wins();
 
-                    aButton.setImageResource(R.drawable.intersection_black_100px_100px);
-                    aButton.setTag("Black");
-                    player = !player;
-                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
-                    //player1Time.pause();
-                    //player2Time.resume();
-                    TextView textView = (TextView)findViewById(R.id.player1);
-                    textView.setBackgroundColor(0xFFFFCB3D);
-                    TextView textView2 = (TextView)findViewById(R.id.player2);
-                    textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                } else {
-                    if(play == 1) {
-                        System.out.println("Player 1 Wins!");
-                        aButton.setImageResource(R.drawable.intersection_black_100px_100px);
-                        aButton.setTag("Black");
-                        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                        TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                        winnerText.setText("Winner: Player 1!\nPlay Again?");
-                        layout.setVisibility(View.VISIBLE);
-                    } else if(play == 2) {
-                        //TODO : Change to alert dialog
-                        System.out.println("Player 2 Wins!");
-                    }
-                }
-                // wait for opponent move from bluetooth
-                if (isPaired) {
-                    //wait
-                }
             }
-            else {
-                int play = playTurn(player2, player2Time, x_coord, y_coord);
-                String message = Integer.toString(id);
-
-                if (isPaired) {
-                    byte[] send = message.getBytes();
-                    mChatService.write(send);
-                }
-                if(play == 0){
-                    Toast.makeText(getApplicationContext(), "Coord: " + x_coord + ", " + y_coord,Toast.LENGTH_LONG).show();
-                    aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                    aButton.setTag("White");
-                    player = !player;
-                    TextView textView = (TextView)findViewById(R.id.player2);
-                    textView.setBackgroundColor(0xFFFFCB3D);
-                    TextView textView2 = (TextView)findViewById(R.id.player1);
-                    textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
-                    //player2Time.pause();
-                    //player1Time.resume();
-                } else {
-                    if(play == 1) {
-                        //TODO : Change to alert dialog
-                        System.out.println("Player 1 Wins!");
-                    } else if(play == 2) {
-                        aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                        aButton.setTag("White");
-                        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                        TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                        winnerText.setText("Winner: Player 2!\nPlay Again?");
-                        layout.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (isPaired) {
-                    // wait for opponent move
-                }
+            else if(play == 2) {
+                drawWhiteStone(aButton);
+                player2Wins();
             }
-        }
-        else { // click an already-placed piece, to demo stalemate box
-            LinearLayout layout = (LinearLayout) findViewById(R.id.stalemate);
-            layout.setVisibility(View.VISIBLE);
         }
     }
 
+    private void initializePlayers() {
+        player1 = new Player(1);
+        player2 = new Player(2);
+        thisPlayer = player1;
+        opponentPlayer = player2;
+    }
+
+    private void initializeTimers() {
+        FragmentManager fm = getFragmentManager();
+        GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
+        GameTimerFragment player2TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer2);
+        player1Time = player1TimeFragment.createTimer();
+        player2Time = player2TimeFragment.createTimer();
+    }
+    private void changeTurns() {
+        if (gameTypeEnum == GameSelection.GameTypes.Offline) {
+            Player swap = thisPlayer;
+            thisPlayer = opponentPlayer;
+            opponentPlayer = swap;
+            isMyTurn = true;
+        }
+        else {
+            isMyTurn = !isMyTurn;
+        }
+    }
+
+    private void highlightPlayer1() {
+        TextView textView = (TextView)findViewById(R.id.player2);
+        textView.setBackgroundColor(0xFFFFCB3D);
+        TextView textView2 = (TextView)findViewById(R.id.player1);
+        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+    }
+
+    private void highlightPlayer2() {
+        TextView textView = (TextView)findViewById(R.id.player1);
+        textView.setBackgroundColor(0xFFFFCB3D);
+        TextView textView2 = (TextView)findViewById(R.id.player2);
+        textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
+    }
+
+
+    private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord) {
+        if (gameTypeEnum == GameSelection.GameTypes.Online) {
+            int intMode = gameBoard.getGameMode();
+            String mode = new String(Integer.toString(intMode));
+            String size = new String(Integer.toString(board_size));
+            String x = new String(Integer.toString(x_coord));
+            String y = new String(Integer.toString(y_coord));
+            String stone = new String(Integer.toString(thisPlayer.getStoneColor()));
+            String game = mode + " , " + size + " , " + x + " , " + y + " , " + stone;
+            byte[] data = game.getBytes(Charset.forName("UTF-8"));
+            Games.TurnBasedMultiplayer.takeTurn(mGoogleApiClient, match.getMatchId(), data, opponentPlayer.getId());
+        }
+    }
+
+    private void writeStoneToBluetooth(Player thisPlayer, int id) {
+        if (gameTypeEnum == GameSelection.GameTypes.OnlineBT && isPaired) {
+            String message = Integer.toString(id);
+            byte[] send = message.getBytes();
+            mChatService.write(send);
+        }
+    }
+
+
+    private void drawBlackStone(ImageButton aButton) {
+        aButton.setImageResource(R.drawable.intersection_black_100px_100px);
+        aButton.setTag("Black");
+
+    }
+    private void drawWhiteStone(ImageButton aButton) {
+        aButton.setImageResource(R.drawable.intersection_white_100px_100px);
+        aButton.setTag("White");
+
+    }
+    private void player1Wins() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
+        TextView winnerText = (TextView) findViewById(R.id.winnerText);
+        winnerText.setText("Winner: Player 1!\nPlay Again?");
+        layout.setVisibility(View.VISIBLE);
+    }
+    private void player2Wins() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
+        TextView winnerText = (TextView) findViewById(R.id.winnerText);
+        winnerText.setText("Winner: Player 2!\nPlay Again?");
+        layout.setVisibility(View.VISIBLE);
+    }
 
 
 
@@ -398,107 +378,20 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
             String pairedDeviceName = deviceList.get(0).getName();
             String myName = BA.getName();
-            if (myName.compareTo(pairedDeviceName) < 0) {
+            if (myName.compareTo(pairedDeviceName) > 0) {
 
                 iHoldBlackPieces = true;
+                isMyTurn = true;
             } else {
                 iHoldBlackPieces = false;
+                isMyTurn = false;
+                thisPlayer = player2;
+                opponentPlayer = player1;
             }
             mChatService.connect(deviceList.get(0), false);
         }
 
     }
-    public void placePieceFromPairedPlayer(int id) {
-        ImageButton aButton = (ImageButton) findViewById(id);
-        int y_coord = id % board_size;
-        int x_coord = id / board_size;
-        FragmentManager fm = getFragmentManager();
-        boolean opponentPlayer;
-        if (isPaired) {
-            if (iHoldBlackPieces) {
-                opponentPlayer = false;
-            } else {
-                opponentPlayer = true;
-            }
-        } else {
-            return;
-        }
-        if (aButton.getTag() == null) {
-            if (opponentPlayer) {
-                int play = playTurn(player1, player1Time, x_coord, y_coord);
-                String message = x_coord + "_" + y_coord;
-                byte[] send = message.getBytes();
-                if(play == 0){
-                    aButton.setImageResource(R.drawable.intersection_black_100px_100px);
-                    aButton.setTag("Black");
-                    player = !player;
-                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
-                    //player1Time.pause();
-                    //player2Time.resume();
-                    TextView textView = (TextView)findViewById(R.id.player1);
-                    textView.setBackgroundColor(0xFFFFCB3D);
-                    TextView textView2 = (TextView)findViewById(R.id.player2);
-                    textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                } else {
-                    if(play == 1) {
-                        System.out.println("Player 1 Wins!");
-                        aButton.setImageResource(R.drawable.intersection_black_100px_100px);
-                        aButton.setTag("Black");
-                        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                        TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                        winnerText.setText("Winner: Player 1!\nPlay Again?");
-                        layout.setVisibility(View.VISIBLE);
-                    } else if(play == 2) {
-                        //TODO : Change to alert dialog
-                        System.out.println("Player 2 Wins!");
-                    }
-                }
-                // wait for opponent move from bluetooth
-                if (isPaired) {
-                    //wait
-                }
-            }
-            else {
-                int play = playTurn(player2, player2Time, x_coord, y_coord);
-                String message = x_coord + "_" + y_coord;
-                byte[] send = message.getBytes();
-                if(play == 0){
-                    aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                    aButton.setTag("White");
-                    player = !player;
-                    TextView textView = (TextView)findViewById(R.id.player2);
-                    textView.setBackgroundColor(0xFFFFCB3D);
-                    TextView textView2 = (TextView)findViewById(R.id.player1);
-                    textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-                    com.gomuku.rs.gomuku.GameTimerFragment player1Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer);
-                    com.gomuku.rs.gomuku.GameTimerFragment player2Time = (com.gomuku.rs.gomuku.GameTimerFragment) fm.findFragmentById(R.id.timer2);
-                    //player2Time.pause();
-                    //player1Time.resume();
-                } else {
-                    if(play == 1) {
-                        //TODO : Change to alert dialog
-                        System.out.println("Player 1 Wins!");
-                    } else if(play == 2) {
-                        aButton.setImageResource(R.drawable.intersection_white_100px_100px);
-                        aButton.setTag("White");
-                        LinearLayout layout = (LinearLayout) findViewById(R.id.winner);
-                        TextView winnerText = (TextView) findViewById(R.id.winnerText);
-                        winnerText.setText("Winner: Player 2!\nPlay Again?");
-                        layout.setVisibility(View.VISIBLE);
-                    }
-                }
-                if (isPaired) {
-                    // wait for opponent move
-                }
-            }
-        }
-        else { // click an already-placed piece, to demo stalemate box
-            LinearLayout layout = (LinearLayout) findViewById(R.id.stalemate);
-            layout.setVisibility(View.VISIBLE);
-        }
-    }
-
 
     public int GetGameType(GameSelection.GameTypes type) {
         switch(type) {
@@ -596,8 +489,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     //construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     Toast.makeText(getApplicationContext(), writeMessage,Toast.LENGTH_SHORT).show();
-
-                    //mConversationArrayAdapter.add("Me:  " + writeMessage);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -605,10 +496,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     Toast.makeText(getApplicationContext(), readMessage,Toast.LENGTH_SHORT).show();
-                    placePieceFromPairedPlayer(Integer.parseInt(readMessage));
-
-                    //print this
-                    //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    int id = Integer.parseInt(readMessage);
+                    ImageButton button = (ImageButton) findViewById(id);
+                    placePiece(button, opponentPlayer);
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name
@@ -631,6 +521,34 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     /************************** End of Bluetooth Helper Methods *******************************/
 
     /*******************************START GPGS FUNCTIONS*********************************/
+
+    private void initializeGooglePlayConnection(Bundle b) {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                // add other APIs and scopes here as needed
+                .build();
+
+        if(b.getBoolean("isGoogle")) {
+            int id = b.getInt("button");
+            ImageButton button = (ImageButton) findViewById(id);
+            thisPlayer = player2;
+            opponentPlayer = player1;
+            isMyTurn = false;
+            placePiece(button, opponentPlayer);
+            isMyTurn = true;
+            /*
+            button.setImageResource(R.drawable.intersection_black_100px_100px);
+            button.setTag("Black");
+            isMyTurn = false;
+            thisPlayer = player2;
+            opponentPlayer = player1;
+            */
+            match = b.getParcelable("game");
+            setParticipants(match.getParticipants(), match);
+        }
+    }
 
     @Override
     protected void onStart() {
@@ -703,8 +621,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        // The player is signed in. Hide the sign-in button and allow the
-        // player to proceed.
+        // The isMyTurn is signed in. Hide the sign-in button and allow the
+        // isMyTurn to proceed.
         Games.TurnBasedMultiplayer.registerMatchUpdateListener(mGoogleApiClient, this);
     }
 
@@ -754,21 +672,21 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         Games.signOut(mGoogleApiClient);
     }
 
-    // Sets player name
+    // Sets isMyTurn name
     private void setParticipants(ArrayList<Participant> players, TurnBasedMatch match) {
 
         Participant first = players.get(0);
         Participant second = players.get(1);
 
-        player1.setName(first.getDisplayName());
-        player1.setId(first.getParticipantId());
+        thisPlayer.setName(first.getDisplayName());
+        thisPlayer.setId(first.getParticipantId());
         TextView firstText = (TextView) findViewById(R.id.player1);
-        firstText.setText(player1.getName());
+        firstText.setText(thisPlayer.getName());
 
-        player2.setName(second.getDisplayName());
-        player2.setId(second.getParticipantId());
+        opponentPlayer.setName(second.getDisplayName());
+        opponentPlayer.setId(second.getParticipantId());
         TextView secondText = (TextView) findViewById(R.id.player2);
-        secondText.setText(player2.getName());
+        secondText.setText(opponentPlayer.getName());
     }
 
     @Override
@@ -778,21 +696,32 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         List<String> list = new ArrayList<String>(Arrays.asList(str.split(" , ")));
         String id = list.get(2) + list.get(3);
 
-        int x = Integer.parseInt(list.get(3));
-        int y = Integer.parseInt(list.get(4));
-        int stoneColor = Integer.parseInt(list.get(4));
+        int x = Integer.parseInt(list.get(2));
+        int y = Integer.parseInt(list.get(3));
+        int stoneColor = Integer.parseInt(list.get(4)); // playPiece determines this from opponentPlayer now.
         int buttonId = Integer.parseInt(id);
 
         ImageButton button = (ImageButton) findViewById(buttonId);
-        if(stoneColor == 1) {
-            button.setImageResource(R.drawable.intersection_white_100px_100px);
-            button.setTag("White");
-        } else if(stoneColor == 2) {
-            button.setImageResource(R.drawable.intersection_black_100px_100px);
-            button.setTag("Black");
-        }
-        player = !player;
+        isMyTurn = false;
+        placePiece(button, opponentPlayer);
+        isMyTurn = true;
 
+/*
+        if(stoneColor == 1) {
+            drawBlackStone(button);
+        } else if(stoneColor == 2) {
+            drawWhiteStone(button);
+        }
+
+        int play = playTurn(opponentPlayer, player1Time, x, y);
+        if (play == 1) {
+            player1Wins();
+        }
+        else if (play == 2) {
+            player2Wins();
+        }
+        isMyTurn = true;
+*/
     }
 
     public void onTurnBasedMatchRemoved (String matchId) {
