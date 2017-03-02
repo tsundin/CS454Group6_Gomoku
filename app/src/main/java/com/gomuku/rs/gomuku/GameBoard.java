@@ -102,8 +102,15 @@ public class GameBoard {
     //Check the area surrounding the origin for winning conditions
     //Return the stone color if the winning conditions are met
     //Returns 0 if no winning conditions are met
-    public int checkForWinner(int stoneColor, int originx, int originy) {
+    public int checkForWinner(int stoneColor, boolean isTimerExpired, int originx, int originy) {
         int chainLength;
+        //Check for timer expired
+        if (isTimerExpired) {
+            if (stoneColor == 1) {
+                return 2;
+            }
+            return 1;
+        }
         //Check for horizontal winning conditions
         chainLength = checkHorizontal(stoneColor, originx, originy);
         if (isChainLengthValid(chainLength))
@@ -412,7 +419,7 @@ public class GameBoard {
     public boolean isThereWinner(int stoneColor){
         for(int i=0; i<boardSizeX; ++i) {
             for(int j=0; j<boardSizeY; ++j) {
-                if(checkForWinner(stoneColor, i, j) == stoneColor)
+                if(checkForWinner(stoneColor, false, i, j) == stoneColor)
                     return true;
             }
         }
@@ -607,4 +614,10 @@ public class GameBoard {
             default: return 0;
         }
     }
+
+    //Returns board size
+    public int getBoardSize() { return boardSizeX; }
+
+    //Returns game mode
+    public int getGameMode() { return gameMode; }
 }

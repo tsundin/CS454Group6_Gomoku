@@ -62,6 +62,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     private BluetoothAdapter BA;
     private BluetoothChatService mChatService = null;
     private Set<BluetoothDevice> pairedDevices;
+    private AIPlayer2 ai;
     ListView lv;
     Button b1,b2,b3,b4;
     boolean isPaired = false;
@@ -144,6 +145,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             initializeGooglePlayConnection(b);
         }
+        /**** Initialize AI *****/
+        if (gameTypeEnum == GameSelection.GameTypes.AI) {
+            initializeAI();
+
+        }
 
         // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
         // It should be in the if (gameTypeEnum == .Online), above?
@@ -161,7 +167,14 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     }
 
-    public void initializeWins() {
+    private void initializeAI() {
+
+        player2 = new AIPlayer2();
+        thisPlayer = player1;
+        opponentPlayer = player2;
+    }
+
+    private void initializeWins() {
         // Initialize Wins
         TextView wins = (TextView) findViewById(R.id.player1_wins);
         wins.setText("Wins: " + thisPlayer.getWins());
@@ -176,7 +189,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         layout = (LinearLayout) findViewById(R.id.stalemate);
         layout.setVisibility(View.INVISIBLE);
     }
-    public void initializeBoard() {
+    private void initializeBoard() {
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
         gridlayout.removeAllViews();
         for (int i = 0; i < board_size; i++) {
@@ -289,18 +302,39 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     private void changeTurns() {
         if (gameTypeEnum == GameSelection.GameTypes.Offline) {
-            Player swap = thisPlayer;
-            thisPlayer = opponentPlayer;
-            opponentPlayer = swap;
+            playerSwap();
+            isMyTurn = true;
+        }
+        else if (gameTypeEnum == GameSelection.GameTypes.AI && opponentPlayer == player2) {
+            int [] rawId;
+            rawId = opponentPlayer.playTurn(gameBoard);
+            int id = rawId[0] * 10 + rawId[1];
+            ImageButton button = (ImageButton) findViewById(id);
 
-            Timer swapTime = thisPlayerTime;
-            thisPlayerTime = opponentPlayerTime;
-            opponentPlayerTime = swapTime;
+            playerSwap();
+            placePiece(button, thisPlayer);
+            isMyTurn = true;
+        }
+        else if (gameTypeEnum == GameSelection.GameTypes.AI && thisPlayer == player2) {
+            playerSwap();
             isMyTurn = true;
         }
         else {
             isMyTurn = !isMyTurn;
         }
+
+
+
+    }
+
+    private void playerSwap() {
+        Player swap = thisPlayer;
+        thisPlayer = opponentPlayer;
+        opponentPlayer = swap;
+
+        Timer swapTime = thisPlayerTime;
+        thisPlayerTime = opponentPlayerTime;
+        opponentPlayerTime = swapTime;
     }
 
     private void highlightPlayer1() {
