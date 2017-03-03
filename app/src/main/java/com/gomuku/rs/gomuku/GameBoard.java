@@ -55,6 +55,14 @@ public class GameBoard {
         }
     }
 
+    //Getters for board sizes
+    public int getBoardSizeX() {
+        return boardSizeX;
+    }
+    public int getBoardSizeY() {
+        return boardSizeY;
+    }
+
 
     //Place a specified color of stone at the given coordinates
     //If a stone already exists there (the array does not contain 0 at that space), return -1
@@ -95,8 +103,16 @@ public class GameBoard {
     //Check the area surrounding the origin for winning conditions
     //Return the stone color if the winning conditions are met
     //Returns 0 if no winning conditions are met
-    public int checkForWinner(int stoneColor, int originx, int originy) {
+    public int checkForWinner(int stoneColor, boolean isTimerExpired, int originx, int originy) {
+
         int chainLength;
+        //Check for timer expired
+        if (isTimerExpired) {
+            if (stoneColor == 1) {
+                return 2;
+            }
+            return 1;
+        }
         //Check for horizontal winning conditions
         chainLength = checkHorizontal(stoneColor, originx, originy);
         if (isChainLengthValid(chainLength))
@@ -322,6 +338,15 @@ public class GameBoard {
     }
 
 
+    //Return true if the coordinates given are within the bounds of the game board
+    //Return false otherwise
+    public boolean isSpaceValid(int x, int y) {
+        if(x>=0 && y>=0 && x<boardSizeX && y<boardSizeY)
+            return true;
+        return false;
+    }
+
+
     //Print the game board to standard output
     public void printBoard() {
 
@@ -372,7 +397,7 @@ public class GameBoard {
     --------------------------------------
     ----- Functions to be used by AI -----
     --------------------------------------
-     */
+    */
 
     //Generate list of possible moves
     public ArrayList<int[]> getMoves() {
@@ -396,7 +421,7 @@ public class GameBoard {
     public boolean isThereWinner(int stoneColor){
         for(int i=0; i<boardSizeX; ++i) {
             for(int j=0; j<boardSizeY; ++j) {
-                if(checkForWinner(stoneColor, i, j) == stoneColor)
+                if(checkForWinner(stoneColor, false, i, j) == stoneColor)
                     return true;
             }
         }
@@ -492,4 +517,109 @@ public class GameBoard {
     public void resetSpot(int x, int y) {
         gameBoard[x][y] = 0;
     }
+
+
+    /*
+    ---------------------------------------------
+    ----- Functions to be used by AIPlayer2 -----
+    ---------------------------------------------
+    */
+
+    //Generate a board of scores based on possible player next moves
+    //NOTE: Assumes AI player's stone color is black (stoneColor == 2)
+    public int[][] generateScoreBoard() {
+        //Create n x n matrix to hold scores
+        int[][] scoreBoard = new int[boardSizeX][boardSizeY];
+        //Generate list of possible player moves
+        ArrayList<int[]> moves = getMoves();
+        //Use to store current move
+        int[] currentMove;
+
+        //For each move, score that space on the board
+        for(int i=0; i<moves.size(); i++) {
+            currentMove = moves.get(i);
+            scoreBoard[currentMove[0]][currentMove[1]] = scoreSpace(currentMove, 2);
+        }
+        return scoreBoard;
+    }
+
+    //Return the score of the move to evaluate
+    public int scoreSpace(int[] spaceToEval, int playerStoneColor) {
+        int score = 0;
+        int x = spaceToEval[0];
+        int y = spaceToEval[1];
+
+        //Search all adjacent spaces and generate a chain length score based on the color stone that exists there
+        //Need to score:
+        //[x+1][y], [x+1][y+1], [x][y+1], [x-1][y+1], [x-1][y], [x-1][y-1], [x][y-1], [x+1][y-1]
+        score += scoreAdjacentSpace(x+1, y, 0);
+        score += scoreAdjacentSpace(x+1, y+1, 3);
+        score += scoreAdjacentSpace(x, y+1, 1);
+        score += scoreAdjacentSpace(x-1, y+1, 2);
+        score += scoreAdjacentSpace(x-1, y, 0);
+        score += scoreAdjacentSpace(x-1, y-1, 3);
+        score += scoreAdjacentSpace(x, y-1, 1);
+        score += scoreAdjacentSpace(x+1, y-1, 2);
+
+        //Sum these values to score the spot
+        return score;
+    }
+
+    //Return the score of an adjacent space
+    //Modes: 0 = horizontal
+    //       1 = vertical
+    //       2 = increasing diagonal
+    //       3 = decreasing diagonal
+    public int scoreAdjacentSpace(int x, int y, int mode) {
+        int chainLength = 0;
+        //If the space to check is valid and contains a player stone, score it
+        if(isSpaceValid(x, y) && gameBoard[x][y] != 0) {
+            //Check for chain based on the mode specified
+            if(mode == 0)
+                chainLength = checkHorizontal(gameBoard[x][y], x, y);
+            if(mode == 1)
+                chainLength = checkVertical(gameBoard[x][y], x, y);
+            if(mode == 2)
+                chainLength = checkDiagonalInc(gameBoard[x][y], x, y);
+            if(mode == 3)
+                chainLength = checkDiagonalDec(gameBoard[x][y], x, y);
+
+            //Return the score for that chain length based on the color of stone on that space
+            if(gameBoard[x][y] == 2)
+                return scorePlayerChain(chainLength);
+            else
+                return scoreOpponentChain(chainLength);
+        }
+        //Otherwise, return a score of 0
+        else
+            return 0;
+    }
+
+    //Return the weighted score of a player chain
+    public int scorePlayerChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 10;
+            case 3: return 25;
+            case 4: return 50;
+            default: return 0;
+        }
+    }
+
+    //Return the weighted score of an opponent chain
+    public int scoreOpponentChain(int chainLength) {
+        switch(chainLength) {
+            case 1: return 1;
+            case 2: return 5;
+            case 3: return 15;
+            case 4: return 35;
+            default: return 0;
+        }
+    }
+
+    //Returns board size
+    public int getBoardSize() { return boardSizeX; }
+
+    //Returns game mode
+    public int getGameMode() { return gameMode; }
 }

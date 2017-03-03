@@ -17,7 +17,7 @@ import android.widget.Toast;
     public class GameSelection extends Activity {
 
     public enum GameTypes {
-        Online, Offline, AI
+        Online, OnlineBT, Offline, AI
     }
 
     GameTypes gameType = GameTypes.Offline;
@@ -40,12 +40,17 @@ import android.widget.Toast;
 
         // Determine game type from radio buttons
         RadioButton radioButton_online = (RadioButton) findViewById(R.id.online);
+        RadioButton radioButton_onlineBT = (RadioButton) findViewById(R.id.onlineBT);
         RadioButton radioButton_offline = (RadioButton) findViewById(R.id.offline);
         RadioButton radioButton_ai = (RadioButton) findViewById(R.id.ai);
 
         radioButton_online.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { gameType = GameTypes.Online; }
+        });
+        radioButton_onlineBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { gameType = GameTypes.OnlineBT; }
         });
         radioButton_offline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +94,6 @@ import android.widget.Toast;
             public void onClick(View view) { boardSize = BoardSizes._20x20; }
         });
         cV.setCardBackgroundColor(getResources().getColor(R.color.transparent));
-
-
     }
 
 
