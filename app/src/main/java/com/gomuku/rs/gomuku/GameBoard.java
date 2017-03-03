@@ -63,6 +63,7 @@ public class GameBoard {
         return boardSizeY;
     }
 
+
     //Place a specified color of stone at the given coordinates
     //If a stone already exists there (the array does not contain 0 at that space), return -1
     public int placeStone(int stoneColor, int x, int y) {
@@ -103,6 +104,7 @@ public class GameBoard {
     //Return the stone color if the winning conditions are met
     //Returns 0 if no winning conditions are met
     public int checkForWinner(int stoneColor, boolean isTimerExpired, int originx, int originy) {
+
         int chainLength;
         //Check for timer expired
         if (isTimerExpired) {
