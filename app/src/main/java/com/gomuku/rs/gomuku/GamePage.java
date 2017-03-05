@@ -244,9 +244,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             successfulPlace = this.gameBoard.placeStone(player.getStoneColor(), x, y);
             if (successfulPlace == 0) break;
             if (successfulPlace == -1)
-                System.out.println("There is already a stone there! Pick a different square.");
+                Toast.makeText(getApplicationContext(), "There is already a stone there! Pick a different square.", Toast.LENGTH_LONG).show();
             if (successfulPlace == -2)
-                System.out.println("Those coordinates are out of bounds!");
+                Toast.makeText(getApplicationContext(), "Those coordinates are out of bounds!", Toast.LENGTH_LONG).show();
             return 3;
         }
 
