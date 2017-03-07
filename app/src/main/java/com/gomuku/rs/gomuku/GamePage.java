@@ -83,12 +83,17 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     final static int RC_LOOK_AT_MATCHES = 10001;
     private TurnBasedMatch match;
 
+    /**
+     * Creates the GamePage view.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle b = getIntent().getExtras();
-
+        // Creating the view from the Google-initiated WelcomePage requires getting the
+        // setup info from the Bundle b.
         if(b.getBoolean("isGoogle")) {
             gameTypeEnum = GameSelection.GameTypes.Online;
             if(b.getInt("gameMode") == 0) {
@@ -105,12 +110,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 boardSizeEnum = GameSelection.BoardSizes._20x20;
             }
 
-        } else {
+        } else { // if not in Google mode, get the setup info straight from the SetupPage bundle.
             gameTypeEnum = (GameSelection.GameTypes) b.getSerializable("gameType");
             gameModeEnum = (GameSelection.GameModes) b.getSerializable("gameMode");
             boardSizeEnum = (GameSelection.BoardSizes) b.getSerializable("boardSize");
         }
 
+        // Setup board size
         switch(boardSizeEnum) {
             case _10x10: setContentView(R.layout.game_page);
                 board_size = 10;
@@ -124,35 +130,39 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             default: setContentView(R.layout.game_page);
                 break;
         }
+
+        // Lock GamePage to Portrait Mode.
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // Generic buttons. b2 is used to create the Google game.
         b1 = (Button) findViewById(R.id.button);
         b2=(Button)findViewById(R.id.button2);
         b3=(Button)findViewById(R.id.button3);
         b4=(Button)findViewById(R.id.button4);
 
+        // Initialize the various layout elements.
         initializePlayers();
         initializeTimers();
-
-        /**** Initialize Layout *****/
         initializeLayout();
-        /**** Initialize Bluetooth connection *****/
+
+        // Initialize Bluetooth, if in Bluetooth mode.
         if (gameTypeEnum == GameSelection.GameTypes.OnlineBT) {
             initializeBluetoothConnection();
 
         }
-        /**** Initialize Google Play connection ****/
+        // Initialize Google Play Services, if in Online mode.
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             initializeGooglePlayConnection(b);
         }
-        /**** Initialize AI *****/
+        // Initialize AI, if in AI mode.
         if (gameTypeEnum == GameSelection.GameTypes.AI) {
             initializeAI();
 
         }
+        // TODO: This code was needed even in offline/bluetooth modes. Else we get a crash.
+        // It should be in the if (gameTypeEnum == .Online), above?
         if (gameTypeEnum != GameSelection.GameTypes.Online) {
-            // TODO: This code temporarily needed even in offline/bluetooth modes. else we get a crash.
-            // It should be in the if (gameTypeEnum == .Online), above?
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -166,9 +176,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     private void initializeLayout() {
         initializeBoard();
         initializeWins();
-
     }
 
+    /**
+     * Setup the players for AI mode.
+     * The AI is always set to player 2, and as the opponent player.
+     */
     private void initializeAI() {
 
         player2 = new AIPlayer2();
@@ -176,8 +189,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         opponentPlayer = player2;
     }
 
+    /**
+     * Initialize the views for representing the number of wins.
+     */
     private void initializeWins() {
-        // Initialize Wins
         TextView wins = (TextView) findViewById(R.id.player1_wins);
         wins.setText("Wins: " + thisPlayer.getWins());
         wins = (TextView) findViewById(R.id.player2_wins);
@@ -191,6 +206,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         layout = (LinearLayout) findViewById(R.id.stalemate);
         layout.setVisibility(View.INVISIBLE);
     }
+
+    /**
+     * (Re)Initialize the game board, clearing all already placed pieces.
+     * Create the intersections programmatically, in a board_size x board_size grid.
+     * Also create the underlying GameBoard model object.
+     */
     private void initializeBoard() {
         GridLayout gridlayout = (GridLayout) findViewById(R.id.gridlayout);
         gridlayout.removeAllViews();
@@ -205,6 +226,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         this.gameType = GetGameType(gameTypeEnum);
     }
 
+    /**
+     * Initialize players. Under these defaults, player 1 always starts as the black stone (1),
+     * and player 2 the white (2). Note that these defaults may be sometimes overridden
+     * elsewhere in the code. E.g. The AI mode overrides these initial settings to replace
+     * player 2 with the AI. Online modes may swap thisPlayer and opponentPlayer depending
+     * on which device initiated the online session.
+     */
     private void initializePlayers() {
         player1 = new Player(1);
         player2 = new Player(2);
@@ -212,6 +240,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         opponentPlayer = player2;
     }
 
+    /**
+     * Initialize player time fragments.
+     */
     private void initializeTimers() {
         FragmentManager fm = getFragmentManager();
         GameTimerFragment player1TimeFragment = (GameTimerFragment) fm.findFragmentById(R.id.timer);
@@ -222,12 +253,19 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         opponentPlayerTime = player2Time;
 
     }
-    //Restart game. This reinitializes everything except thisPlayer/2, so we can track wins
+
+    /**
+     * Restart game. The reinitialization affects everything -except- the two players,
+     * so we can track player wins from game to game.
+     */
     public void restartGame(View view) {
         initializeLayout();
     }
 
-    //End game
+    /**
+     * If the user chooses to end the game, go back to the GameSelection view.
+     * @param view The view that caused us to end the game.
+     */
     public void endGame(View view) {
         //mChatService.stop();
         super.onDestroy ();
@@ -235,50 +273,73 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         startActivity(intent);
     }
 
-    // Place stone on board and verify
+    /**
+     * Place stone on the gameBoard model and return the result of the play.
+     * @return 0 on successful play and no winner yet,
+     *         1 if play was successful and player 1 was the winner for this turn.
+     *         2 if play was successful and player 2 was the winner for this turn.
+     *         3 if already a stone at that location, or if coordinates are out of bounds.
+     */
     public int playTurn(Player player, Timer timer, int x, int y) {
         int successfulPlace = -1;
 
         while (successfulPlace != 0) {
             //Place a stone on the board
             successfulPlace = this.gameBoard.placeStone(player.getStoneColor(), x, y);
-            if (successfulPlace == 0) break;
-            if (successfulPlace == -1)
+            if (successfulPlace == 0) break; // Successful place. Fall-through to checkForWinner.
+            if (successfulPlace == -1) // GameBoard indicates already a stone in that location.
                 Toast.makeText(getApplicationContext(), "There is already a stone there! Pick a different square.", Toast.LENGTH_LONG).show();
-            if (successfulPlace == -2)
+            if (successfulPlace == -2) // GameBoard indicates that location is out of bounds.
                 Toast.makeText(getApplicationContext(), "Those coordinates are out of bounds!", Toast.LENGTH_LONG).show();
             return 3;
         }
-
+        // Fall through to here on successfully placing a piece. Check for winner
+        // returns 0 if no winner; 1 if player 1 wins; 2 if player 2 wins
         return gameBoard.checkForWinner(player.getStoneColor(), timer.isTimerExpired(), x, y);
     }
 
+    /**
+     * Proxy for placing the piece from the board_size x board_size intersection imageViews.
+     * ImageViews do not have access to which player is currently playing.
+     * @param view The intersection imageView that was touched.
+     */
     public void placePiece(View view) {
         placePiece(view, thisPlayer);
 
     }
 
+    /**
+     * Logic for placing the piece on the game board.
+     * @param view The view (e.g. an intersection on the board) that requested a piece be played.
+     * @param player The player that is requesting the piece be played.
+     */
     public void placePiece(View view, Player player) {
+        // Extract the id containing the (x,y) coordinates of where to place the piece
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
         int y_coord = id % board_size;
         int x_coord = id / board_size;
 
+        // Only place a piece if no piece is currently placed there, and either
+        // it is my turn and I am the player playing, or it is not my turn and the opponent
+        // is playing a piece.
         if (aButton.getTag() == null &&
                 (isMyTurn && player == thisPlayer) || (!isMyTurn && player == opponentPlayer)) {
             int play = playTurn(player, player1Time, x_coord, y_coord);
+            // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
             if (isMyTurn && player == thisPlayer) {
                 writeStoneToBluetooth(player, id);
                 writeStoneToGPS(player, x_coord, y_coord);
-                //Toast.makeText(getApplicationContext(), "T", Toast.LENGTH_LONG).show();
+                // Swap the timers (this player just played)
                 thisPlayerTime.pause();
                 opponentPlayerTime.resume();
 
             }
-            else {
+            else { // Swap the timers (opponent just played)
                 opponentPlayerTime.pause();
                 thisPlayerTime.resume();
             }
+
             if(play == 0){ // successful play, no winner
                 if (player.getStoneColor() == 1) {
                     drawBlackStone(aButton);
@@ -288,14 +349,14 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     drawWhiteStone(aButton);
                     highlightPlayer1();
                 }
-                changeTurns();
+                changeTurns(); // Swap players, depending on the game mode
             }
-            else if(play == 1) {
+            else if(play == 1) { // player 1 wins
                 drawBlackStone(aButton);
                 player1Wins(thisPlayer);
 
             }
-            else if(play == 2) {
+            else if(play == 2) { // player 2 wins
                 drawWhiteStone(aButton);
                 player2Wins(opponentPlayer);
             }
@@ -303,23 +364,29 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     }
 
 
+    /**
+     * Swap the players, depending on the game mode.
+     */
     private void changeTurns() {
+        // Offline mode: Swap players, and it always remains my turn.
         if (gameTypeEnum == GameSelection.GameTypes.Offline) {
             playerSwap();
             isMyTurn = true;
         }
+        // AI mode where the AI is playing.
+        // AI places its piece on the game board here.
         else if (gameTypeEnum == GameSelection.GameTypes.AI && opponentPlayer == player2) {
             int [] rawId;
-            rawId = opponentPlayer.playTurn(gameBoard);
-            int id = rawId[0] * 10 + rawId[1];
+            rawId = opponentPlayer.playTurn(gameBoard); // Get which piece to play from the AI
+            int id = rawId[0] * board_size + rawId[1]; // Decode the ID
             ImageButton button = (ImageButton) findViewById(id);
 
-
-            playerSwap();
-            placePiece(button, thisPlayer);
+            playerSwap(); // Swap players so it is the AI's turn before calling placePiece
+            placePiece(button, thisPlayer); // AI places piece. playerSwap will be called again
             highlightPlayer1();
             isMyTurn = true;
         }
+        // AI mode where the AI just played. Swap the player back to player 1
         else if (gameTypeEnum == GameSelection.GameTypes.AI && thisPlayer == player2) {
             playerSwap();
             isMyTurn = true;
@@ -332,6 +399,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     }
 
+    /**
+     * Swap thisPlayer and opponentPlayer, along with which timer is active.
+     */
     private void playerSwap() {
         Player swap = thisPlayer;
         thisPlayer = opponentPlayer;
@@ -347,9 +417,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         textView.setBackgroundColor(0xFFFFCB3D);
         TextView textView2 = (TextView)findViewById(R.id.player1);
         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-        //textView2.setBackgroundResource(0);
-        //textView.setBackgroundResource(R.drawable.rounded_bg);
-
+        textView2.setBackgroundResource(R.drawable.rounded_bg);
+        textView.setBackgroundResource(0);
     }
 
     private void highlightPlayer2() {
@@ -357,12 +426,15 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         textView.setBackgroundColor(0xFFFFCB3D);
         TextView textView2 = (TextView)findViewById(R.id.player2);
         textView2.setBackgroundColor(getResources().getColor(R.color.yellow));
-        //textView.setBackgroundResource(0);
-        //textView2.setBackgroundResource(R.drawable.rounded_bg);
-
+        textView2.setBackgroundResource(R.drawable.rounded_bg);
+        textView.setBackgroundResource(0);
     }
 
-
+    /**
+     * Send which stone was place in Online mode via Google Play Service.
+     * @param thisPlayer Which player is currently playing
+     * @param x_coord, y_coord The (x,y) coordinate to play
+     */
     private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord) {
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             int intMode = gameBoard.getGameMode();
@@ -377,6 +449,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         }
     }
 
+    /**
+     * Send which stone was place in Bluetooth mode via Bluetooth.
+     * @param thisPlayer Which player is currently playing
+     * @param id The (x,y) coordinate to play
+     */
     private void writeStoneToBluetooth(Player thisPlayer, int id) {
         if (gameTypeEnum == GameSelection.GameTypes.OnlineBT && isPaired) {
             String message = Integer.toString(id);
@@ -385,17 +462,30 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         }
     }
 
-
+    /**
+     * Set the imageView for the intersection from blank to a black stone.
+     * @param aButton The imageView button
+     */
     private void drawBlackStone(ImageButton aButton) {
         aButton.setImageResource(R.drawable.intersection_black_100px_100px);
         aButton.setTag("Black");
 
     }
+
+    /**
+     * Set the imageView for the intersection from blank to a white stone.
+     * @param aButton The imageView button
+     */
     private void drawWhiteStone(ImageButton aButton) {
         aButton.setImageResource(R.drawable.intersection_white_100px_100px);
         aButton.setTag("White");
 
     }
+
+    /**
+     * Initialize the Player Wins pop-over and set it to visible.
+     * @param player Update the recording of player wins count
+     */
     private void player1Wins(Player player) {
         player.incrementWins();
         TextView wins = (TextView) findViewById(R.id.player1_wins);
@@ -553,13 +643,20 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     }
                     break;
                 */
-
+                /**
+                 * Transmitting logic for Bluetooth mode.
+                 * Send which piece to play to the other device.
+                 */
                 case Constants.MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
                     //construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     Toast.makeText(getApplicationContext(), writeMessage,Toast.LENGTH_SHORT).show();
                     break;
+                /**
+                 * Receiving logic for Bluetooth mode.
+                 * Get which piece to play from the other device.
+                 */
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
 
@@ -592,6 +689,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
     /*******************************START GPGS FUNCTIONS*********************************/
 
+    /**
+     * Initialization for Online mode.
+     * Also does some game initialization logic and transmits the initial piece to the other device.
+     */
     private void initializeGooglePlayConnection(Bundle b) {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -601,6 +702,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 .build();
 
         if(b.getBoolean("isGoogle")) {
+            // Initialize players for this device and send initial piece to other device.
             int id = b.getInt("button");
             ImageButton button = (ImageButton) findViewById(id);
             thisPlayer = player2;
@@ -764,6 +866,10 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         secondText.setText(opponentPlayer.getName());
     }
 
+    /**
+     * Receiving logic for Online mode.
+     * Get which piece to play from the other device.
+     */
     @Override
     public void onTurnBasedMatchReceived(TurnBasedMatch match) {
         byte[] data = match.getData();
