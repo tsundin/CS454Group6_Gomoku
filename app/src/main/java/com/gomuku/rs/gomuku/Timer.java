@@ -106,6 +106,10 @@ public class Timer {
         textView.setText("Time: " + hms);
     }
 
+    /**
+     * CountDownTimers don't support stopping and starting. Cancel the timer and recreate
+     * a new timer. If the primary timer has expired, start the secondary countdown timer.
+     */
     public void resume() {
         if (primaryTimerExpired) {
             secondaryTimer.cancel();
