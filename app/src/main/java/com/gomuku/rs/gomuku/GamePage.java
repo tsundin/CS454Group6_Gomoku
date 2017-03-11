@@ -194,9 +194,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      */
     private void initializeWins() {
         TextView wins = (TextView) findViewById(R.id.player1_wins);
-        wins.setText("Wins: " + thisPlayer.getWins());
+        wins.setText("Wins: " + player1.getWins());
         wins = (TextView) findViewById(R.id.player2_wins);
-        wins.setText("Wins: " + opponentPlayer.getWins());
+        wins.setText("Wins: " + player2.getWins());
         player1Time.reset();
         player2Time.reset();
         player1Time.pause();
@@ -353,12 +353,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             }
             else if(play == 1) { // player 1 wins
                 drawBlackStone(aButton);
-                player1Wins(thisPlayer);
+                player1Wins(player1);
 
             }
             else if(play == 2) { // player 2 wins
                 drawWhiteStone(aButton);
-                player2Wins(opponentPlayer);
+                player2Wins(player2);
             }
         }
     }
@@ -849,18 +849,29 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         Games.signOut(mGoogleApiClient);
     }
 
-    // Sets isMyTurn name
+    // Sets player name
     private void setParticipants(ArrayList<Participant> players, TurnBasedMatch match) {
-
+        final int n = 7;
         Participant first = players.get(0);
         Participant second = players.get(1);
 
-        thisPlayer.setName(first.getDisplayName());
+        if (first.getDisplayName().length() > n) { // shorten long names
+            thisPlayer.setName(first.getDisplayName().substring(0, n));
+        }
+        else {
+            thisPlayer.setName(first.getDisplayName());
+        }
         thisPlayer.setId(first.getParticipantId());
         TextView firstText = (TextView) findViewById(R.id.player1);
         firstText.setText(thisPlayer.getName());
 
-        opponentPlayer.setName(second.getDisplayName());
+        if (first.getDisplayName().length() > n) { // shorten long names
+            opponentPlayer.setName(second.getDisplayName().substring(0, n));
+        }
+        else {
+            opponentPlayer.setName(second.getDisplayName());
+        }
+
         opponentPlayer.setId(second.getParticipantId());
         TextView secondText = (TextView) findViewById(R.id.player2);
         secondText.setText(opponentPlayer.getName());
