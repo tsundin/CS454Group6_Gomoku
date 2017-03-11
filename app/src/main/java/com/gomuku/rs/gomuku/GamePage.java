@@ -170,7 +170,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     // add other APIs and scopes here as needed
                     .build();
         }
-
     }
 
     private void initializeLayout() {
@@ -314,6 +313,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      * @param player The player that is requesting the piece be played.
      */
     public void placePiece(View view, Player player) {
+        int play = -1;
         // Extract the id containing the (x,y) coordinates of where to place the piece
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
@@ -323,11 +323,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         // Only place a piece if no piece is currently placed there, and either
         // it is my turn and I am the player playing, or it is not my turn and the opponent
         // is playing a piece.
-        if (aButton.getTag() == null &&
-                (isMyTurn && player == thisPlayer) || (!isMyTurn && player == opponentPlayer)) {
-            int play = playTurn(player, player1Time, x_coord, y_coord);
-            // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
+        if (aButton.getTag() == null) { // only play if a stone has not already been placed there
             if (isMyTurn && player == thisPlayer) {
+                // Play the piece
+                play = playTurn(player, thisPlayerTime, x_coord, y_coord);
+                // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
                 writeStoneToBluetooth(player, id);
                 writeStoneToGPS(player, x_coord, y_coord);
                 // Swap the timers (this player just played)
@@ -335,11 +335,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 opponentPlayerTime.resume();
 
             }
-            else { // Swap the timers (opponent just played)
+            else if (!isMyTurn && player == opponentPlayer) { // Swap the timers (opponent just played)
+                // Play the piece
+                play = playTurn(player, opponentPlayerTime, x_coord, y_coord);
+                // Swap the timers (opponent just played)
                 opponentPlayerTime.pause();
                 thisPlayerTime.resume();
             }
-
             if(play == 0){ // successful play, no winner
                 if (player.getStoneColor() == 1) {
                     drawBlackStone(aButton);
@@ -394,9 +396,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         else { // online modes don't swap. just change turns.
             isMyTurn = !isMyTurn;
         }
-
-
-
     }
 
     /**
