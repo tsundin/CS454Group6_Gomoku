@@ -64,7 +64,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/primaryDark"
                 android:layout_below="@id/game_options_text"
-                android:layout_toRightOf="@id/player1_color" />
+                android:layout_toRightOf="@id/player1_color"
+                android:background="@drawable/rounded_bg"/>
             <TextView
                 android:text="Wins: 0"
                 android:padding="16dp"
@@ -107,6 +108,7 @@
                 android:textColor="@color/primaryDark"
                 android:layout_toRightOf="@id/player2_color"
                 android:layout_below="@id/player1"
+                android:background="@null"
                 />
             <TextView
                 android:text="Wins: 0"
