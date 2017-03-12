@@ -1,6 +1,7 @@
 package com.gomuku.rs.gomuku;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -80,8 +81,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     private boolean mSignInClicked = false;
     private static int RC_SIGN_IN = 9001;
     final static int RC_SELECT_PLAYERS = 10000;
-    final static int RC_LOOK_AT_MATCHES = 10001;
+    final static int RC_INVITATION_INBOX = 10001;
     private TurnBasedMatch match;
+    private Bundle incomingMatch;
 
     /**
      * Creates the GamePage view.
@@ -150,7 +152,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             initializeBluetoothConnection();
 
         }
-        // Initialize Google Play Services, if in Online mode.
+        // Initialize Google Play Services, if in Online mode
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             initializeGooglePlayConnection(b);
         }
@@ -329,7 +331,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
             if (isMyTurn && player == thisPlayer) {
                 writeStoneToBluetooth(player, id);
-                writeStoneToGPS(player, x_coord, y_coord);
+                writeStoneToGPS(player, x_coord, y_coord, play);
                 // Swap the timers (this player just played)
                 thisPlayerTime.pause();
                 opponentPlayerTime.resume();
@@ -435,7 +437,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      * @param thisPlayer Which player is currently playing
      * @param x_coord, y_coord The (x,y) coordinate to play
      */
-    private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord) {
+    private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord, int status) {
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             int intMode = gameBoard.getGameMode();
             String mode = new String(Integer.toString(intMode));
@@ -445,7 +447,23 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             String stone = new String(Integer.toString(thisPlayer.getStoneColor()));
             String game = mode + " , " + size + " , " + x + " , " + y + " , " + stone;
             byte[] data = game.getBytes(Charset.forName("UTF-8"));
-            Games.TurnBasedMultiplayer.takeTurn(mGoogleApiClient, match.getMatchId(), data, opponentPlayer.getId());
+
+            ResultCallback<TurnBasedMultiplayer.UpdateMatchResult> cb = new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
+                @Override
+                public void onResult(TurnBasedMultiplayer.UpdateMatchResult result) {
+                    //processResult(result);
+                    System.out.println("Match updated!");
+                }
+            };
+
+            //If move results in winner finish match, else take turn
+            Games.TurnBasedMultiplayer.takeTurn(mGoogleApiClient, match.getMatchId(),
+                                                data, opponentPlayer.getId())
+                                                .setResultCallback(cb);
+
+            if(status != 0) {
+                Games.TurnBasedMultiplayer.finishMatch(mGoogleApiClient, match.getMatchId());
+            }
         }
     }
 
@@ -703,26 +721,24 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
         if(b.getBoolean("isGoogle")) {
             // Initialize players for this device and send initial piece to other device.
-            int id = b.getInt("button");
-            ImageButton button = (ImageButton) findViewById(id);
-            thisPlayer = player2;
-            thisPlayerTime = player2Time;
-            opponentPlayer = player1;
-            opponentPlayerTime = player1Time;
-            isMyTurn = false;
-            placePiece(button, opponentPlayer);
+//            int id = b.getInt("button");
+//            ImageButton button = (ImageButton) findViewById(id);
+//            thisPlayer = player2;
+//            thisPlayerTime = player2Time;
+//            opponentPlayer = player1;
+//            opponentPlayerTime = player1Time;
+//            isMyTurn = false;
+//            placePiece(button, opponentPlayer);
 
-            mGoogleApiClient.connect();
+            //mGoogleApiClient.connect();
 
-            /*
-            button.setImageResource(R.drawable.intersection_black_100px_100px);
-            button.setTag("Black");
-            isMyTurn = false;
-            thisPlayer = player2;
-            opponentPlayer = player1;
-            */
-            match = b.getParcelable("game");
-            setParticipants(match.getParticipants(), match);
+
+            //match = b.getParcelable("game");
+            incomingMatch = b;
+            //setParticipants(match.getParticipants(), match);
+        } else {
+            LinearLayout layout = (LinearLayout) findViewById(R.id.google_play_start);
+            layout.setVisibility(View.VISIBLE);
         }
         mGoogleApiClient.connect();
     }
@@ -731,6 +747,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
+    }
+
+    public void onCheckForInvitesClicked(View view) {
+        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            Intent intent = Games.TurnBasedMultiplayer.getInboxIntent(mGoogleApiClient);
+            startActivityForResult(intent, RC_INVITATION_INBOX);
+        }
     }
 
     public void onStartMatchClicked(View view) {
@@ -748,6 +771,17 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     @Override
     public void onActivityResult(int request, int response, Intent data) {
         super.onActivityResult(request, response, data);
+        if (request == RC_INVITATION_INBOX) {
+            if(response != Activity.RESULT_OK) {
+                return;
+            }
+
+            match = data.getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
+
+            if(match != null) {
+
+            }
+        }
 
         if (request == RC_SELECT_PLAYERS) {
             if (response != Activity.RESULT_OK) {
@@ -784,6 +818,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     //processResult(result);
                     match = result.getMatch();
                     setParticipants(match.getParticipants(), match);
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.google_play_start);
+                    layout.setVisibility(View.GONE);
                 }
             };
             Games.TurnBasedMultiplayer.createMatch(mGoogleApiClient, tbmc).setResultCallback(cb);
@@ -800,7 +836,28 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     public void onConnected(Bundle connectionHint) {
         // The isMyTurn is signed in. Hide the sign-in button and allow the
         // isMyTurn to proceed.
+        //mGoogleApiClient.registerConnectionCallbacks(this);
+        if(incomingMatch != null) {
+            match = incomingMatch.getParcelable("game");
+            //Button start = (Button) findViewById(R.id.start_button);
+            //Button check = (Button) findViewById(R.id.check_for_invites);
+            //start.setVisibility(View.GONE);
+            //check.setVisibility(View.GONE);
+        }
+
         Games.TurnBasedMultiplayer.registerMatchUpdateListener(mGoogleApiClient, this);
+
+        if(incomingMatch != null) {
+            setParticipants(match.getParticipants(), match);
+            int id = incomingMatch.getInt("button");
+            ImageButton button = (ImageButton) findViewById(id);
+            thisPlayer = player2;
+            thisPlayerTime = player2Time;
+            opponentPlayer = player1;
+            opponentPlayerTime = player1Time;
+            isMyTurn = false;
+            placePiece(button, opponentPlayer);
+        }
     }
 
     @Override
@@ -811,7 +868,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         }
 
         // if the sign-in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
+        // launch the sign-in flowf
         if (mSignInClicked || mAutoStartSignInFlow) {
             mAutoStartSignInFlow = false;
             mSignInClicked = false;
