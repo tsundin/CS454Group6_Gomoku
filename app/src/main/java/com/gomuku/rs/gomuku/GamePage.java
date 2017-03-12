@@ -21,6 +21,8 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.os.Handler;
 import android.os.Message;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -82,6 +84,8 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     final static int RC_SELECT_PLAYERS = 10000;
     final static int RC_LOOK_AT_MATCHES = 10001;
     private TurnBasedMatch match;
+    public  BluetoothDevice finalBondedDevice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -430,35 +434,46 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
         }
         pairedDevices = BA.getBondedDevices();
-        if (pairedDevices.size() != 1) {
-            // need to error out;
-
-            Toast.makeText(getApplicationContext(), "No paired device found", Toast.LENGTH_LONG).show();
-            for(BluetoothDevice bt : pairedDevices) ;
-
-        } else {
-            isPaired = true;
+        ArrayList<String> pairedDeviceNames = new ArrayList<String>();
+        for(BluetoothDevice device: pairedDevices) {
+            pairedDeviceNames.add(device.getName());
         }
-        if (isPaired) {
+        final List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
+        final CharSequence[] fol_list = pairedDeviceNames.toArray(new CharSequence[pairedDeviceNames.size()]);
 
-            mChatService = new BluetoothChatService(this, mHandler);
-            List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
-            String pairedDeviceName = deviceList.get(0).getName();
-            String myName = BA.getName();
-            if (myName.compareTo(pairedDeviceName) < 0) {
+        mChatService = new BluetoothChatService(this, mHandler);
 
-                iHoldBlackPieces = true;
-                isMyTurn = true;
-            } else {
-                iHoldBlackPieces = false;
-                isMyTurn = false;
-                thisPlayer = player2;
-                thisPlayerTime = player2Time;
-                opponentPlayer = player1;
-                opponentPlayerTime = player1Time;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        builder.setTitle("Pick a device to pair with");
+        builder.setItems(fol_list, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                finalBondedDevice = deviceList.get(which);
+                isPaired = true;
+                String pairedDeviceName = finalBondedDevice.getName();
+                Log.i("Paired to device", pairedDeviceName);
+                String myName = BA.getName();
+                if (myName.compareTo(pairedDeviceName) < 0) {
+
+                    iHoldBlackPieces = true;
+                    isMyTurn = true;
+                } else {
+                    iHoldBlackPieces = false;
+                    isMyTurn = false;
+                    thisPlayer = player2;
+                    thisPlayerTime = player2Time;
+                    opponentPlayer = player1;
+                    opponentPlayerTime = player1Time;
+                }
+                mChatService.connect(finalBondedDevice, false);
+
             }
-            mChatService.connect(deviceList.get(0), false);
-        }
+        });
+        builder.show();
+        Log.i("here","here");
 
     }
 
@@ -719,15 +734,15 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             // The R.string.signin_other_error value should reference a generic
             // error string in your strings.xml file, such as "There was
             // an issue with sign-in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    mGoogleApiClient, connectionResult,
-                    RC_SIGN_IN, getResources().getString(R.string.signin_other_error))) {
+          //  if (!BaseGameUtils.resolveConnectionFailure(this,
+              //      mGoogleApiClient, connectionResult,
+                //    RC_SIGN_IN, getResources().getString(R.string.signin_other_error))) {
                 mResolvingConnectionFailure = false;
             }
         }
 
         // Put code here to display the sign-in button
-    }
+
 
     @Override
     public void onConnectionSuspended(int i) {
