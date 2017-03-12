@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 /**
  * Created by rs on 1/26/17.
@@ -40,17 +42,30 @@ import android.widget.Toast;
 
         // Determine game type from radio buttons
         RadioButton radioButton_online = (RadioButton) findViewById(R.id.online);
-        RadioButton radioButton_onlineBT = (RadioButton) findViewById(R.id.onlineBT);
         RadioButton radioButton_offline = (RadioButton) findViewById(R.id.offline);
         RadioButton radioButton_ai = (RadioButton) findViewById(R.id.ai);
 
         radioButton_online.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { gameType = GameTypes.Online; }
-        });
-        radioButton_onlineBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { gameType = GameTypes.OnlineBT; }
+            public void onClick(View view) {
+                gameType = GameTypes.Online;
+                AlertDialog.Builder builder = new AlertDialog.Builder(GameSelection.this);
+                builder.setCancelable(false);
+
+                builder.setTitle("Choose online mode");
+                final CharSequence[] fol_list = {"google play services", "bluetooth"};
+                builder.setItems(fol_list, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // the user clicked on colors[which]
+                        if (which == 1) {
+                            gameType = GameTypes.OnlineBT;
+                        }
+
+                    }
+                });
+                builder.show();
+            }
         });
         radioButton_offline.setOnClickListener(new View.OnClickListener() {
             @Override

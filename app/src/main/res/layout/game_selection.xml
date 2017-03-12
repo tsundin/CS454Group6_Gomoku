@@ -78,12 +78,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/online"
                     android:layout_weight="1" />
-                <RadioButton
-                    android:text="Bluetooth "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/onlineBT"
-                    android:layout_weight="1" />
 
                 <RadioButton
                     android:text="Offline"

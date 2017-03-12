@@ -22,6 +22,8 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.os.Handler;
 import android.os.Message;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -84,6 +86,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
     final static int RC_INVITATION_INBOX = 10001;
     private TurnBasedMatch match;
     private Bundle incomingMatch;
+    public  BluetoothDevice finalBondedDevice;
 
     /**
      * Creates the GamePage view.
@@ -172,7 +175,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     // add other APIs and scopes here as needed
                     .build();
         }
-
     }
 
     private void initializeLayout() {
@@ -196,9 +198,9 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      */
     private void initializeWins() {
         TextView wins = (TextView) findViewById(R.id.player1_wins);
-        wins.setText("Wins: " + thisPlayer.getWins());
+        wins.setText("Wins: " + player1.getWins());
         wins = (TextView) findViewById(R.id.player2_wins);
-        wins.setText("Wins: " + opponentPlayer.getWins());
+        wins.setText("Wins: " + player2.getWins());
         player1Time.reset();
         player2Time.reset();
         player1Time.pause();
@@ -316,6 +318,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      * @param player The player that is requesting the piece be played.
      */
     public void placePiece(View view, Player player) {
+        int play = -1;
         // Extract the id containing the (x,y) coordinates of where to place the piece
         ImageButton aButton = (ImageButton) view;
         int id = aButton.getId();
@@ -325,11 +328,11 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         // Only place a piece if no piece is currently placed there, and either
         // it is my turn and I am the player playing, or it is not my turn and the opponent
         // is playing a piece.
-        if (aButton.getTag() == null &&
-                (isMyTurn && player == thisPlayer) || (!isMyTurn && player == opponentPlayer)) {
-            int play = playTurn(player, player1Time, x_coord, y_coord);
-            // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
+        if (aButton.getTag() == null) { // only play if a stone has not already been placed there
             if (isMyTurn && player == thisPlayer) {
+                // Play the piece
+                play = playTurn(player, thisPlayerTime, x_coord, y_coord);
+                // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
                 writeStoneToBluetooth(player, id);
                 writeStoneToGPS(player, x_coord, y_coord, play);
                 // Swap the timers (this player just played)
@@ -337,11 +340,13 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 opponentPlayerTime.resume();
 
             }
-            else { // Swap the timers (opponent just played)
+            else if (!isMyTurn && player == opponentPlayer) { // Swap the timers (opponent just played)
+                // Play the piece
+                play = playTurn(player, opponentPlayerTime, x_coord, y_coord);
+                // Swap the timers (opponent just played)
                 opponentPlayerTime.pause();
                 thisPlayerTime.resume();
             }
-
             if(play == 0){ // successful play, no winner
                 if (player.getStoneColor() == 1) {
                     drawBlackStone(aButton);
@@ -355,12 +360,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             }
             else if(play == 1) { // player 1 wins
                 drawBlackStone(aButton);
-                player1Wins(thisPlayer);
+                player1Wins(player1);
 
             }
             else if(play == 2) { // player 2 wins
                 drawWhiteStone(aButton);
-                player2Wins(opponentPlayer);
+                player2Wins(player2);
             }
         }
     }
@@ -396,9 +401,6 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         else { // online modes don't swap. just change turns.
             isMyTurn = !isMyTurn;
         }
-
-
-
     }
 
     /**
@@ -538,35 +540,46 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             Toast.makeText(getApplicationContext(), "Already on", Toast.LENGTH_LONG).show();
         }
         pairedDevices = BA.getBondedDevices();
-        if (pairedDevices.size() != 1) {
-            // need to error out;
-
-            Toast.makeText(getApplicationContext(), "No paired device found", Toast.LENGTH_LONG).show();
-            for(BluetoothDevice bt : pairedDevices) ;
-
-        } else {
-            isPaired = true;
+        ArrayList<String> pairedDeviceNames = new ArrayList<String>();
+        for(BluetoothDevice device: pairedDevices) {
+            pairedDeviceNames.add(device.getName());
         }
-        if (isPaired) {
+        final List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
+        final CharSequence[] fol_list = pairedDeviceNames.toArray(new CharSequence[pairedDeviceNames.size()]);
 
-            mChatService = new BluetoothChatService(this, mHandler);
-            List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>(pairedDevices);
-            String pairedDeviceName = deviceList.get(0).getName();
-            String myName = BA.getName();
-            if (myName.compareTo(pairedDeviceName) < 0) {
+        mChatService = new BluetoothChatService(this, mHandler);
 
-                iHoldBlackPieces = true;
-                isMyTurn = true;
-            } else {
-                iHoldBlackPieces = false;
-                isMyTurn = false;
-                thisPlayer = player2;
-                thisPlayerTime = player2Time;
-                opponentPlayer = player1;
-                opponentPlayerTime = player1Time;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        builder.setTitle("Pick a device to pair with");
+        builder.setItems(fol_list, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                finalBondedDevice = deviceList.get(which);
+                isPaired = true;
+                String pairedDeviceName = finalBondedDevice.getName();
+                Log.i("Paired to device", pairedDeviceName);
+                String myName = BA.getName();
+                if (myName.compareTo(pairedDeviceName) < 0) {
+
+                    iHoldBlackPieces = true;
+                    isMyTurn = true;
+                } else {
+                    iHoldBlackPieces = false;
+                    isMyTurn = false;
+                    thisPlayer = player2;
+                    thisPlayerTime = player2Time;
+                    opponentPlayer = player1;
+                    opponentPlayerTime = player1Time;
+                }
+                mChatService.connect(finalBondedDevice, false);
+
             }
-            mChatService.connect(deviceList.get(0), false);
-        }
+        });
+        builder.show();
+        Log.i("here","here");
 
     }
 
@@ -878,15 +891,15 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
             // The R.string.signin_other_error value should reference a generic
             // error string in your strings.xml file, such as "There was
             // an issue with sign-in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    mGoogleApiClient, connectionResult,
-                    RC_SIGN_IN, getResources().getString(R.string.signin_other_error))) {
+          //  if (!BaseGameUtils.resolveConnectionFailure(this,
+              //      mGoogleApiClient, connectionResult,
+                //    RC_SIGN_IN, getResources().getString(R.string.signin_other_error))) {
                 mResolvingConnectionFailure = false;
             }
         }
 
         // Put code here to display the sign-in button
-    }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -906,18 +919,29 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         Games.signOut(mGoogleApiClient);
     }
 
-    // Sets isMyTurn name
+    // Sets player name
     private void setParticipants(ArrayList<Participant> players, TurnBasedMatch match) {
-
+        final int n = 7;
         Participant first = players.get(0);
         Participant second = players.get(1);
 
-        thisPlayer.setName(first.getDisplayName());
+        if (first.getDisplayName().length() > n) { // shorten long names
+            thisPlayer.setName(first.getDisplayName().substring(0, n));
+        }
+        else {
+            thisPlayer.setName(first.getDisplayName());
+        }
         thisPlayer.setId(first.getParticipantId());
         TextView firstText = (TextView) findViewById(R.id.player1);
         firstText.setText(thisPlayer.getName());
 
-        opponentPlayer.setName(second.getDisplayName());
+        if (first.getDisplayName().length() > n) { // shorten long names
+            opponentPlayer.setName(second.getDisplayName().substring(0, n));
+        }
+        else {
+            opponentPlayer.setName(second.getDisplayName());
+        }
+
         opponentPlayer.setId(second.getParticipantId());
         TextView secondText = (TextView) findViewById(R.id.player2);
         secondText.setText(opponentPlayer.getName());
