@@ -191,15 +191,24 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/google_play_start"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                    <fragment
+                        android:name="com.gomuku.rs.gomuku.StartMatchFragment"
+                        android:id="@+id/google_play_start"
+                        tools:layout="@layout/google_play_start_match"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                </LinearLayout>
             </FrameLayout>
-            <Button
-                android:text="Start Match"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/timer2"
-                android:layout_toEndOf="@+id/game_options_text"
-                android:id="@+id/button2"
-                android:onClick="onStartMatchClicked" />
+
         </RelativeLayout>
         <fragment
             android:name="com.gomuku.rs.gomuku.BluetoothFragment"

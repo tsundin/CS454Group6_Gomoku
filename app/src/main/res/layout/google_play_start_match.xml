@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/winnerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="0.9"
+        android:background="@color/white"
+        android:gravity="center"
+        android:rotation="0"
+        android:text="Google Play Match"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/primaryDark"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/google_play_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.9"
+        android:background="@color/white"
+        android:padding="30dp"
+        android:text="You must be signed in to Google Play Games and have a Play Games account to continue. To start a new match press the button below and select your opponent. Once you return to the game board make your first move and your opponent will be notified of the incoming invitation for them to accept or ignore.\n\nDo not close the game board until you have completed your match or your board state will not be saved."
+        android:layout_below="@+id/winnerText"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/start_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_play_button"
+        android:onClick="onStartMatchClicked"
+        android:text="Start\nMatch"
+        android:textColor="@color/white"
+        android:layout_below="@+id/winnerText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="191dp" />
+
+</RelativeLayout>
