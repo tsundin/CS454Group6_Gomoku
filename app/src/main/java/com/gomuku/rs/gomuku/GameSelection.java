@@ -53,7 +53,7 @@ import android.content.DialogInterface;
                 builder.setCancelable(false);
 
                 builder.setTitle("Choose online mode");
-                final CharSequence[] fol_list = {"google play services", "bluetooth"};
+                final CharSequence[] fol_list = {"Google Play Game", "Bluetooth"};
                 builder.setItems(fol_list, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

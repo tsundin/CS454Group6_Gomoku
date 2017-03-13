@@ -334,7 +334,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                 play = playTurn(player, thisPlayerTime, x_coord, y_coord);
                 // Only send the coordinate via Bluetooth/Google if it's my turn and I am the player.
                 writeStoneToBluetooth(player, id);
-                writeStoneToGPS(player, x_coord, y_coord, play);
+                writeStoneToGPS(player, x_coord, y_coord, play, id);
                 // Swap the timers (this player just played)
                 thisPlayerTime.pause();
                 opponentPlayerTime.resume();
@@ -356,7 +356,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
                     drawWhiteStone(aButton);
                     highlightPlayer1();
                 }
-                changeTurns(); // Swap players, depending on the game mode
+                if(gameBoard.isBoardFull()) {
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.stalemate);
+                    layout.setVisibility(View.VISIBLE);
+                } else {
+                    changeTurns(); // Swap players, depending on the game mode
+                }
             }
             else if(play == 1) { // player 1 wins
                 drawBlackStone(aButton);
@@ -439,15 +444,16 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
      * @param thisPlayer Which player is currently playing
      * @param x_coord, y_coord The (x,y) coordinate to play
      */
-    private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord, int status) {
+    private void writeStoneToGPS(Player thisPlayer, int x_coord, int y_coord, int status, int buttonId) {
         if (gameTypeEnum == GameSelection.GameTypes.Online) {
             int intMode = gameBoard.getGameMode();
             String mode = new String(Integer.toString(intMode));
             String size = new String(Integer.toString(board_size));
             String x = new String(Integer.toString(x_coord));
             String y = new String(Integer.toString(y_coord));
+            String id = new String(Integer.toString(buttonId));
             String stone = new String(Integer.toString(thisPlayer.getStoneColor()));
-            String game = mode + " , " + size + " , " + x + " , " + y + " , " + stone;
+            String game = mode + " , " + size + " , " + x + " , " + y + " , " + stone + " , " + id;
             byte[] data = game.getBytes(Charset.forName("UTF-8"));
 
             ResultCallback<TurnBasedMultiplayer.UpdateMatchResult> cb = new ResultCallback<TurnBasedMultiplayer.UpdateMatchResult>() {
@@ -734,21 +740,7 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
 
         if(b.getBoolean("isGoogle")) {
             // Initialize players for this device and send initial piece to other device.
-//            int id = b.getInt("button");
-//            ImageButton button = (ImageButton) findViewById(id);
-//            thisPlayer = player2;
-//            thisPlayerTime = player2Time;
-//            opponentPlayer = player1;
-//            opponentPlayerTime = player1Time;
-//            isMyTurn = false;
-//            placePiece(button, opponentPlayer);
-
-            //mGoogleApiClient.connect();
-
-
-            //match = b.getParcelable("game");
             incomingMatch = b;
-            //setParticipants(match.getParticipants(), match);
         } else {
             LinearLayout layout = (LinearLayout) findViewById(R.id.google_play_start);
             layout.setVisibility(View.VISIBLE);
@@ -956,12 +948,12 @@ public class GamePage extends Activity implements GoogleApiClient.ConnectionCall
         byte[] data = match.getData();
         String str = new String(data, Charset.forName("US-ASCII"));
         List<String> list = new ArrayList<String>(Arrays.asList(str.split(" , ")));
-        String id = list.get(2) + list.get(3);
+        //String id = list.get(2) + list.get(3);
 
         int x = Integer.parseInt(list.get(2));
         int y = Integer.parseInt(list.get(3));
         int stoneColor = Integer.parseInt(list.get(4)); // playPiece determines this from opponentPlayer now.
-        int buttonId = Integer.parseInt(id);
+        int buttonId = Integer.parseInt(list.get(5));
 
         ImageButton button = (ImageButton) findViewById(buttonId);
         isMyTurn = false;

@@ -72,7 +72,7 @@ public class WelcomePage extends Activity implements GoogleApiClient.ConnectionC
                 byte[] data = match.getData();
                 String str = new String(data, Charset.forName("US-ASCII"));
                 List<String> list = new ArrayList<String>(Arrays.asList(str.split(" , ")));
-                String id = list.get(2) + list.get(3);
+                //String id = list.get(2) + list.get(3);
 
                 Toast.makeText(WelcomePage.this, str,
                         Toast.LENGTH_SHORT).show();
@@ -88,7 +88,7 @@ public class WelcomePage extends Activity implements GoogleApiClient.ConnectionC
                 intent.putExtra("x_coord", Integer.parseInt(list.get(3)));
                 intent.putExtra("y_coord", Integer.parseInt(list.get(2)));
                 intent.putExtra("stoneColor", Integer.parseInt(list.get(4)));
-                intent.putExtra("button", Integer.parseInt(id));
+                intent.putExtra("button", Integer.parseInt(list.get(5)));
                 intent.putExtra("matchId", match.getMatchId());
                 intent.putExtras(b);
 
